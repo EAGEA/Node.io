@@ -4,40 +4,46 @@ public class Player
 {
     private String pseudo;
     private int posX,posY;
+    private Map map;
 
     //Player
-    public void Player(String pPseudo,int initPosX,int initPosY)
+    public void Player(String pPseudo,int initPosX,int initPosY,Map m)
     {
         pseudo = pPseudo;
         posX = initPosX;
         posY = initPosY;
+        map = m;
     }
 
     //Action to move the player to the left
     public void MoveLeft()
     {
-        /*TO DO : Add the map constraints (waiting the Map class) ...*/
+        if(posX+1 > map.getSize() || map.IsOccupied(posX+1,posY))
+            System.err.println("Error, impossible move !");
         posX ++;
     }
 
     //Action to move the player to the right
     public void MoveRight()
     {
-        /*TO DO : Add the map constraints (waiting the Map class) ...*/
+        if(posX-1 < 0 || map.IsOccupied(posX-1,posY))
+            System.err.println("Error, impossible move !");
         posX --;
     }
 
-    //Action to move the player to top
+    //Action to move the player to the top
     public void MoveUp()
     {
-        /*TO DO : Add the map constraints (waiting the Map class) ...*/
+        if(posY+1 > map.getSize() || map.IsOccupied(posX,posY+1))
+            System.err.println("Error, impossible move !");
         posY ++;
     }
 
     //Action to move the player to the bottom
     public void MoveDown()
     {
-        /*TO DO : Add the map constraints (waiting the Map class) ...*/
+        if(posY-1 < map.getSize() || map.IsOccupied(posX,posY-1))
+            System.err.println("Error, impossible move !");
         posY --;
     }
 
