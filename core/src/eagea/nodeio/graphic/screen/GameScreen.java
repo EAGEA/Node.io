@@ -1,4 +1,4 @@
-package eagea.nodeio.screen;
+package eagea.nodeio.graphic.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -11,7 +11,6 @@ public class GameScreen extends ScreenAdapter
     {
         //Gdx.input.setInputProcessor(mGameTouchListener) ;
     }
-
 
     @Override
     public void render(float delta)
@@ -33,6 +32,31 @@ public class GameScreen extends ScreenAdapter
         renderHUD() ;
         mSpriteBatch.end() ;
          */
+    }
+
+    @Override
+    public void hide()
+    {
+    }
+
+    @Override
+    public void resize(int width, int height)
+    {
+    }
+
+    @Override
+    public void pause()
+    {
+    }
+
+    @Override
+    public void resume()
+    {
+    }
+
+    @Override
+    public void dispose()
+    {
     }
 
     private void update(float delta)
