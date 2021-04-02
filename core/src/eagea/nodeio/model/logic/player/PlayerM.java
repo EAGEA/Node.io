@@ -72,13 +72,51 @@ public class PlayerM
     //Action to move the player to the top
     public void MoveUp()
     {
-        mPosi ++;
+        //Next zone or impossible move
+        if(mPosi-1 < 0)
+        {
+            //The player can not go over limits
+            if(((mZone.getId() - 1) - MapM.ZONE_LINE) < 0)
+            {
+                System.err.println("ZONE : Impossible move !");
+            }
+            //The player exit the current zone
+            else
+            {
+                mPosi = mZone.SIZE - 1;
+                setZone(mMap.getZone(mZone.getId() - MapM.ZONE_LINE));
+            }
+        }
+        //Left move within the zone
+        else
+        {
+            mPosj--;
+        }
     }
 
     //Action to move the player to the bottom
     public void MoveDown()
     {
-        mPosi --;
+        //Next zone or impossible move
+        if(mPosi+1 >= mZone.SIZE)
+        {
+            //The player can not go over limits
+            if(((mZone.getId() + 1) + MapM.ZONE_LINE) > mMap.getnbZone())
+            {
+                System.err.println("ZONE : Impossible move !");
+            }
+            //The player exit the current zone
+            else
+            {
+                mPosi = 0;
+                setZone(mMap.getZone(mZone.getId() + MapM.ZONE_LINE));
+            }
+        }
+        //Left move within the zone
+        else
+        {
+            mPosj++;
+        }
     }
 
     //Return the pseudo
