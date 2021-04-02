@@ -44,4 +44,10 @@ public class MapM extends Observable
     {
         return nbZone;
     }
+
+    //Return the zone n° id
+    public ZoneM getZone(int id)
+    {
+        return mZones.get(id);
+    }
 }

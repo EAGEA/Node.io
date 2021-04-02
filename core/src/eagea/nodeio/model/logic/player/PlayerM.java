@@ -8,13 +8,15 @@ public class PlayerM
     private String mPseudo;
     private int mPosj,mPosi;
     private ZoneM mZone;
+    private MapM mMap; //Here the mMap is to attribute new zones
 
     //Player
-    public void Player(String pPseudo, int initPosj, int initPosi,ZoneM zoneM) {
+    public void Player(String pPseudo, int initPosj, int initPosi,ZoneM zoneM,MapM mapM) {
         mPseudo = pPseudo;
         mPosj = initPosj;
         mPosi = initPosi;
         mZone = zoneM;
+        mMap = mapM;
     }
 
     //Action to move the player to the right
@@ -32,6 +34,7 @@ public class PlayerM
             else
             {
                 mPosj = 0;
+                setZone(mMap.getZone(mZone.getId() + 1));
             }
         }
         //Right move within the zone
@@ -56,6 +59,7 @@ public class PlayerM
             else
             {
                 mPosj = mZone.SIZE - 1;
+                setZone(mMap.getZone(mZone.getId() - 1));
             }
         }
         //Left move within the zone
@@ -84,20 +88,26 @@ public class PlayerM
     }
 
     //Return the x position of the player
-    public int getposj()
+    public int getPosj()
     {
         return mPosj;
     }
 
     //Return the y position of the player
-    public int getposi()
+    public int getPosi()
     {
         return mPosi;
     }
 
     //Return the current zone in which is the player
-    public ZoneM getzone()
+    public ZoneM getZone()
     {
         return mZone;
+    }
+
+    //Attributes a new zone to the player
+    public void setZone(ZoneM zone)
+    {
+        mZone = zone;
     }
 }
