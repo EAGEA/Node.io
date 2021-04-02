@@ -47,8 +47,9 @@ public class Model
         {
             mMap = new MapM();
         }
-        // In all the cases, add our zone to the map.
-        mMap.add(new ZoneM("Albert"));
+        // In all the cases, add our zone to the map with an Id
+        mMap.add(new ZoneM("Albert",mMap.getnbZone()));
+        mMap.add(new ZoneM("John",mMap.getnbZone()));
     }
 
     public MapM getMap()

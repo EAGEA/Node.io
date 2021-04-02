@@ -15,12 +15,16 @@ public class ZoneM extends Observable
     private String mOwner; // To be changed
     // Type of map.
     private Type mType;
+    //Id of the zone
+    private int mId;
 
-    public ZoneM(String player)
+    public ZoneM(String player,int id)
     {
         mOwner = player;
         // Assign a random type.
         mType = Type.values()[(int) (Math.random() * Type.values().length)];
+        // Assign an ID to the zone
+        mId = id;
     }
 
     /**
@@ -43,6 +47,8 @@ public class ZoneM extends Observable
     {
         return mType;
     }
+
+    public int getId() { return mId; }
 
     public void setOwner(String player)
     {
