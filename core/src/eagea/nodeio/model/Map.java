@@ -2,6 +2,7 @@ package eagea.nodeio.model;
 
 public class Map
 {
+    public static final int SIZE = 30;
     /* TO DO : ENUM CLASS FOR MAP (COLOR ?)*/
 
     private int size; // Map of N * N
