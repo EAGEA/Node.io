@@ -1,13 +1,9 @@
 package eagea.nodeio.view.object.map;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import eagea.nodeio.Main;
-import eagea.nodeio.view.object.Object;
 
 /**
  * A cell of a zone render with isometric projection.
@@ -51,7 +47,7 @@ public class CellV
         // Space between tiles for grid.
         float space = (mPosition.x - mPosition.y) * mSize / 10f;
 
-        return  + (mPosition.x - mPosition.y) * (mSize / 2f) + space;
+        return  -50 + (mPosition.x - mPosition.y) * (mSize / 2f) + space;
     }
 
     /**
@@ -65,6 +61,6 @@ public class CellV
         // Space between tiles for grid.
         float space = (mPosition.x + mPosition.y) * mSize / 10f;
 
-        return  + (mPosition.x + mPosition.y) * (mSize / 2f) + elevation + space;
+        return  -50 + (mPosition.x + mPosition.y) * (mSize / 2f) + elevation + space;
     }
 }

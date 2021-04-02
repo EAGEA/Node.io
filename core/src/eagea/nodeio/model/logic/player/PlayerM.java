@@ -1,151 +1,136 @@
 package eagea.nodeio.model.logic.player;
 
-import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.map.MapM;
+import eagea.nodeio.model.logic.map.ZoneM;
 
+/**
+ * Handle the player movements.
+ */
 public class PlayerM
 {
     private String mPseudo;
-    private int mPosj,mPosi;
-    private ZoneM mZone;
-    private MapM mMap; //Here the mMap is to attribute new zones
+    // Coordinate in its current zone.
+    private int mZone;
+    private int mI, mJ;
+    // Current environment.
+    private MapM mMap;
 
-    //Player
-    public void Player(String pPseudo, int initPosj, int initPosi,ZoneM zoneM,MapM mapM) {
+    public void Player (String pPseudo, int i, int j, MapM mapM)
+    {
         mPseudo = pPseudo;
-        mPosj = initPosj;
-        mPosi = initPosi;
-        mZone = zoneM;
+        mI = i;
+        mJ = j;
         mMap = mapM;
     }
 
-    //Action to move the player to the right
-    public void MoveRight()
+    public void moveRight()
     {
-        //Next zone or impossible move
-        if(mPosj+1 >= mZone.SIZE)
+        if (mJ + 1 >= ZoneM.SIZE)
         {
-            //The player can not go over limits
-            if(((mZone.getId() + 1) % MapM.ZONE_LINE) == 0)
+            // Next zone or impossible move.
+            if (((mZone + 1) % MapM.ZONE_LINE) == 0)
             {
-                System.err.println("ZONE : Impossible move !");
+                // The player can not go over limits.
+                System.err.println("ZONE: Impossible move!");
             }
-            //The player exit the current zone
             else
             {
-                mPosj = 0;
-                setZone(mMap.getZone(mZone.getId() + 1));
+                // The player exit the current zone.
+                mJ = 0;
+                mZone ++;
             }
         }
-        //Right move within the zone
         else
         {
-            mPosj++;
+            // Move within the zone.
+            mJ ++;
         }
     }
 
-    //Action to move the player to the left
-    public void MoveLeft()
+    public void moveLeft()
     {
-        //Next zone or impossible move
-        if(mPosj-1 < 0)
+        if (mJ - 1 < 0)
         {
-            //The player can not go over limits
-            if(((mZone.getId() - 1) % MapM.ZONE_LINE) == MapM.ZONE_LINE - 1)
+            // Next zone or impossible move.
+            if (((mZone - 1) % MapM.ZONE_LINE) == MapM.ZONE_LINE - 1)
             {
-                System.err.println("ZONE : Impossible move !");
+                // The player can not go over limits.
+                System.err.println("ZONE: Impossible move!");
             }
-            //The player exit the current zone
             else
             {
-                mPosj = mZone.SIZE - 1;
-                setZone(mMap.getZone(mZone.getId() - 1));
+                // The player exit the current zone.
+                mJ = ZoneM.SIZE - 1;
+                mZone --;
             }
         }
-        //Left move within the zone
         else
         {
-            mPosj--;
+            // Move within the zone.
+            mJ --;
         }
     }
 
-    //Action to move the player to the top
-    public void MoveUp()
+    public void moveUp()
     {
-        //Next zone or impossible move
-        if(mPosi-1 < 0)
+        if (mI - 1 < 0)
         {
-            //The player can not go over limits
-            if(((mZone.getId() - 1) - MapM.ZONE_LINE) < 0)
+            // Next zone or impossible move.
+            if (((mZone - 1) - MapM.ZONE_LINE) < 0)
             {
-                System.err.println("ZONE : Impossible move !");
+                // The player can not go over limits.
+                System.err.println("ZONE: Impossible move!");
             }
-            //The player exit the current zone
             else
             {
-                mPosi = mZone.SIZE - 1;
-                setZone(mMap.getZone(mZone.getId() - MapM.ZONE_LINE));
+                // The player exit the current zone.
+                mI = ZoneM.SIZE - 1;
+                mZone -= MapM.ZONE_LINE;
             }
         }
-        //Left move within the zone
         else
         {
-            mPosj--;
+            // Move within the zone.
+            mJ --;
         }
     }
 
-    //Action to move the player to the bottom
-    public void MoveDown()
+    public void moveDown()
     {
-        //Next zone or impossible move
-        if(mPosi+1 >= mZone.SIZE)
+        if (mI + 1 >= ZoneM.SIZE)
         {
-            //The player can not go over limits
-            if(((mZone.getId() + 1) + MapM.ZONE_LINE) > mMap.getnbZone())
+            // Next zone or impossible move.
+            if (((mZone + 1) + MapM.ZONE_LINE) > mMap.getNbZone())
             {
-                System.err.println("ZONE : Impossible move !");
+                // The player can not go over limits.
+                System.err.println("ZONE: Impossible move!");
             }
-            //The player exit the current zone
             else
             {
-                mPosi = 0;
-                setZone(mMap.getZone(mZone.getId() + MapM.ZONE_LINE));
+                // The player exit the current zone.
+                mI = 0;
+                mZone += MapM.ZONE_LINE;
             }
         }
-        //Left move within the zone
         else
         {
-            mPosj++;
+            // Move within the zone.
+            mJ ++;
         }
     }
 
-    //Return the pseudo
     public String getPseudo()
     {
         return mPseudo;
     }
 
-    //Return the x position of the player
-    public int getPosj()
+    public int getJ()
     {
-        return mPosj;
+        return mJ;
     }
 
-    //Return the y position of the player
-    public int getPosi()
+    public int getI()
     {
-        return mPosi;
-    }
-
-    //Return the current zone in which is the player
-    public ZoneM getZone()
-    {
-        return mZone;
-    }
-
-    //Attributes a new zone to the player
-    public void setZone(ZoneM zone)
-    {
-        mZone = zone;
+        return mI;
     }
 }

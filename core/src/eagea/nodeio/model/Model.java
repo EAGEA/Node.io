@@ -48,8 +48,8 @@ public class Model
             mMap = new MapM();
         }
         // In all the cases, add our zone to the map with an Id
-        mMap.add(new ZoneM("Albert",mMap.getnbZone()));
-        mMap.add(new ZoneM("John",mMap.getnbZone()));
+        mMap.add(new ZoneM("Albert", mMap.getNbZone()));
+        mMap.add(new ZoneM("John", mMap.getNbZone()));
     }
 
     public MapM getMap()
