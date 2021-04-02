@@ -1,24 +1,27 @@
-package eagea.nodeio.model;
+package eagea.nodeio.model.logic.player;
 
-public class Player
+import eagea.nodeio.model.logic.map.MapM;
+
+public class PlayerM
 {
     private String pseudo;
     private int posX,posY;
-    private Map map;
+    private MapM mapM;
 
     //Player
-    public void Player(String pPseudo,int initPosX,int initPosY,Map m)
+    public void Player(String pPseudo, int initPosX, int initPosY, MapM m)
     {
         pseudo = pPseudo;
         posX = initPosX;
         posY = initPosY;
-        map = m;
+        mapM = m;
     }
+    /*
 
     //Action to move the player to the left
     public void MoveLeft()
     {
-        if(posX+1 > map.getSize() || map.IsOccupied(posX+1,posY))
+        if(posX+1 > MapM.SIZE || mapM.IsOccupied(posX+1,posY))
             System.err.println("Error, impossible move !");
         posX ++;
     }
@@ -26,7 +29,7 @@ public class Player
     //Action to move the player to the right
     public void MoveRight()
     {
-        if(posX-1 < 0 || map.IsOccupied(posX-1,posY))
+        if(posX-1 < 0 || mapM.IsOccupied(posX-1,posY))
             System.err.println("Error, impossible move !");
         posX --;
     }
@@ -34,7 +37,7 @@ public class Player
     //Action to move the player to the top
     public void MoveUp()
     {
-        if(posY+1 > map.getSize() || map.IsOccupied(posX,posY+1))
+        if(posY+1 > MapM.SIZE || mapM.IsOccupied(posX,posY+1))
             System.err.println("Error, impossible move !");
         posY ++;
     }
@@ -42,7 +45,7 @@ public class Player
     //Action to move the player to the bottom
     public void MoveDown()
     {
-        if(posY-1 < map.getSize() || map.IsOccupied(posX,posY-1))
+        if(posY-1 < MapM.SIZE || mapM.IsOccupied(posX,posY-1))
             System.err.println("Error, impossible move !");
         posY --;
     }
@@ -64,4 +67,5 @@ public class Player
     {
         return posY;
     }
+     */
 }

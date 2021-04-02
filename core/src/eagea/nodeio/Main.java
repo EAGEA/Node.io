@@ -5,42 +5,39 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import eagea.nodeio.view.screen.game.GameScreen;
 
 public class Main extends Game
 {
-    private OrthographicCamera mCamera;
-    private Viewport mViewPort;
+    public static OrthographicCamera mCamera;
+    public static Viewport mViewPort;
     private GameScreen mGameScreen;
 
-    private SpriteBatch mBatch;
+    // To draw objects.
+    public static SpriteBatch mBatch;
 
-
-    Texture img;
 
     @Override
     public void create ()
     {
         mBatch = new SpriteBatch();
-        mCamera = new OrthographicCamera(100, 250) ;
-        mViewPort = new ExtendViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
+        mCamera = new OrthographicCamera(50, 50);
+        mViewPort = new FitViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
 
 
-        mGameScreen = new GameScreen(this);
-
+        mGameScreen = new GameScreen();
         setScreen(mGameScreen);
+
+        // World units when drawing.
+        Main.mBatch.setProjectionMatrix(Main.mCamera.combined);
+
     }
 
     @Override
     public void dispose ()
     {
         mBatch.dispose();
-        img.dispose();
-
-
-
         mGameScreen.dispose();
     }
 
@@ -52,11 +49,5 @@ public class Main extends Game
         // Center the camera
         //resetCameraPosition() ;
         // And resize the current screen
-        //getScreen().resize(width, height) ;
-    }
-
-    public SpriteBatch getBatch()
-    {
-        return mBatch;
     }
 }

@@ -1,21 +1,42 @@
-package eagea.nodeio.view.screen.game;
+package eagea.nodeio.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+
+import eagea.nodeio.model.Model;
 
 /**
  * Handle inputs from player.
  */
-public class Listener implements InputProcessor
+public class Controller implements InputProcessor
 {
+    // The game model.
+    private final Model mModel;
+
+    public Controller(Model model)
+    {
+        mModel = model ;
+        // Set as default input handler.
+        Gdx.input.setInputProcessor(this);
+    }
+
     @Override
     public boolean keyDown(int keyCode)
     {
-        if (keyCode == Input.Keys.SPACE)
+        switch (keyCode)
         {
+            case Input.Keys.UP:
+                return true;
+            case Input.Keys.DOWN:
+                return true;
+            case Input.Keys.LEFT:
+                return true;
+            case Input.Keys.RIGHT:
+                return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
