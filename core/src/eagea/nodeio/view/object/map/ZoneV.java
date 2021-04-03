@@ -32,13 +32,14 @@ public class ZoneV implements Observer
         {
             for (int j = 0; j < ZoneM.SIZE; j ++)
             {
-                mCells[i][j] = new CellV(i, j, getCellTexture());
+                mCells[i][j] = new CellV(mZone.getId(), i, j, getCellTexture());
             }
         }
     }
 
     public void render()
     {
+        // Reverse render order because of isometric rendering.
         for (int i = ZoneM.SIZE - 1; i >= 0 ; i --)
         {
             for (int j = ZoneM.SIZE - 1; j >= 0 ; j --)

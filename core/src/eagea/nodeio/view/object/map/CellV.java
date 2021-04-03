@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import eagea.nodeio.Main;
+import eagea.nodeio.model.logic.map.MapM;
+import eagea.nodeio.model.logic.map.ZoneM;
 
 /**
  * A cell of a zone render with isometric projection.
@@ -17,10 +19,13 @@ public class CellV
     // Position relative to the player, in number of cells.
     private final Vector2 mPosition;
 
-    public CellV(float i, float j, TextureRegion texture)
+    public CellV(int zone, float i, float j, TextureRegion texture)
     {
         mTexture = texture;
-        mPosition = new Vector2(i, j);
+        // From zone indexes to map ones.
+        int deltaI = (zone / MapM.ZONE_LINE) * ZoneM.SIZE;
+        int deltaJ = (zone % MapM.ZONE_LINE) * ZoneM.SIZE;
+        mPosition = new Vector2(i + deltaI, j + deltaJ);
     }
 
     public void render()

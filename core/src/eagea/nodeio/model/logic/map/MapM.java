@@ -8,7 +8,7 @@ import java.util.Observable;
  */
 public class MapM extends Observable
 {
-    public static final int ZONE_LINE = 5;
+    public static final int ZONE_LINE = 4;
 
     // Current zones on the map.
     private final ArrayList<ZoneM> mZones;
@@ -27,6 +27,7 @@ public class MapM extends Observable
     {
         mZones.remove(zone);
         // Notify the associated view.
+        hasChanged();
         notifyObservers();
     }
 
@@ -34,10 +35,11 @@ public class MapM extends Observable
     {
         mZones.add(zone);
         // Notify the associated view.
+        hasChanged();
         notifyObservers();
     }
 
-    public int getNbZone()
+    public int getNbZones()
     {
         return mZones.size();
     }

@@ -54,11 +54,18 @@ public class Model
         else
         {
             mMap = new MapM();
+            // !!!!TEST!!!!!
+            for (int i = 0 ; i <= 30 ; i ++)
+            {
+                mMap.add(new ZoneM(null, mMap.getNbZones()));
+            }
         }
         // In all the cases, add our zone to the map.
-        mMap.add(new ZoneM(new PlayerM("Albert",1,1,mMap), mMap.getNbZone()));
+        ZoneM zone = new ZoneM(mPlayer, mMap.getNbZones());
+        mMap.add(zone);
         // Notify RabbitMQ; zone added.
         // TODO
+        // mNode.sendZone(zone)
     }
 
     /**

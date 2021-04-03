@@ -1,7 +1,5 @@
 package eagea.nodeio.view;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.model.Model;
 import eagea.nodeio.view.object.map.MapV;

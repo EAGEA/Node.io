@@ -3,6 +3,8 @@ package eagea.nodeio.view.object.map;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -36,7 +38,11 @@ public class MapV implements Observer
 
     public void render()
     {
-        mZones.forEach(ZoneV::render);
+        // Reverse render order because of isometric rendering.
+        for (int i = mZones.size() - 1 ; i >= 0 ; i --)
+        {
+            mZones.get(i).render();
+        }
     }
 
     @Override
@@ -49,6 +55,7 @@ public class MapV implements Observer
         }
         else if (observable == mPlayer)
         {
+            System.out.println(mPlayer.getZone() + " " + mPlayer.getI() + " " + mPlayer.getJ());
             // Player has moved; update zones position.
             Vector2 delta = (Vector2) o;
             mZones.forEach(z -> z.updatePosition((int) delta.x, (int) delta.y));

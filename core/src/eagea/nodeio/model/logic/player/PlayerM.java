@@ -59,7 +59,7 @@ public class PlayerM extends Observable
         if (mPosition.y + 1 >= ZoneM.SIZE)
         {
             // Next zone or impossible move.
-            if (mZone < mMap.getNbZone() || ((mZone + 1) % MapM.ZONE_LINE) == 0)
+            if (mZone >= mMap.getNbZones() -1 || ((mZone + 1) % MapM.ZONE_LINE) == 0)
             {
                 // The player can not go over limits.
                 System.err.println("ZONE: Impossible move!");
@@ -87,7 +87,7 @@ public class PlayerM extends Observable
         if (mPosition.x + 1 >= ZoneM.SIZE)
         {
             // Next zone or impossible move.
-            if (((mZone + 1) + MapM.ZONE_LINE) > mMap.getNbZone())
+            if (((mZone + 1) + MapM.ZONE_LINE) > mMap.getNbZones())
             {
                 // The player can not go over limits.
                 System.err.println("ZONE: Impossible move!");
@@ -115,7 +115,7 @@ public class PlayerM extends Observable
         if (mPosition.x - 1 < 0)
         {
             // Next zone or impossible move.
-            if (((mZone - 1) - MapM.ZONE_LINE) < 0)
+            if ((mZone - MapM.ZONE_LINE) < 0)
             {
                 // The player can not go over limits.
                 System.err.println("ZONE: Impossible move!");
@@ -141,6 +141,11 @@ public class PlayerM extends Observable
     public String getPseudo()
     {
         return mPseudo;
+    }
+
+    public int getZone()
+    {
+        return mZone;
     }
 
     public int getJ()

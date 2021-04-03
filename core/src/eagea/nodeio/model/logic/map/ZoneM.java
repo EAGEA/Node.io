@@ -10,7 +10,7 @@ import eagea.nodeio.model.logic.player.PlayerM;
  */
 public class ZoneM extends Observable
 {
-    public static final int SIZE = 32;
+    public static final int SIZE = 4;
 
     public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
 
@@ -20,8 +20,6 @@ public class ZoneM extends Observable
     private Type mType;
     // Zone ID.
     private final int mId;
-    //Players within the zone
-    private ArrayList<PlayerM> mPlayers;
 
     public ZoneM(PlayerM player, int id)
     {
@@ -30,9 +28,6 @@ public class ZoneM extends Observable
         mType = Type.values()[(int) (Math.random() * Type.values().length)];
         // Assign an ID to the zone
         mId = id;
-
-        mPlayers = new ArrayList<PlayerM>();
-        mPlayers.add(mOwner);
     }
 
     /**
@@ -40,24 +35,11 @@ public class ZoneM extends Observable
      */
     public void changeOwner(PlayerM player, Type type)
     {
-        mPlayers.remove(mOwner);
         mOwner = player;
-        mPlayers.add(mOwner);
         mType = type;
         // Notify the associated view.
+        hasChanged();
         notifyObservers();
-    }
-
-    //Add player to the zone
-    public void add(PlayerM player)
-    {
-        mPlayers.add(player);
-    }
-
-    //Remove player of the zone
-    public void remove(PlayerM player)
-    {
-        mPlayers.remove(player);
     }
 
     public PlayerM getOwner()
