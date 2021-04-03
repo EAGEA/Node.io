@@ -26,14 +26,10 @@ public class Controller implements InputProcessor
     {
         switch (keyCode)
         {
-            case Input.Keys.UP:
-                return true;
-            case Input.Keys.DOWN:
-                return true;
-            case Input.Keys.LEFT:
-                return true;
-            case Input.Keys.RIGHT:
-                return true;
+            case Input.Keys.UP: mModel.getPlayer().moveUp(); return true;
+            case Input.Keys.DOWN: mModel.getPlayer().moveDown(); return true;
+            case Input.Keys.LEFT: mModel.getPlayer().moveLeft(); return true;
+            case Input.Keys.RIGHT: mModel.getPlayer().moveRight(); return false;
         }
 
         return false;

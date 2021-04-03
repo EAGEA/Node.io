@@ -10,32 +10,33 @@ import eagea.nodeio.Main;
  */
 public class CellV
 {
-    public static final float TILE_SIZE = 4f;
+    public static final float TILE_SIZE = 2f;
 
     // Current frame.
     private final TextureRegion mTexture;
-    // Positions in the zone.
+    // Position relative to the player, in number of cells.
     private final Vector2 mPosition;
-    // Current size.
-    private float mSize;
 
     public CellV(float i, float j, TextureRegion texture)
     {
         mTexture = texture;
         mPosition = new Vector2(i, j);
-        mSize = TILE_SIZE;
     }
 
     public void render()
     {
         // Draw.
-        Main.mBatch.draw(mTexture, getXPosition(), getYPosition(), mSize, mSize);
+        Main.mBatch.draw(mTexture, getXPosition(), getYPosition(), TILE_SIZE, TILE_SIZE);
     }
 
-    public void update(float delta)
+    /**
+     * Change position of each cell when player has moved of "deltaI"
+     * and "deltaJ".
+     */
+    public void updatePosition(int deltaI, int deltaJ)
     {
-        // To keep same size even when resizing.
-        //mSize = TILE_SIZE / (Gdx.graphics.getWidth() / Main.mCamera.viewportWidth);
+        mPosition.x += deltaI;
+        mPosition.y += deltaJ;
     }
 
     /**
@@ -45,9 +46,11 @@ public class CellV
     private float getXPosition()
     {
         // Space between tiles for grid.
-        float space = (mPosition.x - mPosition.y) * mSize / 10f;
+        float space = (mPosition.x - mPosition.y) * TILE_SIZE / 10f;
+        // To center.
+        float center = -TILE_SIZE / 2f;
 
-        return  -50 + (mPosition.x - mPosition.y) * (mSize / 2f) + space;
+        return (mPosition.x - mPosition.y) * (TILE_SIZE / 2f) + space + center;
     }
 
     /**
@@ -56,11 +59,13 @@ public class CellV
      */
     private float getYPosition()
     {
-        // The tile graphical elevation.
-        float elevation = -(mPosition.x + mPosition.y) * mSize / 3.75f;
         // Space between tiles for grid.
-        float space = (mPosition.x + mPosition.y) * mSize / 10f;
+        float space = (mPosition.x + mPosition.y) * TILE_SIZE / 10f;
+        // To center.
+        float center = -TILE_SIZE / 2f;
+        // The tile graphical elevation.
+        float elevation = -(mPosition.x + mPosition.y) * TILE_SIZE / 3.75f;
 
-        return  -50 + (mPosition.x + mPosition.y) * (mSize / 2f) + elevation + space;
+        return (mPosition.x + mPosition.y) * (TILE_SIZE / 2f) + elevation + space + center;
     }
 }

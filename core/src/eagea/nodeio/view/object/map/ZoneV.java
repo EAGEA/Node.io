@@ -1,12 +1,14 @@
 package eagea.nodeio.view.object.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.model.logic.map.ZoneM;
+import eagea.nodeio.model.logic.player.PlayerM;
 
 /**
  * A zone of the game map.
@@ -30,7 +32,7 @@ public class ZoneV implements Observer
         {
             for (int j = 0; j < ZoneM.SIZE; j ++)
             {
-                mCells[i][j] = new CellV(i, j, getTexture());
+                mCells[i][j] = new CellV(i, j, getCellTexture());
             }
         }
     }
@@ -46,17 +48,6 @@ public class ZoneV implements Observer
         }
     }
 
-    public void update(float delta)
-    {
-        for (int i = 0; i < ZoneM.SIZE; i ++)
-        {
-            for (int j = 0; j < ZoneM.SIZE; j ++)
-            {
-                mCells[i][j].update(delta);
-            }
-        }
-    }
-
     @Override
     public void update(Observable observable, java.lang.Object o)
     {
@@ -64,9 +55,24 @@ public class ZoneV implements Observer
     }
 
     /**
+     * Change position of each cell when player has moved of "deltaI"
+     * and "deltaJ".
+     */
+    public void updatePosition(int deltaI, int deltaJ)
+    {
+        for (int i = 0; i < ZoneM.SIZE; i ++)
+        {
+            for (int j = 0; j < ZoneM.SIZE; j ++)
+            {
+                mCells[i][j].updatePosition(deltaI, deltaJ);
+            }
+        }
+    }
+
+    /**
      * Return a random texture for a cell of this zone.
      */
-    private TextureRegion getTexture()
+    private TextureRegion getCellTexture()
     {
         String name = mZone.getType().name().toLowerCase();
 

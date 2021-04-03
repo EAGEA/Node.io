@@ -1,13 +1,13 @@
 
 player.png
-size: 128, 128
+size: 1024, 2048
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-grass
+player
   rotate: false
   xy: 2, 2
-  size: 100, 65
-  orig: 100, 65
+  size: 600, 1062
+  orig: 600, 1062
   offset: 0, 0
   index: -1

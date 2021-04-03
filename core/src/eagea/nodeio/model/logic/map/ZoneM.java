@@ -11,14 +11,14 @@ public class ZoneM extends Observable
 
     public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
 
-    // Player who owns of the map.
-    private String mOwner; // To be changed
+    // Player who owns this zone.
+    private String mOwner;
     // Type of map.
     private Type mType;
-    //Id of the zone
-    private int mId;
+    // Zone ID.
+    private final int mId;
 
-    public ZoneM(String player,int id)
+    public ZoneM(String player, int id)
     {
         mOwner = player;
         // Assign a random type.

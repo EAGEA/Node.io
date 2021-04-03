@@ -1,14 +1,10 @@
 package eagea.nodeio.model;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
+import java.util.ArrayList;
 
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
+import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.model.rabbitmq.Node;
 
 /**
@@ -17,15 +13,20 @@ import eagea.nodeio.model.rabbitmq.Node;
  */
 public class Model
 {
-    // RabbitMQ:
+    // RabbitMQ.
     private Node mNode;
     // The map.
     private MapM mMap;
+    // The player.
+    private PlayerM mPlayer;
+    // All the players.
+    private ArrayList<PlayerM> mPlayers;
 
     public Model()
     {
         initNode();
         initMap();
+        initPlayers();
     }
 
     /**
@@ -33,17 +34,10 @@ public class Model
      */
     private void initNode()
     {
-        //Creation of the connexion
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
-            mNode = new Node(channel);
-            // Stuff.....
-        } catch (TimeoutException | IOException e) {
-            e.printStackTrace();
-        }
+        mNode = new Node();
+
     }
-        /**
+     /**
      * Request and load the map from previous user, or create the map.
      * Also add the player's zone.
      */
@@ -55,18 +49,50 @@ public class Model
         {
             // If a map already exists.
             // -> mMap = getMapFromRabbitMQUser()
+            // TODO
         }
         else
         {
             mMap = new MapM();
         }
-        // In all the cases, add our zone to the map with an Id
-        mMap.add(new ZoneM("Albert", mMap.getNbZone()));
+        // In all the cases, add our zone to the map.
         mMap.add(new ZoneM("John", mMap.getNbZone()));
+        // Notify RabbitMQ; zone added.
+        // TODO
+    }
+
+    /**
+     * Request and load the players from previous user.
+     * Also add the player's zone.
+     */
+    public void initPlayers()
+    {
+        // Check if already players playing
+        // RabbitMQ stuff...
+        if (false)
+        {
+            // If a players:
+            // -> mPlayers = getPlayersFromRabbitMQ()
+            // TODO
+        }
+        else
+        {
+            mPlayers = new ArrayList<>();
+        }
+        // In all the cases, add our player to the map with an Id
+        mPlayer = new PlayerM("John", 0, 0, mMap);
+        mPlayers.add(mPlayer);
+        // Notify RabbitMQ; player added.
+        // TODO
     }
 
     public MapM getMap()
     {
         return mMap;
+    }
+
+    public PlayerM getPlayer()
+    {
+        return mPlayer;
     }
 }
