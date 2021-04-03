@@ -34,7 +34,7 @@ public class Model
      */
     private void initNode()
     {
-        mNode = new Node();
+        mNode = new Node(mMap);
 
     }
      /**
@@ -56,7 +56,7 @@ public class Model
             mMap = new MapM();
         }
         // In all the cases, add our zone to the map.
-        mMap.add(new ZoneM("John", mMap.getNbZone()));
+        mMap.add(new ZoneM(new PlayerM("Albert",1,1,mMap), mMap.getNbZone()));
         // Notify RabbitMQ; zone added.
         // TODO
     }
