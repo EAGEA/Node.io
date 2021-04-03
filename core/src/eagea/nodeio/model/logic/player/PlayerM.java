@@ -2,26 +2,30 @@ package eagea.nodeio.model.logic.player;
 
 import com.badlogic.gdx.math.Vector2;
 
+import java.io.Serializable;
 import java.util.Observable;
 
+import eagea.nodeio.model.Model;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 
 /**
  * Handle the player movements.
  */
-public class PlayerM extends Observable
+public class PlayerM extends Observable implements Serializable
 {
-    private final String mPseudo;
+    // Its type of zone (ID).
+    private Model.Type mType;
     // Coordinate in its current zone (array like).
     private int mZone;
     private final Vector2 mPosition;
     // Current environment.
     private final MapM mMap;
 
-    public PlayerM(String pseudo, int i, int j, MapM mapM)
+    public PlayerM(Model.Type type, int zone, int i, int j, MapM mapM)
     {
-        mPseudo = pseudo;
+        mType = type;
+        mZone = zone;
         mPosition = new Vector2(i, j);
         mMap = mapM;
     }
@@ -138,9 +142,14 @@ public class PlayerM extends Observable
         notifyObservers(new Vector2(1, 0));
     }
 
-    public String getPseudo()
+    public void setType(Model.Type type)
     {
-        return mPseudo;
+        mType = type;
+    }
+
+    public Model.Type getType()
+    {
+        return mType;
     }
 
     public int getZone()

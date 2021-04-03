@@ -1,14 +1,12 @@
 package eagea.nodeio.view.object.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.model.logic.map.ZoneM;
-import eagea.nodeio.model.logic.player.PlayerM;
 
 /**
  * A zone of the game map.
@@ -32,7 +30,7 @@ public class ZoneV implements Observer
         {
             for (int j = 0; j < ZoneM.SIZE; j ++)
             {
-                mCells[i][j] = new CellV(mZone.getId(), i, j, getCellTexture());
+                mCells[i][j] = new CellV(mZone.getPositionInMap(), i, j, getCellTexture());
             }
         }
     }

@@ -22,7 +22,7 @@ public class Main extends Game
     public void create ()
     {
         mBatch = new SpriteBatch();
-        mCamera = new OrthographicCamera(50, 50);
+        mCamera = new OrthographicCamera(30, 30);
         mViewPort = new FitViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
 
 

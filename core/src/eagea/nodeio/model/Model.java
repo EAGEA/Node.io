@@ -13,6 +13,10 @@ import eagea.nodeio.model.rabbitmq.Node;
  */
 public class Model
 {
+    // Player ID (i.e. its color, and its zone type).
+    public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
+
+    private Type mType;
     // RabbitMQ.
     private Node mNode;
     // The map.
@@ -24,9 +28,15 @@ public class Model
 
     public Model()
     {
+        // Assign a random type to the player.
+        mType = Type.values()[(int) (Math.random() * Type.values().length)];
+
         initNode();
         initMap();
         initPlayers();
+
+        // Notify RabbitMQ new player.
+        //mNode.notifyNewNode(mPlayer, mMap.get(mMap.size() - 1)));
     }
 
     /**
@@ -54,18 +64,10 @@ public class Model
         else
         {
             mMap = new MapM();
-            // !!!!TEST!!!!!
-            for (int i = 0 ; i <= 30 ; i ++)
-            {
-                mMap.add(new ZoneM(null, mMap.getNbZones()));
-            }
         }
         // In all the cases, add our zone to the map.
-        ZoneM zone = new ZoneM(mPlayer, mMap.getNbZones());
+        ZoneM zone = new ZoneM(mType, mMap.getNbZones());
         mMap.add(zone);
-        // Notify RabbitMQ; zone added.
-        // TODO
-        // mNode.sendZone(zone)
     }
 
     /**
@@ -87,10 +89,28 @@ public class Model
             mPlayers = new ArrayList<>();
         }
         // In all the cases, add our player to the map with an Id
-        mPlayer = new PlayerM("John", 0, 0, mMap);
+        mPlayer = new PlayerM(mType, mMap.getNbZones() - 1, 0, 0, mMap);
         mPlayers.add(mPlayer);
-        // Notify RabbitMQ; player added.
-        // TODO
+
+
+
+        // !!!!TEST!!!!!
+        for (int i = 0 ; i <= 30 ; i ++)
+        {
+            mMap.add(new ZoneM(
+                    Type.values()[(int) (Math.random() * Type.values().length)]
+                    , mMap.getNbZones()));
+        }
+    }
+
+    public void addPlayer(PlayerM player)
+    {
+        mPlayers.add(player);
+    }
+
+    public Type getType()
+    {
+        return mType;
     }
 
     public MapM getMap()
