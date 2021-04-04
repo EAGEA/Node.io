@@ -1,6 +1,5 @@
 ## Attributions
 
-Tiles made by **Ajay Karat | Devil's Work.shop**
-> www.devilswork.shop
+* Tiles made by **[Ajay Karat | Devil's Work.shop](https://www.devilswork.shop/)**
 
-Character made by
+* Character made by **[gamekrazzy](https://gamekrazzy.itch.io/)**

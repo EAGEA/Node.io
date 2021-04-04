@@ -16,11 +16,17 @@ import eagea.nodeio.view.object.map.CellV;
  */
 public class PlayerV implements Observer
 {
-    public static final float WIDTH = 2f;
-    public static final float HEIGHT = 2f;
+    public static final float WIDTH_CHAR = 2f;
+    public static final float HEIGHT_CHAR = 2f;
+    public static final float WIDTH_HELLO = 2f;
+    public static final float HEIGHT_HELLO = 1.39f;
 
+    // Animation number of frames.
     private final int FRAMES_PER_ANIMATION = 4;
+    // Animation seconds per frame.
     private final float TIME_PER_FRAME = 0.04f;
+    // Hello seconds per frame.
+    private final float TIME_SPEAK = 1f;
 
     // Model.
     private final PlayerM mPlayer;
@@ -30,29 +36,45 @@ public class PlayerV implements Observer
     private TextureRegion[] mUpAnimation;
     private TextureRegion[] mDownAnimation;
     private int mFrame;
-    private float mTimeSinceLastRender;
+    private float mDeltaAnimation;
     private boolean mIsAnimated;
+    // Hello frame.
+    private TextureRegion mHelloTexture;
+    private float mDeltaHello;
+    private boolean mIsSpeaking;
     // Position in the world.
-    private final Vector2 mCoordinates;
+    private final Vector2 mCoordinatesChar;
+    private final Vector2 mCoordinatesHello;
     // Current orientation.
     private PlayerM.Orientation mOrientation;
 
     public PlayerV(PlayerM player, String color)
     {
+        loadTextures(color);
         // Get the model and observe it.
         mPlayer = player;
         mPlayer.addObserver(this);
-
-        loadTextures(color);
-
+        // Walking animation
         mFrame = 0;
-        mTimeSinceLastRender = 0f;
+        mDeltaAnimation = 0f;
         mOrientation = PlayerM.Orientation.LEFT;
-        // Always the same position.
-        mCoordinates = new Vector2(-WIDTH / 2f, -HEIGHT / 2f + CellV.TILE_SIZE / 2f);
+        // "Hello!" animation
+        mDeltaHello = 0f;
+        mIsSpeaking = false;
+        // Always the same positions:
+        mCoordinatesChar = new Vector2(-WIDTH_CHAR / 2f,
+                -HEIGHT_CHAR / 2f + CellV.TILE_SIZE / 2f);
+        mCoordinatesHello = new Vector2(-WIDTH_HELLO / 2f,
+                mCoordinatesChar.y + HEIGHT_HELLO);
     }
 
     public void render(float delta)
+    {
+        renderCharacter(delta);
+        renderHello(delta);
+    }
+
+    private void renderCharacter(float delta)
     {
         TextureRegion toDraw = null;
         // Get the frame to draw.
@@ -65,15 +87,16 @@ public class PlayerV implements Observer
 
         }
         // Draw.
-        Main.mBatch.draw(toDraw, mCoordinates.x, mCoordinates.y, WIDTH, HEIGHT);
+        Main.mBatch.draw(toDraw, mCoordinatesChar.x, mCoordinatesChar.y,
+                WIDTH_CHAR, HEIGHT_CHAR);
         // Change frame?
         if (mIsAnimated)
         {
-            mTimeSinceLastRender += delta;
+            mDeltaAnimation += delta;
 
-            if (mTimeSinceLastRender >= TIME_PER_FRAME)
+            if (mDeltaAnimation >= TIME_PER_FRAME)
             {
-                mTimeSinceLastRender = 0f;
+                mDeltaAnimation = 0f;
 
                 if (mFrame == FRAMES_PER_ANIMATION -1)
                 {
@@ -89,15 +112,41 @@ public class PlayerV implements Observer
         }
     }
 
+    private void renderHello(float delta)
+    {
+        if (mIsSpeaking)
+        {
+            Main.mBatch.draw(mHelloTexture, mCoordinatesHello.x, mCoordinatesHello.y,
+                    WIDTH_HELLO, HEIGHT_HELLO);
+            mDeltaHello += delta;
+
+            // Stop animation?
+            if (mDeltaHello >= TIME_SPEAK)
+            {
+                mDeltaHello = 0f;
+                mIsSpeaking = false;
+            }
+        }
+    }
+
     @Override
     public void update(Observable observable, Object o)
     {
         if (observable == mPlayer)
         {
-            // Player has moved; start the move animation.
-            mOrientation = (PlayerM.Orientation) o;
-            mFrame = 1;
-            mIsAnimated = true;
+            if (o == null)
+            {
+                // Player wants to say hello.
+                mDeltaHello = 0f;
+                mIsSpeaking = true;
+            }
+            else
+            {
+                // Player has moved; start the move animation.
+                mOrientation = (PlayerM.Orientation) o;
+                mFrame = 1;
+                mIsAnimated = true;
+            }
         }
     }
 
@@ -115,5 +164,7 @@ public class PlayerV implements Observer
             mUpAnimation[i] = GameScreen.mCharactersAtlas.findRegion(color + "_up", i);
             mDownAnimation[i] = GameScreen.mCharactersAtlas.findRegion(color + "_down", i);
         }
+
+        mHelloTexture = GameScreen.mCharactersAtlas.findRegion("hello");
     }
 }

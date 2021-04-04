@@ -30,6 +30,7 @@ public class Controller implements InputProcessor
             case Input.Keys.DOWN: mModel.getPlayer().moveDown(); return true;
             case Input.Keys.LEFT: mModel.getPlayer().moveLeft(); return true;
             case Input.Keys.RIGHT: mModel.getPlayer().moveRight(); return false;
+            case Input.Keys.B: mModel.getPlayer().sayHello(); return false;
         }
 
         return false;

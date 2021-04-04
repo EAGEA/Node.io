@@ -56,19 +56,22 @@ public class MapV implements Observer
         }
         else if (observable == mPlayer)
         {
-            // Player has moved.
-            PlayerM.Orientation orientation = (PlayerM.Orientation) o;
-            final Vector2 delta = new Vector2();
-            // Get the coordinates of the movement.
-            switch (orientation)
+            if (o != null)
             {
-                case LEFT: delta.y = -1; break;
-                case RIGHT: delta.y = 1; break;
-                case UP: delta.x = -1; break;
-                case DOWN: delta.x = 1; break;
+                // Player has moved.
+                PlayerM.Orientation orientation = (PlayerM.Orientation) o;
+                final Vector2 delta = new Vector2();
+                // Get the coordinates of the movement.
+                switch (orientation)
+                {
+                    case LEFT: delta.y = -1; break;
+                    case RIGHT: delta.y = 1; break;
+                    case UP: delta.x = -1; break;
+                    case DOWN: delta.x = 1; break;
+                }
+                // Shift each zone with this delta.
+                mZones.forEach(z -> z.updatePosition((int) delta.x, (int) delta.y));
             }
-            // Shift each zone with this delta.
-            mZones.forEach(z -> z.updatePosition((int) delta.x, (int) delta.y));
         }
     }
 }

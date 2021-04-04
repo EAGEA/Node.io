@@ -140,6 +140,13 @@ public class PlayerM extends Observable implements Serializable
         notifyObservers(Orientation.DOWN);
     }
 
+    public void sayHello()
+    {
+        // Notify that player wants to say hello.
+        setChanged();
+        notifyObservers(null);
+    }
+
     public void setMap(MapM map)
     {
         mMap = map;
