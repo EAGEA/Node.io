@@ -11,6 +11,7 @@ import java.util.Observer;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
+import eagea.nodeio.view.object.player.PlayerV;
 
 /**
  * Manage game zones, and players.
@@ -55,9 +56,18 @@ public class MapV implements Observer
         }
         else if (observable == mPlayer)
         {
-            System.out.println(mPlayer.getZone() + " " + mPlayer.getI() + " " + mPlayer.getJ());
-            // Player has moved; update zones position.
-            Vector2 delta = (Vector2) o;
+            // Player has moved.
+            PlayerM.Orientation orientation = (PlayerM.Orientation) o;
+            final Vector2 delta = new Vector2();
+            // Get the coordinates of the movement.
+            switch (orientation)
+            {
+                case LEFT: delta.y = -1; break;
+                case RIGHT: delta.y = 1; break;
+                case UP: delta.x = -1; break;
+                case DOWN: delta.x = 1; break;
+            }
+            // Shift each zone with this delta.
             mZones.forEach(z -> z.updatePosition((int) delta.x, (int) delta.y));
         }
     }

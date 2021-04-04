@@ -75,6 +75,6 @@ public class ZoneV implements Observer
     {
         String name = mZone.getType().name().toLowerCase();
 
-        return GameScreen.mMapAtlas.findRegion(name, (int) (Math.random() * 2d) + 1);
+        return GameScreen.mEnvironmentAtlas.findRegion(name, (int) (Math.random() * 2d) + 1);
     }
 }

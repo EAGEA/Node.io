@@ -44,7 +44,7 @@ public class Model
      */
     private void initNode()
     {
-        mNode = new Node(mMap);
+        mNode = new Node(this);
 
     }
      /**

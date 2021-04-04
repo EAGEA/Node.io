@@ -5,11 +5,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-import eagea.nodeio.Main;
 import eagea.nodeio.controller.Controller;
 import eagea.nodeio.model.Model;
 import eagea.nodeio.view.View;
-import eagea.nodeio.view.object.map.MapV;
 
 /**
  * Render the game environment i.e. map, players and more.
@@ -17,8 +15,8 @@ import eagea.nodeio.view.object.map.MapV;
 public class GameScreen extends ScreenAdapter
 {
     // Textures.
-    public static TextureAtlas mMapAtlas;
-    public static TextureAtlas mPlayerAtlas;
+    public static TextureAtlas mEnvironmentAtlas;
+    public static TextureAtlas mCharactersAtlas;
     // Model:
     private Model mModel;
     // View:
@@ -30,8 +28,8 @@ public class GameScreen extends ScreenAdapter
     public void show()
     {
         // Textures.
-        mMapAtlas = new TextureAtlas(Gdx.files.internal("map.atlas")) ;
-        mPlayerAtlas = new TextureAtlas(Gdx.files.internal("player.atlas")) ;
+        mEnvironmentAtlas = new TextureAtlas(Gdx.files.internal("environment.atlas")) ;
+        mCharactersAtlas = new TextureAtlas(Gdx.files.internal("characters.atlas")) ;
         // Game objects.
         mModel = new Model();
         mView = new View(mModel);
@@ -41,28 +39,21 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void dispose()
     {
-        mMapAtlas.dispose();
-        mPlayerAtlas.dispose();
+        mEnvironmentAtlas.dispose();
+        mCharactersAtlas.dispose();
     }
 
     @Override
     public void render(float delta)
     {
         super.render(delta) ;
-        // Update objects.
-        update(delta) ;
         // Clear the screen.
         Gdx.gl.glEnable(GL30.GL_BLEND) ;
         Gdx.gl.glClearColor(0, 0, 0, 1) ;
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT) ;
         // Render objects.
         Main.mBatch.begin();
-        mView.render();
+        mView.render(delta);
         Main.mBatch.end();
-    }
-
-    private void update(float delta)
-    {
-
     }
 }

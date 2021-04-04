@@ -24,14 +24,13 @@ public class View
     {
         mModel = model;
         mMap = new MapV(model.getMap(), model.getPlayer());
-        mPlayer = new PlayerV(GameScreen.mPlayerAtlas.findRegion("down"),
-                getPlayerColor());
+        mPlayer = new PlayerV(model.getPlayer(), getPlayerColor());
     }
 
-    public void render()
+    public void render(float delta)
     {
         mMap.render();
-        mPlayer.render();
+        mPlayer.render(delta);
     }
 
     public MapV getMap()
@@ -39,16 +38,13 @@ public class View
         return mMap;
     }
 
-    public Color getPlayerColor()
+    public String getPlayerColor()
     {
-        switch (mModel.getType())
+        switch ((int) (Math.random() * 3))
         {
-            case BLACK: return Color.WHITE;
-            case GRASS: return Color.MAROON;
-            case GRAVEL: return Color.RED;
-            case ROCK: return Color.BLUE;
-            case SAND: return Color.OLIVE;
-            case SNOW: return Color.GRAY;
+            case 0: return "red";
+            case 1: return "green";
+            case 2: return "blue";
         }
 
         return null;

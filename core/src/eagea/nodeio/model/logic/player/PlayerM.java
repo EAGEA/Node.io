@@ -14,6 +14,9 @@ import eagea.nodeio.model.logic.map.ZoneM;
  */
 public class PlayerM extends Observable implements Serializable
 {
+    // Direction of movements.
+    public enum Orientation { LEFT, RIGHT, UP, DOWN }
+
     // Its type of zone (ID).
     private Model.Type mType;
     // Coordinate in its current zone (array like).
@@ -55,7 +58,7 @@ public class PlayerM extends Observable implements Serializable
         }
         // Notify that player has moved to the left.
         setChanged();
-        notifyObservers(new Vector2(0, 1));
+        notifyObservers(Orientation.RIGHT);
     }
 
     public void moveLeft()
@@ -83,7 +86,7 @@ public class PlayerM extends Observable implements Serializable
         }
         // Notify that player has moved to the right.
         setChanged();
-        notifyObservers(new Vector2(0, -1));
+        notifyObservers(Orientation.LEFT);
     }
 
     public void moveUp()
@@ -111,7 +114,7 @@ public class PlayerM extends Observable implements Serializable
         }
         // Notify that player has moved upwards.
         setChanged();
-        notifyObservers(new Vector2(-1, 0));
+        notifyObservers(Orientation.UP);
     }
 
     public void moveDown()
@@ -139,7 +142,7 @@ public class PlayerM extends Observable implements Serializable
         }
         // Notify that player has moved downwards.
         setChanged();
-        notifyObservers(new Vector2(1, 0));
+        notifyObservers(Orientation.DOWN);
     }
 
     public void setType(Model.Type type)
