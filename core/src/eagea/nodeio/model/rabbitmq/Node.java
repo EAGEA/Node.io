@@ -8,12 +8,12 @@ import com.rabbitmq.client.Delivery;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 
 import eagea.nodeio.model.Model;
-import eagea.nodeio.model.logic.map.ZoneM;
-import eagea.nodeio.model.logic.player.PlayerM;
+import eagea.nodeio.model.rabbitmq.action.Action;
+import eagea.nodeio.model.rabbitmq.action.Disconnection;
+import eagea.nodeio.model.rabbitmq.action.Move;
 
 /**
  * Handle all the RabbitMQ communications with other players.
@@ -23,8 +23,8 @@ public class Node
     private Channel mChannel;
     private final Model mModel;
 
-    private static final String EXCHANGE_NODES = "nodes";
-    private static final String QUEUE_NEWNODE = "newnode";
+    private static final String EXCHANGE_NODES = "exnodes";
+    private static final String QUEUE_NODES = "qnodes";
 
     public Node(Model model)
     {
@@ -44,9 +44,9 @@ public class Node
             mChannel = connection.createChannel();
             mChannel.exchangeDeclare(EXCHANGE_NODES,"fanout");
             //Queue for connection
-            mChannel.queueDeclare(QUEUE_NEWNODE,false,false,false,null);
-            mChannel.queueBind(QUEUE_NEWNODE,EXCHANGE_NODES,"");
-            mChannel.basicConsume(QUEUE_NEWNODE,true,this::onReceiveNewNode,consumerTag -> {});
+            mChannel.queueDeclare(QUEUE_NODES,false,false,false,null);
+            mChannel.queueBind(QUEUE_NODES,EXCHANGE_NODES,"");
+            mChannel.basicConsume(QUEUE_NODES,true,this::onReceiveNewNode,consumerTag -> {});
         }
         catch (TimeoutException | IOException e)
         {
@@ -55,13 +55,11 @@ public class Node
     }
 
     //Connection to the game
-    public void notifyNewNode(PlayerM player, ZoneM zone)
+    public void notifyNewNode(Action action)
     {
         try
         {
-            ArrayList<Object> newNode = new ArrayList<Object>();
-            newNode.add(player);  newNode.add(zone);
-            mChannel.basicPublish(EXCHANGE_NODES,QUEUE_NEWNODE,null, SerializationUtils.serialize(newNode));
+            mChannel.basicPublish(EXCHANGE_NODES,QUEUE_NODES,null, SerializationUtils.serialize(action));
         }
         catch (IOException e)
         {
@@ -71,20 +69,23 @@ public class Node
 
     private void onReceiveNewNode(String consumertag, Delivery delivery)
     {
-        ArrayList<Object> newNode = (ArrayList<Object>) SerializationUtils.deserialize(delivery.getBody());
-        mModel.addPlayer((PlayerM) newNode.get(0));
-        mModel.getMap().add((ZoneM) newNode.get(1));
-    }
-
-    //When a player move, update positions for all other nodes
-    public void MovingPlayer()
-    {
-
-    }
-
-    //Disconnection of the game
-    public void Disconnect()
-    {
-
+        Action receivedAction = SerializationUtils.deserialize(delivery.getBody());
+        if(receivedAction instanceof eagea.nodeio.model.rabbitmq.action.Connection)
+        {
+            //Add new player and new zone for each node map and model
+            mModel.getMap().add(((eagea.nodeio.model.rabbitmq.action.Connection) receivedAction).getZone());
+            mModel.addPlayer(((eagea.nodeio.model.rabbitmq.action.Connection) receivedAction).getPlayer());
+        }
+        if(receivedAction instanceof Disconnection)
+        {
+            //Remove player from the model and modify the owner of the zone. (Add removePlayer() to the model)
+            //mModel.removePlayer(((Disconnection) receivedAction).getPlayer());
+            mModel.getMap().getZone(((Disconnection) receivedAction).getZone().getPositionInMap()).setOwner(((Disconnection) receivedAction).getNewOwner());
+        }
+        if(receivedAction instanceof Move)
+        {
+            //PlayerM player = mModel.getInPlayers(((Move) receivedAction).getPlayer());
+            //player.setPos(((Move) receivedAction).getPosI(),((Move) receivedAction).getPosJ());
+        }
     }
 }
