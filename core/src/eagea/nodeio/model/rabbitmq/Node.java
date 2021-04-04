@@ -21,7 +21,7 @@ import eagea.nodeio.model.logic.player.PlayerM;
 public class Node
 {
     private Channel mChannel;
-    private Model mModel;
+    private final Model mModel;
 
     private static final String EXCHANGE_NODES = "nodes";
     private static final String QUEUE_NEWNODE = "newnode";

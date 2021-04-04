@@ -1,7 +1,10 @@
 package eagea.nodeio.view.object.map;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+
+import java.util.Timer;
 
 import eagea.nodeio.Main;
 import eagea.nodeio.model.logic.map.MapM;
@@ -14,24 +17,41 @@ public class CellV
 {
     public static final float TILE_SIZE = 2f;
 
+    // Parent.
+    private final ZoneM mZone;
     // Current frame.
-    private final TextureRegion mTexture;
+    private final TextureRegion[] mTextures;
     // Position relative to the player, in number of cells.
     private final Vector2 mPosition;
 
-    public CellV(int zone, float i, float j, TextureRegion texture)
+    public CellV(ZoneM zone, float i, float j, TextureRegion[] textures)
     {
-        mTexture = texture;
+        mZone = zone;
+        mTextures = textures;
         // From zone indexes to map ones.
-        int deltaI = (zone / MapM.ZONE_LINE) * ZoneM.SIZE;
-        int deltaJ = (zone % MapM.ZONE_LINE) * ZoneM.SIZE;
+        int deltaI = (zone.getPositionInMap() / MapM.ZONE_LINE) * ZoneM.SIZE;
+        int deltaJ = (zone.getPositionInMap() % MapM.ZONE_LINE) * ZoneM.SIZE;
         mPosition = new Vector2(i + deltaI, j + deltaJ);
     }
 
-    public void render()
+    public void render(float delta, boolean highlight)
     {
         // Draw.
-        Main.mBatch.draw(mTexture, getXPosition(), getYPosition(), TILE_SIZE, TILE_SIZE);
+        Main.mBatch.draw(mTextures[0],
+                getXPosition(),
+                getYPosition(),
+                TILE_SIZE,
+                TILE_SIZE);
+
+        if (highlight)
+        {
+            // Highlight the player cells.
+            Main.mBatch.draw(mTextures[1],
+                    getXPosition(),
+                    getYPosition(),
+                    TILE_SIZE,
+                    TILE_SIZE);
+        }
     }
 
     /**

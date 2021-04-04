@@ -33,16 +33,16 @@ public class MapV implements Observer
         mPlayer.addObserver(this);
         // Load the zones.
         mZones = new ArrayList<>();
-        mMap.getZones().forEach(z -> mZones.add(new ZoneV(z)));
+        mMap.getZones().forEach(z -> mZones.add(new ZoneV(z, player)));
 
     }
 
-    public void render()
+    public void render(float delta)
     {
         // Reverse render order because of isometric rendering.
         for (int i = mZones.size() - 1 ; i >= 0 ; i --)
         {
-            mZones.get(i).render();
+            mZones.get(i).render(delta);
         }
     }
 

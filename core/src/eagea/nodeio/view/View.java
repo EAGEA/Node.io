@@ -29,7 +29,7 @@ public class View
 
     public void render(float delta)
     {
-        mMap.render();
+        mMap.render(delta);
         mPlayer.render(delta);
     }
 

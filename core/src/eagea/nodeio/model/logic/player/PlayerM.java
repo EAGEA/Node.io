@@ -17,20 +17,15 @@ public class PlayerM extends Observable implements Serializable
     // Direction of movements.
     public enum Orientation { LEFT, RIGHT, UP, DOWN }
 
-    // Its type of zone (ID).
-    private Model.Type mType;
     // Coordinate in its current zone (array like).
     private int mZone;
     private final Vector2 mPosition;
     // Current environment.
-    private final MapM mMap;
+    private MapM mMap;
 
-    public PlayerM(Model.Type type, int zone, int i, int j, MapM mapM)
+    public PlayerM(int i, int j)
     {
-        mType = type;
-        mZone = zone;
         mPosition = new Vector2(i, j);
-        mMap = mapM;
     }
 
     public void moveRight()
@@ -145,14 +140,14 @@ public class PlayerM extends Observable implements Serializable
         notifyObservers(Orientation.DOWN);
     }
 
-    public void setType(Model.Type type)
+    public void setMap(MapM map)
     {
-        mType = type;
+        mMap = map;
     }
 
-    public Model.Type getType()
+    public void setZone(int zone)
     {
-        return mType;
+        mZone = zone;
     }
 
     public int getZone()

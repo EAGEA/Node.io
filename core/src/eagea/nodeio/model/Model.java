@@ -16,7 +16,6 @@ public class Model
     // Player ID (i.e. its color, and its zone type).
     public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
 
-    private Type mType;
     // RabbitMQ.
     private Node mNode;
     // The map.
@@ -28,12 +27,9 @@ public class Model
 
     public Model()
     {
-        // Assign a random type to the player.
-        mType = Type.values()[(int) (Math.random() * Type.values().length)];
-
         initNode();
-        initMap();
         initPlayers();
+        initMap();
 
         // Notify RabbitMQ new player.
         //mNode.notifyNewNode(mPlayer, mMap.get(mMap.size() - 1)));
@@ -66,8 +62,22 @@ public class Model
             mMap = new MapM();
         }
         // In all the cases, add our zone to the map.
-        ZoneM zone = new ZoneM(mType, mMap.getNbZones());
+        ZoneM zone = new ZoneM(mPlayer,
+                Type.values()[(int) (Math.random() * Type.values().length)], mMap.getNbZones());
         mMap.add(zone);
+        // Set player's attributes.
+        mPlayer.setZone(zone.getPositionInMap());
+        mPlayer.setMap(mMap);
+
+
+
+        // !!!!TEST!!!!!
+        for (int i = 0 ; i <= 30 ; i ++)
+        {
+            zone = new ZoneM(null,
+                    Type.values()[(int) (Math.random() * Type.values().length)], mMap.getNbZones());
+            mMap.add(zone);
+        }
     }
 
     /**
@@ -88,29 +98,14 @@ public class Model
         {
             mPlayers = new ArrayList<>();
         }
-        // In all the cases, add our player to the map with an Id
-        mPlayer = new PlayerM(mType, mMap.getNbZones() - 1, 0, 0, mMap);
+        // In all the cases, add our player to the map.
+        mPlayer = new PlayerM(0, 0);
         mPlayers.add(mPlayer);
-
-
-
-        // !!!!TEST!!!!!
-        for (int i = 0 ; i <= 30 ; i ++)
-        {
-            mMap.add(new ZoneM(
-                    Type.values()[(int) (Math.random() * Type.values().length)]
-                    , mMap.getNbZones()));
-        }
     }
 
     public void addPlayer(PlayerM player)
     {
         mPlayers.add(player);
-    }
-
-    public Type getType()
-    {
-        return mType;
     }
 
     public MapM getMap()

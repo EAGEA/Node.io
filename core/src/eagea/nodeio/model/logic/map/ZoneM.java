@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Observable;
 
 import eagea.nodeio.model.Model;
+import eagea.nodeio.model.logic.player.PlayerM;
+import eagea.nodeio.view.object.player.PlayerV;
 
 /**
  * A zone of the game map.
@@ -12,21 +14,33 @@ public class ZoneM extends Observable implements Serializable
 {
     public static final int SIZE = 4;
 
-    // Type of zone (ID).
+    private PlayerM mOwner;
+    // Type of zone.
     private Model.Type mType;
     // Zone position in map.
     private final int mPositionInMap;
 
-    public ZoneM(Model.Type type, int id)
+    public ZoneM(PlayerM owner, Model.Type type, int id)
     {
+        mOwner = owner;
         mType = type;
         // Position in map.
         mPositionInMap = id;
     }
 
+    public void setOwner(PlayerM owner)
+    {
+        mOwner = owner;
+    }
+
     public void setType(Model.Type type)
     {
         mType = type;
+    }
+
+    public PlayerM getOwner()
+    {
+        return mOwner;
     }
 
     public Model.Type getType()
