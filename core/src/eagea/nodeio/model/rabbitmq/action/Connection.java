@@ -4,7 +4,8 @@ import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
 
 /**
- * Player is connecting.
+ * Player is connecting. Send this action to the host so that it
+ * can notify everyone and send us the current map and the players.
  */
 public class Connection extends Action
 {

@@ -70,19 +70,22 @@ public class Node
     private void onReceiveNewNode(String consumertag, Delivery delivery)
     {
         Action receivedAction = SerializationUtils.deserialize(delivery.getBody());
-        if(receivedAction instanceof eagea.nodeio.model.rabbitmq.action.Connection)
+
+        if (receivedAction instanceof eagea.nodeio.model.rabbitmq.action.Connection)
         {
             //Add new player and new zone for each node map and model
             mModel.getMap().add(((eagea.nodeio.model.rabbitmq.action.Connection) receivedAction).getZone());
             mModel.addPlayer(((eagea.nodeio.model.rabbitmq.action.Connection) receivedAction).getPlayer());
         }
-        if(receivedAction instanceof Disconnection)
+
+        if (receivedAction instanceof Disconnection)
         {
             //Remove player from the model and modify the owner of the zone. (Add removePlayer() to the model)
             //mModel.removePlayer(((Disconnection) receivedAction).getPlayer());
             mModel.getMap().getZone(((Disconnection) receivedAction).getZone().getPositionInMap()).setOwner(((Disconnection) receivedAction).getNewOwner());
         }
-        if(receivedAction instanceof Move)
+
+        if (receivedAction instanceof Move)
         {
             //PlayerM player = mModel.getInPlayers(((Move) receivedAction).getPlayer());
             //player.setPos(((Move) receivedAction).getPosI(),((Move) receivedAction).getPosJ());

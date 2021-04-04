@@ -1,10 +1,7 @@
 package eagea.nodeio.view.object.map;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-
-import java.util.Timer;
 
 import eagea.nodeio.Main;
 import eagea.nodeio.model.logic.map.MapM;

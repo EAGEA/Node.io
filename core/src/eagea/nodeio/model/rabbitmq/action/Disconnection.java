@@ -4,7 +4,8 @@ import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
 
 /**
- * Player is disconnecting.
+ * Player is disconnecting. Send this action to the host so that it can
+ * notify everyone, and give our zone to a random player.
  */
 public class Disconnection extends Action
 {

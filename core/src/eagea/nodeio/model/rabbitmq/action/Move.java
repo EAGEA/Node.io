@@ -3,7 +3,8 @@ package eagea.nodeio.model.rabbitmq.action;
 import eagea.nodeio.model.logic.player.PlayerM;
 
 /**
- * Player has moved.
+ * Player has moved. Send this action to the host so that it can
+ * confirm by sending it to everyone.
  */
 public class Move extends Action
 {
