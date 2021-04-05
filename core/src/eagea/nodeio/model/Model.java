@@ -6,6 +6,10 @@ import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.model.rabbitmq.Node;
+import eagea.nodeio.model.rabbitmq.action.Action;
+import eagea.nodeio.model.rabbitmq.action.Connection;
+import eagea.nodeio.model.rabbitmq.action.Disconnection;
+import eagea.nodeio.model.rabbitmq.action.Move;
 
 /**
  * Handle all the logic of the game, and the rabbitMQ communications with other
@@ -101,6 +105,48 @@ public class Model
         // In all the cases, add our player to the map.
         mPlayer = new PlayerM(0, 0);
         mPlayers.add(mPlayer);
+    }
+
+    /**
+     * Process and play action received from host.
+     */
+    public void play(Action action)
+    {
+        if (action instanceof Connection)
+        {
+
+        }
+        else if (action instanceof Disconnection)
+        {
+
+        }
+        else if (action instanceof Move)
+        {
+
+        }
+    }
+
+    /**
+     * Host only.
+     * Check if the action can be done.
+     * If so, return the corresponding one, otherwise null.
+     */
+    public Action check(Action action)
+    {
+        if (action instanceof Connection)
+        {
+            return action;
+        }
+        else if (action instanceof Disconnection)
+        {
+            return action;
+        }
+        else if (action instanceof Move)
+        {
+            return action;
+        }
+
+        return null;
     }
 
     public void addPlayer(PlayerM player)

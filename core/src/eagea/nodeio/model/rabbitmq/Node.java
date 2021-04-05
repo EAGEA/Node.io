@@ -27,9 +27,10 @@ public class Node
     // RabbitMQ server URL.
     private final String AMPQ_URI = "amqps://gkpyuliw:ifaqqxycOvHebZEJVbHubCCu8ovJA9zn@rat"
             + ".rmq2.cloudamqp.com/gkpyuliw";
-
-    // Host.
+    // RabbitMQ exchange and queues.
+    private final String EXCHANGE_URI = "rabbitmq://all/exchange";
     private final String HOST_QUEUE_URI = "rabbitmq://host/queue";
+    private final String QUEUE_URI = "rabbitmq://all/queue";
 
     // RabbitMQ connection.
     private Connection mConnection;
@@ -45,33 +46,9 @@ public class Node
     {
         mModel = model;
 
-        shutDownHook();
         openConnection();
+        declareQueue();
         checkIfHost();
-    }
-
-    /**
-     * End the game when host disconnects. Remove rabbitMQ host data.
-     */
-    private void shutDownHook()
-    {
-        Runtime.getRuntime().addShutdownHook(
-                new Thread(() ->
-                {
-                    if (mIsHost)
-                    {
-                        try
-                        {
-                            mChannel.queueDelete(HOST_QUEUE_URI);
-                        }
-                        catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            )
-        );
     }
 
     /**
@@ -86,11 +63,6 @@ public class Node
             factory.setUri(AMPQ_URI);
             mConnection = factory.newConnection();
             openChannel();
-            //mChannel.exchangeDeclare(EXCHANGE_NODES,"fanout");
-            //Queue for connection
-            //mChannel.queueDeclare(QUEUE_NODES,false,false,false,null);
-            //mChannel.queueBind(QUEUE_NODES,EXCHANGE_NODES,"");
-            //mChannel.basicConsume(QUEUE_NODES,true,this::onReceiveNewNode,consumerTag -> {});
         }
         catch (Exception e)
         {
@@ -101,6 +73,28 @@ public class Node
     private void openChannel() throws IOException
     {
         mChannel = mConnection.createChannel();
+    }
+
+    /**
+     * Declare the queue which receives players actions.
+     */
+    private void declareQueue()
+    {
+        try
+        {
+            mChannel.exchangeDeclare(EXCHANGE_URI, "fanout");
+            mChannel.queueDeclare(QUEUE_URI,
+                    false, false, false,
+                    null);
+            mChannel.queueBind(EXCHANGE_URI, QUEUE_URI,"");
+            mChannel.basicConsume(QUEUE_URI, true,
+                    this::onReceive,
+                    consumerTag -> {});
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -122,9 +116,15 @@ public class Node
                 // Re-open the channel (closed with exception before).
                 openChannel();
                 // Declare the host queue.
-                mChannel.queueDeclare(HOST_QUEUE_URI, false, false, false, null);
+                mChannel.queueDeclare(HOST_QUEUE_URI,
+                        false, false, false,
+                        null);
+                mChannel.basicConsume(HOST_QUEUE_URI, true,
+                        this::onHostReceive,
+                        consumerTag -> { });
                 // She/he is the host!
                 mIsHost = true;
+                addShutDownHook();
             }
             catch (Exception e_)
             {
@@ -133,25 +133,77 @@ public class Node
         }
     }
 
-    private void initConnection()
+    /**
+     * Only for host.
+     * End the game when host disconnects. Remove rabbitMQ host data.
+     */
+    private void addShutDownHook()
     {
+        Runtime.getRuntime().addShutdownHook(
+                new Thread(() ->
+                {
+                    if (mIsHost)
+                    {
+                        try
+                        {
+                            mChannel.queueDelete(HOST_QUEUE_URI);
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            )
+        );
     }
 
-    //Connection to the game
-    public void notifyNewNode(Action action)
+    /**
+     * Send an action to the host. It will confirm or decline it.
+     * If this node is host, also push the action in the queue so that
+     * the host has no priority.
+     */
+    public void notifyHost(Action action)
     {
-        /*
         try
         {
-            mChannel.basicPublish(EXCHANGE_NODES,QUEUE_NODES,null, SerializationUtils.serialize(action));
+            mChannel.basicPublish("", HOST_QUEUE_URI,
+                    null,
+                    SerializationUtils.serialize(action));
         }
         catch (IOException e)
         {
             e.printStackTrace();
-        }Purge
-
-         */
+        }
     }
+
+    /**
+     * Host process Action received.
+     */
+    private void onHostReceive(String consumerTag, Delivery delivery) throws IOException
+    {
+        Action action = SerializationUtils.deserialize(delivery.getBody());
+        action = mModel.check(action);
+
+        if (action != null)
+        {
+            // Action validated by host.
+            // Send it to all the players.
+            mChannel.basicPublish(EXCHANGE_URI, "", null,
+                    SerializationUtils.serialize(action));
+        }
+    }
+
+    /**
+     * Player play the action received.
+     */
+    public void onReceive(String consumerTag, Delivery delivery)
+    {
+        Action action = SerializationUtils.deserialize(delivery.getBody());
+        mModel.play(action);
+    }
+
+    /*
 
     private void onReceiveNewNode(String consumertag, Delivery delivery)
     {
@@ -177,4 +229,5 @@ public class Node
             //player.setPos(((Move) receivedAction).getPosI(),((Move) receivedAction).getPosJ());
         }
     }
+     */
 }
