@@ -31,64 +31,116 @@ public class Node
     // Host.
     private final String HOST_QUEUE_URI = "rabbitmq://host/queue";
 
+    // RabbitMQ connection.
+    private Connection mConnection;
     private Channel mChannel;
     private final Model mModel;
+    //
+    private boolean mIsHost;
 
-    private static final String EXCHANGE_NODES = "exnodes";
-    private static final String QUEUE_NODES = "qnodes";
+//    private static final String EXCHANGE_NODES = "exnodes";
+  //  private static final String QUEUE_NODES = "qnodes";
 
     public Node(Model model)
     {
         mModel = model;
-        initConnection();
+
+        shutDownHook();
+        openConnection();
         checkIfHost();
     }
 
-    private void checkIfHost()
+    /**
+     * End the game when host disconnects. Remove rabbitMQ host data.
+     */
+    private void shutDownHook()
     {
-        try
-        {
-            AMQP.Queue.DeclareOk ok = mChannel.queueDeclarePassive(HOST_QUEUE_URI);
-            System.out.println("NO!");
-        }
-        catch (Exception e)
-        {
-            System.out.println("YES!");
-
-        }
+        Runtime.getRuntime().addShutdownHook(
+                new Thread(() ->
+                {
+                    if (mIsHost)
+                    {
+                        try
+                        {
+                            mChannel.queueDelete(HOST_QUEUE_URI);
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            )
+        );
     }
 
-    private void initConnection()
+    /**
+     * Start RabbitMQ connection.
+     */
+    private void openConnection()
     {
-        // Initiate connection.
         ConnectionFactory factory = new ConnectionFactory();
 
         try
         {
             factory.setUri(AMPQ_URI);
-            Connection connection = factory.newConnection();
-            mChannel = connection.createChannel();
+            mConnection = factory.newConnection();
+            openChannel();
             //mChannel.exchangeDeclare(EXCHANGE_NODES,"fanout");
             //Queue for connection
             //mChannel.queueDeclare(QUEUE_NODES,false,false,false,null);
             //mChannel.queueBind(QUEUE_NODES,EXCHANGE_NODES,"");
             //mChannel.basicConsume(QUEUE_NODES,true,this::onReceiveNewNode,consumerTag -> {});
         }
-        catch (TimeoutException | IOException e)
+        catch (Exception e)
         {
             e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
+    }
+
+    private void openChannel() throws IOException
+    {
+        mChannel = mConnection.createChannel();
+    }
+
+    /**
+     * Check if the user is the first one to connect. If so, she/he is the host.
+     */
+    private void checkIfHost()
+    {
+        try
+        {
+            // If no exception, host queue already exists, so host too.
+            AMQP.Queue.DeclareOk hostQueue = mChannel.queueDeclarePassive(HOST_QUEUE_URI);
+            mIsHost = false;
+        }
+        catch (Exception e)
+        {
+            // This user will be the host:
+            try
+            {
+                // Re-open the channel (closed with exception before).
+                openChannel();
+                // Declare the host queue.
+                mChannel.queueDeclare(HOST_QUEUE_URI, false, false, false, null);
+                // She/he is the host!
+                mIsHost = true;
+            }
+            catch (Exception e_)
+            {
+                e_.printStackTrace();
+            }
+        }
+    }
+
+    private void initConnection()
+    {
     }
 
     //Connection to the game
     public void notifyNewNode(Action action)
     {
+        /*
         try
         {
             mChannel.basicPublish(EXCHANGE_NODES,QUEUE_NODES,null, SerializationUtils.serialize(action));
@@ -96,7 +148,9 @@ public class Node
         catch (IOException e)
         {
             e.printStackTrace();
-        }
+        }Purge
+
+         */
     }
 
     private void onReceiveNewNode(String consumertag, Delivery delivery)
