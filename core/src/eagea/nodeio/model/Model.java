@@ -65,6 +65,10 @@ public class Model
             ZoneM zone = new ZoneM(mPlayer,
                     Type.values()[(int) (Math.random() * Type.values().length)], 0);
             mMap.add(zone);
+
+            // TODO REMOVE
+            mGameScreen.createView(this);
+            mGameScreen.createController(this);
         }
     }
 
@@ -73,12 +77,34 @@ public class Model
      */
     public void play(Action action)
     {
+        System.out.println("[DEBUG]: play " + action.getClass().getSimpleName());
+
         if (action instanceof Connection)
         {
+            boolean iamTheNewGuy = (mPlayer == null);
+            // Get new map and updated player list from host.
             mMap = ((Connection) action).getMap();
             mPlayers = ((Connection) action).getPlayers();
-            mGameScreen.createView();
-            mGameScreen.createController();
+
+            if (iamTheNewGuy)
+            {
+                mPlayer = mPlayers.get(mPlayers.size() - 1);
+
+                // TODO REMOVE
+                mGameScreen.createView(this);
+                mGameScreen.createController(this);
+
+                // Place the character on the current cell i.e. (0, 0) of its zone.
+                for (int i = 0; i < ZoneM.SIZE * (mPlayer.getZone() % MapM.ZONE_LINE); i ++)
+                {
+                    mPlayer.notify(PlayerM.Orientation.LEFT);
+                }
+
+                for (int i = 0; i < ZoneM.SIZE * (mPlayer.getZone() / MapM.ZONE_LINE); i ++)
+                {
+                    mPlayer.notify(PlayerM.Orientation.UP);
+                }
+            }
         }
         else if (action instanceof Disconnection)
         {
@@ -101,10 +127,10 @@ public class Model
         {
             // Add new player and zone.
             PlayerM player = new PlayerM(0, 0, mMap.getNbZones(), mMap);
-            ZoneM zone = new ZoneM(mPlayer,
+            ZoneM zone = new ZoneM(player,
                     Type.values()[(int) (Math.random() * Type.values().length)],
                     mMap.getNbZones());
-            mPlayers.add(mPlayer);
+            mPlayers.add(player);
             mMap.add(zone);
             // Send it.
             return new Connection(mMap, mPlayers);

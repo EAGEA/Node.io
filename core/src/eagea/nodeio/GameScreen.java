@@ -39,14 +39,14 @@ public class GameScreen extends ScreenAdapter
         mModel = new Model(this);
     }
 
-    public void createView()
+    public void createView(Model model)
     {
-        mView = new View(mModel);
+        mView = new View(model);
     }
 
-    public void createController()
+    public void createController(Model model)
     {
-        mController = new Controller(mModel);
+        mController = new Controller(model);
     }
 
     @Override

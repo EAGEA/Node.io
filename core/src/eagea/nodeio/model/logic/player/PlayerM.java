@@ -53,8 +53,7 @@ public class PlayerM extends Observable implements Serializable
             mPosition.y --;
         }
         // Notify that player has moved to the left.
-        setChanged();
-        notifyObservers(Orientation.RIGHT);
+        notify(Orientation.RIGHT);
     }
 
     public void moveLeft()
@@ -80,8 +79,7 @@ public class PlayerM extends Observable implements Serializable
             mPosition.y ++;
         }
         // Notify that player has moved to the right.
-        setChanged();
-        notifyObservers(Orientation.LEFT);
+        notify(Orientation.LEFT);
     }
 
     public void moveUp()
@@ -107,8 +105,7 @@ public class PlayerM extends Observable implements Serializable
             mPosition.x ++;
         }
         // Notify that player has moved upwards.
-        setChanged();
-        notifyObservers(Orientation.UP);
+        notify(Orientation.UP);
     }
 
     public void moveDown()
@@ -134,8 +131,7 @@ public class PlayerM extends Observable implements Serializable
             mPosition.x --;
         }
         // Notify that player has moved downwards.
-        setChanged();
-        notifyObservers(Orientation.DOWN);
+        notify(Orientation.DOWN);
     }
 
     public void sayHello()
@@ -143,6 +139,12 @@ public class PlayerM extends Observable implements Serializable
         // Notify that player wants to say hello.
         setChanged();
         notifyObservers(null);
+    }
+
+    public void notify(Orientation orientation)
+    {
+        setChanged();
+        notifyObservers(orientation);
     }
 
     public void setMap(MapM map)

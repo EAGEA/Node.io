@@ -28,18 +28,14 @@ public class Node
     private final String AMPQ_URI = "amqps://gkpyuliw:ifaqqxycOvHebZEJVbHubCCu8ovJA9zn@rat"
             + ".rmq2.cloudamqp.com/gkpyuliw";
     // RabbitMQ exchange and queues.
-    private final String EXCHANGE_URI = "rabbitmq://all/exchange";
+    private final String EXCHANGE_URI = "amq.fanout"; // Default one (no need to declare).
     private final String HOST_QUEUE_URI = "rabbitmq://host/queue";
 
     // RabbitMQ connection.
     private Connection mConnection;
     private Channel mChannel;
     private final Model mModel;
-    private String mQueueName;
     private boolean mIsHost;
-
-//    private static final String EXCHANGE_NODES = "exnodes";
-  //  private static final String QUEUE_NODES = "qnodes";
 
     public Node(Model model)
     {
@@ -48,7 +44,6 @@ public class Node
         openConnection();
         declareQueue();
         checkIfHost();
-        addShutDownHook();
     }
 
     /**
@@ -82,16 +77,15 @@ public class Node
     {
         try
         {
-            // Declare the exchange (fan-out).
-            mChannel.exchangeDeclare(EXCHANGE_URI, "fanout");
             // Get a queue.
-            mQueueName = mChannel.queueDeclare().getQueue();
+            String queueName = mChannel.queueDeclare().getQueue();
             // Bind it.
-            mChannel.queueBind(mQueueName, EXCHANGE_URI,"");
+            mChannel.queueBind(queueName, EXCHANGE_URI, "");
             // Handler.
-            mChannel.basicConsume(mQueueName, true,
+            mChannel.basicConsume(queueName, true,
                     this::onReceive,
-                    consumerTag -> {});
+                    consumerTag -> { });
+            System.out.println("[DEBUG]: queue created");
         }
         catch (IOException e)
         {
@@ -109,6 +103,7 @@ public class Node
             // If no exception, host queue already exists, so host too.
             AMQP.Queue.DeclareOk hostQueue = mChannel.queueDeclarePassive(HOST_QUEUE_URI);
             mIsHost = false;
+            System.out.println("[DEBUG]: i'm not HOST");
         }
         catch (Exception e)
         {
@@ -119,13 +114,14 @@ public class Node
                 openChannel();
                 // Declare the host queue.
                 mChannel.queueDeclare(HOST_QUEUE_URI,
-                        false, false, false,
+                        false, false, true,
                         null);
                 mChannel.basicConsume(HOST_QUEUE_URI, true,
                         this::onHostReceive,
                         consumerTag -> { });
                 // She/he is the host!
                 mIsHost = true;
+                System.out.println("[DEBUG]: i'm HOST");
             }
             catch (Exception e_)
             {
@@ -135,38 +131,14 @@ public class Node
     }
 
     /**
-     * Remove RabbitMQ data.
-     */
-    private void addShutDownHook()
-    {
-        Runtime.getRuntime().addShutdownHook(
-                new Thread(() ->
-                {
-                    try
-                    {
-                        if (mIsHost)
-                        {
-                            mChannel.queueDelete(HOST_QUEUE_URI);
-                        }
-
-                        mChannel.queueDelete(mQueueName);
-                    }
-                    catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            )
-        );
-    }
-
-    /**
      * Send an action to the host. It will confirm or decline it.
      * If this node is host, also push the action in the queue so that
      * the host has no priority.
      */
     public void notifyHost(Action action)
     {
+        System.out.println("[DEBUG]: send action");
+
         try
         {
             mChannel.basicPublish("", HOST_QUEUE_URI,
@@ -184,6 +156,7 @@ public class Node
      */
     private void onHostReceive(String consumerTag, Delivery delivery) throws IOException
     {
+        System.out.println("[DEBUG]: HOST receive action");
         Action action = SerializationUtils.deserialize(delivery.getBody());
         action = mModel.check(action);
 
@@ -191,7 +164,9 @@ public class Node
         {
             // Action validated by host.
             // Send it to all the players.
-            mChannel.basicPublish(EXCHANGE_URI, "", null,
+            System.out.println("[DEBUG]: HOST publish action");
+            mChannel.basicPublish(EXCHANGE_URI, "",
+                    null,
                     SerializationUtils.serialize(action));
         }
     }
@@ -201,6 +176,7 @@ public class Node
      */
     public void onReceive(String consumerTag, Delivery delivery)
     {
+        System.out.println("[DEBUG]: receive action");
         Action action = SerializationUtils.deserialize(delivery.getBody());
         mModel.play(action);
     }

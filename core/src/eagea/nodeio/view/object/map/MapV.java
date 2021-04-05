@@ -52,7 +52,7 @@ public class MapV implements Observer
         if (observable == mMap)
         {
             // Add, remove zones.....
-            // TODO
+            mMap.getZones().forEach(z -> mZones.add(new ZoneV(z, mPlayer)));
         }
         else if (observable == mPlayer)
         {

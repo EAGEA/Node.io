@@ -1,17 +1,18 @@
 package eagea.nodeio.model.logic.map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
 /**
  * Manage game zones, and players.
  */
-public class MapM extends Observable
+public class MapM extends Observable implements Serializable
 {
     public static final int ZONE_LINE = 4;
 
     // Current zones on the map.
-    private final ArrayList<ZoneM> mZones;
+    private ArrayList<ZoneM> mZones;
 
     public MapM()
     {
