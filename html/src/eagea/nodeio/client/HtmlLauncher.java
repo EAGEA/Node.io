@@ -3,6 +3,7 @@ package eagea.nodeio.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
+
 import eagea.nodeio.Main;
 
 public class HtmlLauncher extends GwtApplication {

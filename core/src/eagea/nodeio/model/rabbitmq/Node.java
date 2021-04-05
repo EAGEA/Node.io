@@ -1,5 +1,6 @@
 package eagea.nodeio.model.rabbitmq;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -8,6 +9,9 @@ import com.rabbitmq.client.Delivery;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
 import eagea.nodeio.model.Model;
@@ -20,6 +24,13 @@ import eagea.nodeio.model.rabbitmq.action.Move;
  */
 public class Node
 {
+    // RabbitMQ server URL.
+    private final String AMPQ_URI = "amqps://gkpyuliw:ifaqqxycOvHebZEJVbHubCCu8ovJA9zn@rat"
+            + ".rmq2.cloudamqp.com/gkpyuliw";
+
+    // Host.
+    private final String HOST_QUEUE_URI = "rabbitmq://host/queue";
+
     private Channel mChannel;
     private final Model mModel;
 
@@ -29,27 +40,48 @@ public class Node
     public Node(Model model)
     {
         mModel = model;
-        initConnection("localhost");
+        initConnection();
+        checkIfHost();
     }
 
-    private void initConnection(String host)
+    private void checkIfHost()
+    {
+        try
+        {
+            AMQP.Queue.DeclareOk ok = mChannel.queueDeclarePassive(HOST_QUEUE_URI);
+            System.out.println("NO!");
+        }
+        catch (Exception e)
+        {
+            System.out.println("YES!");
+
+        }
+    }
+
+    private void initConnection()
     {
         // Initiate connection.
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(host);
 
         try
         {
+            factory.setUri(AMPQ_URI);
             Connection connection = factory.newConnection();
             mChannel = connection.createChannel();
-            mChannel.exchangeDeclare(EXCHANGE_NODES,"fanout");
+            //mChannel.exchangeDeclare(EXCHANGE_NODES,"fanout");
             //Queue for connection
-            mChannel.queueDeclare(QUEUE_NODES,false,false,false,null);
-            mChannel.queueBind(QUEUE_NODES,EXCHANGE_NODES,"");
-            mChannel.basicConsume(QUEUE_NODES,true,this::onReceiveNewNode,consumerTag -> {});
+            //mChannel.queueDeclare(QUEUE_NODES,false,false,false,null);
+            //mChannel.queueBind(QUEUE_NODES,EXCHANGE_NODES,"");
+            //mChannel.basicConsume(QUEUE_NODES,true,this::onReceiveNewNode,consumerTag -> {});
         }
         catch (TimeoutException | IOException e)
         {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
