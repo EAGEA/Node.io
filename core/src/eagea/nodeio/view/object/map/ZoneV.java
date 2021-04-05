@@ -43,7 +43,7 @@ public class ZoneV implements Observer
         {
             for (int j = 0; j < ZoneM.SIZE; j ++)
             {
-                mCells[i][j] = new CellV(mZone, i, j,
+                mCells[i][j] = new CellV(mZone, mPlayer, i, j,
                         new TextureRegion[]{ getCellTexture(), texture });
             }
         }
@@ -76,21 +76,7 @@ public class ZoneV implements Observer
     public void update(Observable observable, java.lang.Object o)
     {
         // Zone model has changed.
-    }
-
-    /**
-     * Change position of each cell when player has moved of "deltaI"
-     * and "deltaJ".
-     */
-    public void updatePosition(int deltaI, int deltaJ)
-    {
-        for (int i = 0; i < ZoneM.SIZE; i ++)
-        {
-            for (int j = 0; j < ZoneM.SIZE; j ++)
-            {
-                mCells[i][j].updatePosition(deltaI, deltaJ);
-            }
-        }
+        // TODO type change
     }
 
     /**

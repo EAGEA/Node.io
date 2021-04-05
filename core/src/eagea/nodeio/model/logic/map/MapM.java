@@ -15,7 +15,7 @@ public class MapM extends Observable implements Serializable
     public static final int ZONE_LINE = 4;
 
     // Current zones on the map.
-    private ArrayList<ZoneM> mZones;
+    private final ArrayList<ZoneM> mZones;
 
     public MapM()
     {

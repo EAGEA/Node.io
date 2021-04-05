@@ -62,24 +62,5 @@ public class MapV implements Observer
             // Add, remove zones.....
 //            mMap.getZones().forEach(z -> mZones.add(new ZoneV(z, mPlayer)));
         }
-        else if (observable == mPlayer)
-        {
-            if (o != null)
-            {
-                // Player has moved.
-                PlayerM.Event event = (PlayerM.Event) o;
-                final Vector2 delta = new Vector2();
-                // Get the coordinates of the movement.
-                switch (event)
-                {
-                    case LEFT: delta.y = -1; break;
-                    case RIGHT: delta.y = 1; break;
-                    case UP: delta.x = -1; break;
-                    case DOWN: delta.x = 1; break;
-                }
-                // Shift each zone with this delta.
-                mZones.forEach(z -> z.updatePosition((int) delta.x, (int) delta.y));
-            }
-        }
     }
 }
