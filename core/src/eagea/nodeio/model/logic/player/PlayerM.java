@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import java.io.Serializable;
 import java.util.Observable;
 
-import eagea.nodeio.model.Model;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 
@@ -14,8 +13,8 @@ import eagea.nodeio.model.logic.map.ZoneM;
  */
 public class PlayerM extends Observable implements Serializable
 {
-    // Direction of movements.
-    public enum Orientation { LEFT, RIGHT, UP, DOWN }
+    // Event; Direction of movements.
+    public enum Event { LEFT, RIGHT, UP, DOWN }
 
     // Coordinate in its current zone (array like).
     private int mZone;
@@ -53,7 +52,7 @@ public class PlayerM extends Observable implements Serializable
             mPosition.y --;
         }
         // Notify that player has moved to the left.
-        notify(Orientation.RIGHT);
+        notify(Event.RIGHT);
     }
 
     public void moveLeft()
@@ -79,7 +78,7 @@ public class PlayerM extends Observable implements Serializable
             mPosition.y ++;
         }
         // Notify that player has moved to the right.
-        notify(Orientation.LEFT);
+        notify(Event.LEFT);
     }
 
     public void moveUp()
@@ -105,7 +104,7 @@ public class PlayerM extends Observable implements Serializable
             mPosition.x ++;
         }
         // Notify that player has moved upwards.
-        notify(Orientation.UP);
+        notify(Event.UP);
     }
 
     public void moveDown()
@@ -131,7 +130,7 @@ public class PlayerM extends Observable implements Serializable
             mPosition.x --;
         }
         // Notify that player has moved downwards.
-        notify(Orientation.DOWN);
+        notify(Event.DOWN);
     }
 
     public void sayHello()
@@ -141,10 +140,10 @@ public class PlayerM extends Observable implements Serializable
         notifyObservers(null);
     }
 
-    public void notify(Orientation orientation)
+    public void notify(Event event)
     {
         setChanged();
-        notifyObservers(orientation);
+        notifyObservers(event);
     }
 
     public void setMap(MapM map)

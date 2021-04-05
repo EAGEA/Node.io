@@ -3,15 +3,11 @@ package eagea.nodeio.view.object.map;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import eagea.nodeio.model.logic.map.MapM;
-import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
-import eagea.nodeio.view.object.player.PlayerV;
 
 /**
  * Manage game zones, and players.
@@ -51,18 +47,30 @@ public class MapV implements Observer
     {
         if (observable == mMap)
         {
+            if (o != null)
+            {
+                // Map has changed.
+                MapM.Event event = (MapM.Event) o;
+
+                switch (event)
+                {
+                    case ADD:
+                        mZones.add(new ZoneV(mMap.getZone(mMap.getNbZones() - 1), mPlayer));
+                        break;
+                }
+            }
             // Add, remove zones.....
-            mMap.getZones().forEach(z -> mZones.add(new ZoneV(z, mPlayer)));
+//            mMap.getZones().forEach(z -> mZones.add(new ZoneV(z, mPlayer)));
         }
         else if (observable == mPlayer)
         {
             if (o != null)
             {
                 // Player has moved.
-                PlayerM.Orientation orientation = (PlayerM.Orientation) o;
+                PlayerM.Event event = (PlayerM.Event) o;
                 final Vector2 delta = new Vector2();
                 // Get the coordinates of the movement.
-                switch (orientation)
+                switch (event)
                 {
                     case LEFT: delta.y = -1; break;
                     case RIGHT: delta.y = 1; break;

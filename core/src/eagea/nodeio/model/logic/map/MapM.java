@@ -9,6 +9,9 @@ import java.util.Observable;
  */
 public class MapM extends Observable implements Serializable
 {
+    // Event.
+    public enum Event { ADD, REMOVE }
+    // Number of zone in the same row.
     public static final int ZONE_LINE = 4;
 
     // Current zones on the map.
@@ -27,17 +30,19 @@ public class MapM extends Observable implements Serializable
     public void remove(ZoneM zone)
     {
         mZones.remove(zone);
-        // Notify the associated view.
-        hasChanged();
-        notifyObservers();
     }
 
     public void add(ZoneM zone)
     {
         mZones.add(zone);
         // Notify the associated view.
-        hasChanged();
-        notifyObservers();
+        notify(Event.ADD);
+    }
+
+    public void notify(Event event)
+    {
+        setChanged();
+        notifyObservers(event);
     }
 
     public int getNbZones()

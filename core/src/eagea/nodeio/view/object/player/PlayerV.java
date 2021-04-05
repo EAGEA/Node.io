@@ -46,7 +46,7 @@ public class PlayerV implements Observer
     private final Vector2 mCoordinatesChar;
     private final Vector2 mCoordinatesHello;
     // Current orientation.
-    private PlayerM.Orientation mOrientation;
+    private PlayerM.Event mOrientation;
 
     public PlayerV(PlayerM player, String color)
     {
@@ -57,7 +57,7 @@ public class PlayerV implements Observer
         // Walking animation
         mFrame = 0;
         mDeltaAnimation = 0f;
-        mOrientation = PlayerM.Orientation.LEFT;
+        mOrientation = PlayerM.Event.LEFT;
         // "Hello!" animation
         mDeltaHello = 0f;
         mIsSpeaking = false;
@@ -143,7 +143,7 @@ public class PlayerV implements Observer
             else
             {
                 // Player has moved; start the move animation.
-                mOrientation = (PlayerM.Orientation) o;
+                mOrientation = (PlayerM.Event) o;
                 mFrame = 1;
                 mIsAnimated = true;
             }

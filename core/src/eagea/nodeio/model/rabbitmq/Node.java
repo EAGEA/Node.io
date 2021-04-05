@@ -78,7 +78,9 @@ public class Node
         try
         {
             // Get a queue.
-            String queueName = mChannel.queueDeclare().getQueue();
+            String queueName = mChannel.queueDeclare().getQueue(); // BUG: First assigned queue never
+                                                                   // exists on the cloud side.
+            queueName = mChannel.queueDeclare().getQueue();
             // Bind it.
             mChannel.queueBind(queueName, EXCHANGE_URI, "");
             // Handler.

@@ -82,12 +82,12 @@ public class Model
         if (action instanceof Connection)
         {
             boolean iamTheNewGuy = (mPlayer == null);
-            // Get new map and updated player list from host.
-            mMap = ((Connection) action).getMap();
-            mPlayers = ((Connection) action).getPlayers();
 
             if (iamTheNewGuy)
             {
+                // Get whole map and player list from host.
+                mMap = ((Connection) action).getMap();
+                mPlayers = ((Connection) action).getPlayers();
                 mPlayer = mPlayers.get(mPlayers.size() - 1);
 
                 // TODO REMOVE
@@ -97,13 +97,22 @@ public class Model
                 // Place the character on the current cell i.e. (0, 0) of its zone.
                 for (int i = 0; i < ZoneM.SIZE * (mPlayer.getZone() % MapM.ZONE_LINE); i ++)
                 {
-                    mPlayer.notify(PlayerM.Orientation.LEFT);
+                    mPlayer.notify(PlayerM.Event.LEFT);
                 }
 
                 for (int i = 0; i < ZoneM.SIZE * (mPlayer.getZone() / MapM.ZONE_LINE); i ++)
                 {
-                    mPlayer.notify(PlayerM.Orientation.UP);
+                    mPlayer.notify(PlayerM.Event.UP);
                 }
+            }
+            else
+            {
+                // Get new map and updated player list from host.
+                MapM map = ((Connection) action).getMap();
+
+                mMap.add(map.getZone(map.getNbZones() - 1));
+                mPlayers = ((Connection) action).getPlayers();
+                mMap.notify(MapM.Event.ADD);
             }
         }
         else if (action instanceof Disconnection)
