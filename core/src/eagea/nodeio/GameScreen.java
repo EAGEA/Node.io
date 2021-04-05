@@ -31,8 +31,21 @@ public class GameScreen extends ScreenAdapter
         mEnvironmentAtlas = new TextureAtlas(Gdx.files.internal("environment.atlas")) ;
         mCharactersAtlas = new TextureAtlas(Gdx.files.internal("characters.atlas")) ;
         // Game objects.
-        mModel = new Model();
+        createModel();
+    }
+
+    private void createModel()
+    {
+        mModel = new Model(this);
+    }
+
+    public void createView()
+    {
         mView = new View(mModel);
+    }
+
+    public void createController()
+    {
         mController = new Controller(mModel);
     }
 
@@ -52,8 +65,11 @@ public class GameScreen extends ScreenAdapter
         Gdx.gl.glClearColor(0, 0, 0, 1) ;
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT) ;
         // Render objects.
-        Main.mBatch.begin();
-        mView.render(delta);
-        Main.mBatch.end();
+        if (mView != null)
+        {
+            Main.mBatch.begin();
+            mView.render(delta);
+            Main.mBatch.end();
+        }
     }
 }

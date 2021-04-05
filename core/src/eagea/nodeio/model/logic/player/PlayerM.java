@@ -23,9 +23,11 @@ public class PlayerM extends Observable implements Serializable
     // Current environment.
     private MapM mMap;
 
-    public PlayerM(int i, int j)
+    public PlayerM(int i, int j, int zone, MapM map)
     {
         mPosition = new Vector2(i, j);
+        mZone = zone;
+        mMap = map;
     }
 
     public void moveRight()
@@ -36,7 +38,6 @@ public class PlayerM extends Observable implements Serializable
             if (mZone % MapM.ZONE_LINE == 0)
             {
                 // The player can not go over limits.
-                System.err.println("ZONE: Impossible move!");
                 return;
             }
             else
@@ -64,7 +65,6 @@ public class PlayerM extends Observable implements Serializable
             if (mZone >= mMap.getNbZones() -1 || ((mZone + 1) % MapM.ZONE_LINE) == 0)
             {
                 // The player can not go over limits.
-                System.err.println("ZONE: Impossible move!");
                 return;
             }
             else
@@ -92,7 +92,6 @@ public class PlayerM extends Observable implements Serializable
             if (((mZone + 1) + MapM.ZONE_LINE) > mMap.getNbZones())
             {
                 // The player can not go over limits.
-                System.err.println("ZONE: Impossible move!");
                 return;
             }
             else
@@ -120,7 +119,6 @@ public class PlayerM extends Observable implements Serializable
             if ((mZone - MapM.ZONE_LINE) < 0)
             {
                 // The player can not go over limits.
-                System.err.println("ZONE: Impossible move!");
                 return;
             }
             else

@@ -2,6 +2,7 @@ package eagea.nodeio.model;
 
 import java.util.ArrayList;
 
+import eagea.nodeio.GameScreen;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
@@ -20,6 +21,9 @@ public class Model
     // Player ID (i.e. its color, and its zone type).
     public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
 
+    // Context.
+    private GameScreen mGameScreen;
+
     // RabbitMQ.
     private Node mNode;
     // The map.
@@ -29,14 +33,11 @@ public class Model
     // All the players.
     private ArrayList<PlayerM> mPlayers;
 
-    public Model()
+    public Model(GameScreen screen)
     {
-        initNode();
-        initPlayers();
-        initMap();
+        mGameScreen = screen;
 
-        // Notify RabbitMQ new player.
-        //mNode.notifyNewNode(mPlayer, mMap.get(mMap.size() - 1)));
+        initNode();
     }
 
     /**
@@ -46,65 +47,25 @@ public class Model
     {
         mNode = new Node(this);
 
-    }
-     /**
-     * Request and load the map from previous user, or create the map.
-     * Also add the player's zone.
-     */
-    private void initMap()
-    {
-        // Check if a map is already existing among players.
-        // RabbitMQ stuff...
-        if (false)
+        if (! mNode.isHost())
         {
-            // If a map already exists.
-            // -> mMap = getMapFromRabbitMQUser()
-            // TODO
+            // Not the host; request for game model.
+            mNode.notifyHost(new Connection());
         }
         else
         {
+            // The host initiates game model:
+            // - Create Map.
             mMap = new MapM();
-        }
-        // In all the cases, add our zone to the map.
-        ZoneM zone = new ZoneM(mPlayer,
-                Type.values()[(int) (Math.random() * Type.values().length)], mMap.getNbZones());
-        mMap.add(zone);
-        // Set player's attributes.
-        mPlayer.setZone(zone.getPositionInMap());
-        mPlayer.setMap(mMap);
-
-
-
-        // !!!!TEST!!!!!
-        for (int i = 0 ; i <= 30 ; i ++)
-        {
-            zone = new ZoneM(null,
-                    Type.values()[(int) (Math.random() * Type.values().length)], mMap.getNbZones());
+            // - Create player.
+            mPlayer = new PlayerM(0, 0, 0, mMap);
+            mPlayers = new ArrayList<>();
+            mPlayers.add(mPlayer);
+            // - Create player's zone.
+            ZoneM zone = new ZoneM(mPlayer,
+                    Type.values()[(int) (Math.random() * Type.values().length)], 0);
             mMap.add(zone);
         }
-    }
-
-    /**
-     * Request and load the players from previous user.
-     * Also add the player's zone.
-     */
-    public void initPlayers()
-    {
-        // Check if already players playing
-        // RabbitMQ stuff...
-        if (false)
-        {
-            // If a players:
-            // -> mPlayers = getPlayersFromRabbitMQ()
-            // TODO
-        }
-        else
-        {
-            mPlayers = new ArrayList<>();
-        }
-        // In all the cases, add our player to the map.
-        mPlayer = new PlayerM(0, 0);
-        mPlayers.add(mPlayer);
     }
 
     /**
@@ -114,7 +75,10 @@ public class Model
     {
         if (action instanceof Connection)
         {
-
+            mMap = ((Connection) action).getMap();
+            mPlayers = ((Connection) action).getPlayers();
+            mGameScreen.createView();
+            mGameScreen.createController();
         }
         else if (action instanceof Disconnection)
         {
@@ -135,7 +99,15 @@ public class Model
     {
         if (action instanceof Connection)
         {
-            return action;
+            // Add new player and zone.
+            PlayerM player = new PlayerM(0, 0, mMap.getNbZones(), mMap);
+            ZoneM zone = new ZoneM(mPlayer,
+                    Type.values()[(int) (Math.random() * Type.values().length)],
+                    mMap.getNbZones());
+            mPlayers.add(mPlayer);
+            mMap.add(zone);
+            // Send it.
+            return new Connection(mMap, mPlayers);
         }
         else if (action instanceof Disconnection)
         {

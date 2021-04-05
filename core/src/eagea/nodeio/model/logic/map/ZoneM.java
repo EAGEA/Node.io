@@ -18,14 +18,13 @@ public class ZoneM extends Observable implements Serializable
     // Type of zone.
     private Model.Type mType;
     // Zone position in map.
-    private final int mPositionInMap;
+    private int mPositionInMap;
 
-    public ZoneM(PlayerM owner, Model.Type type, int id)
+    public ZoneM(PlayerM owner, Model.Type type, int position)
     {
         mOwner = owner;
         mType = type;
-        // Position in map.
-        mPositionInMap = id;
+        mPositionInMap = position;
     }
 
     public void setOwner(PlayerM owner)

@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import eagea.nodeio.Main;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
@@ -12,5 +11,13 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(new Main(), config);
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		// Trigger the shutdown hook.
+		Runtime.getRuntime().exit(0);
 	}
 }

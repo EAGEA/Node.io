@@ -30,13 +30,12 @@ public class Node
     // RabbitMQ exchange and queues.
     private final String EXCHANGE_URI = "rabbitmq://all/exchange";
     private final String HOST_QUEUE_URI = "rabbitmq://host/queue";
-    private final String QUEUE_URI = "rabbitmq://all/queue";
 
     // RabbitMQ connection.
     private Connection mConnection;
     private Channel mChannel;
     private final Model mModel;
-    //
+    private String mQueueName;
     private boolean mIsHost;
 
 //    private static final String EXCHANGE_NODES = "exnodes";
@@ -49,6 +48,7 @@ public class Node
         openConnection();
         declareQueue();
         checkIfHost();
+        addShutDownHook();
     }
 
     /**
@@ -82,12 +82,14 @@ public class Node
     {
         try
         {
+            // Declare the exchange (fan-out).
             mChannel.exchangeDeclare(EXCHANGE_URI, "fanout");
-            mChannel.queueDeclare(QUEUE_URI,
-                    false, false, false,
-                    null);
-            mChannel.queueBind(EXCHANGE_URI, QUEUE_URI,"");
-            mChannel.basicConsume(QUEUE_URI, true,
+            // Get a queue.
+            mQueueName = mChannel.queueDeclare().getQueue();
+            // Bind it.
+            mChannel.queueBind(mQueueName, EXCHANGE_URI,"");
+            // Handler.
+            mChannel.basicConsume(mQueueName, true,
                     this::onReceive,
                     consumerTag -> {});
         }
@@ -124,7 +126,6 @@ public class Node
                         consumerTag -> { });
                 // She/he is the host!
                 mIsHost = true;
-                addShutDownHook();
             }
             catch (Exception e_)
             {
@@ -134,24 +135,25 @@ public class Node
     }
 
     /**
-     * Only for host.
-     * End the game when host disconnects. Remove rabbitMQ host data.
+     * Remove RabbitMQ data.
      */
     private void addShutDownHook()
     {
         Runtime.getRuntime().addShutdownHook(
                 new Thread(() ->
                 {
-                    if (mIsHost)
+                    try
                     {
-                        try
+                        if (mIsHost)
                         {
                             mChannel.queueDelete(HOST_QUEUE_URI);
                         }
-                        catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
+
+                        mChannel.queueDelete(mQueueName);
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
                     }
                 }
             )
@@ -203,6 +205,10 @@ public class Node
         mModel.play(action);
     }
 
+    public boolean isHost()
+    {
+        return mIsHost;
+    }
     /*
 
     private void onReceiveNewNode(String consumertag, Delivery delivery)

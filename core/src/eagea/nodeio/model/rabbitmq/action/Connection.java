@@ -1,25 +1,40 @@
 package eagea.nodeio.model.rabbitmq.action;
 
-import eagea.nodeio.model.logic.map.ZoneM;
+import java.util.ArrayList;
+
+import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.player.PlayerM;
 
 /**
  * Player is connecting. Send this action to the host so that it
- * can notify everyone and send us the current map and the players.
+ * can notify everyone and send to everyone the updated map and players.
  */
 public class Connection extends Action
 {
-    private PlayerM mPlayer;
-    private ZoneM mZone;
+    private MapM mMap;
+    private ArrayList<PlayerM> mPlayers;
 
-    //Connection of a new node
-    public Connection(PlayerM player, ZoneM zone)
+    /**
+     * Empty constructor send to host to request her/him the map and players.
+     */
+    public Connection() { }
+
+    /**
+     * Sent by the host to update map and players of everyone.
+     */
+    public Connection(MapM map, ArrayList<PlayerM> players)
     {
-        mPlayer = player;
-        mZone = zone;
+        mMap = map;
+        mPlayers = players;
     }
 
-    public PlayerM getPlayer() { return mPlayer; }
+    public MapM getMap()
+    {
+        return mMap;
+    }
 
-    public ZoneM getZone() { return mZone; }
+    public ArrayList<PlayerM> getPlayers()
+    {
+        return mPlayers;
+    }
 }
