@@ -11,6 +11,8 @@ import eagea.nodeio.model.logic.map.ZoneM;
  */
 public class PlayersM extends Observable implements Serializable
 {
+    private static final long serialVersionUID = -4305329594662051817L;
+
     // Event.
     public enum Event { ADD, REMOVE }
 
@@ -25,6 +27,24 @@ public class PlayersM extends Observable implements Serializable
     public ArrayList<PlayerM> getPlayers()
     {
         return mPlayers;
+    }
+
+    public PlayerM find(PlayerM player)
+    {
+        final PlayerM[] result = { null };
+
+        mPlayers.forEach(p ->
+                {
+                    if (p.getI() == player.getI()
+                            && p.getJ() == player.getJ()
+                            && p.getZone() == player.getZone())
+                    {
+                        result[0] = p;
+                    }
+                }
+        );
+
+        return result[0];
     }
 
     public void remove(PlayerM player)

@@ -36,22 +36,24 @@ public class Controller implements InputProcessor
         {
             case Input.Keys.UP:
                 mModel.askForMove(PlayerM.Event.UP);
-                mIsHolding = true;
                 return true;
             case Input.Keys.DOWN:
                 mModel.askForMove(PlayerM.Event.DOWN);
-                mIsHolding = true;
                 return true;
             case Input.Keys.LEFT:
                 mModel.askForMove(PlayerM.Event.LEFT);
-                mIsHolding = true;
                 return true;
             case Input.Keys.RIGHT:
                 mModel.askForMove(PlayerM.Event.RIGHT);
-                mIsHolding = true;
                 return false;
-            case Input.Keys.B:
-                mModel.getPlayer().sayHello();
+            case Input.Keys.E:
+                mModel.askForSpeak(PlayerM.Speak.HELLO);
+                return false;
+            case Input.Keys.R:
+                mModel.askForSpeak(PlayerM.Speak.LOOSER);
+                return false;
+            case Input.Keys.T:
+                mModel.askForSpeak(PlayerM.Speak.BYE);
                 return false;
         }
 
@@ -61,16 +63,6 @@ public class Controller implements InputProcessor
     @Override
     public boolean keyUp(int keyCode)
     {
-        switch (keyCode)
-        {
-            case Input.Keys.UP:
-            case Input.Keys.DOWN:
-            case Input.Keys.LEFT:
-            case Input.Keys.RIGHT:
-                mIsHolding = false;
-                return true;
-        }
-
         return false;
     }
 
@@ -113,14 +105,12 @@ public class Controller implements InputProcessor
             }
         }
 
-        mIsHolding = true;
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
-        mIsHolding = false;
         return true;
     }
 

@@ -8,6 +8,8 @@ import eagea.nodeio.model.logic.player.PlayerM;
  */
 public class Move extends Action
 {
+    private static final long serialVersionUID = -2331051169444334502L;
+
     private final PlayerM mPlayer;
     private final PlayerM.Event mOrientation;
 

@@ -13,8 +13,12 @@ import eagea.nodeio.model.logic.map.ZoneM;
  */
 public class PlayerM extends Observable implements Serializable
 {
+    private static final long serialVersionUID = 4604898990645685618L;
+
     // Event; Direction of movements.
     public enum Event { LEFT, RIGHT, UP, DOWN }
+    // Event; speak.
+    public enum Speak { HELLO, LOOSER, BYE }
     // Hair color.
     public enum Color { RED, GREEN, BLUE }
 
@@ -23,6 +27,8 @@ public class PlayerM extends Observable implements Serializable
     private final Vector2 mPosition;
     // Her/his hair color.
     private final Color mColor;
+    // Her/his sentence to say.
+    private Speak mSentence;
     // Current environment.
     private MapM mMap;
 
@@ -138,9 +144,10 @@ public class PlayerM extends Observable implements Serializable
         notify(Event.DOWN);
     }
 
-    public void sayHello()
+    public void speak(Speak sentence)
     {
-        // Notify that player wants to say hello.
+        mSentence = sentence;
+        // Notify that player wants to speak.
         setChanged();
         notifyObservers(null);
     }
@@ -164,6 +171,11 @@ public class PlayerM extends Observable implements Serializable
     public int getZone()
     {
         return mZone;
+    }
+
+    public Speak getSpeak()
+    {
+        return mSentence;
     }
 
     public int getJ()

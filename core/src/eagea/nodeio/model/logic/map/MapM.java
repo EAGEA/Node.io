@@ -11,6 +11,8 @@ import eagea.nodeio.model.logic.player.PlayersM;
  */
 public class MapM extends Observable implements Serializable
 {
+    private static final long serialVersionUID = -6492819057776221671L;
+
     // Event.
     public enum Event { ADD, REMOVE }
     // Number of zone in the same row.

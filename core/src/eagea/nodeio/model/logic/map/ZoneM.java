@@ -12,6 +12,9 @@ import eagea.nodeio.view.object.player.PlayerV;
  */
 public class ZoneM extends Observable implements Serializable
 {
+    private static final long serialVersionUID = -3060804350757580941L;
+
+    // Width and height.
     public static final int SIZE = 4;
 
     private PlayerM mOwner;

@@ -9,6 +9,8 @@ import eagea.nodeio.model.logic.player.PlayerM;
  */
 public class Disconnection extends Action
 {
+    private static final long serialVersionUID = 2116895505000334818L;
+
     private PlayerM mPlayer,mNewOwner;
     private ZoneM mZone;
 

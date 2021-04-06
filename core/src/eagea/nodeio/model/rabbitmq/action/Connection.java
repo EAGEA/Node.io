@@ -13,6 +13,8 @@ import eagea.nodeio.model.logic.player.PlayersM;
  */
 public class Connection extends Action
 {
+    private static final long serialVersionUID = 8956958123191408048L;
+
     private MapM mMap;
     private PlayersM mPlayers;
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.lang.management.PlatformLoggingMXBean;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -22,14 +23,14 @@ public class PlayerV implements Observer
 {
     public static final float WIDTH_CHAR = 2f;
     public static final float HEIGHT_CHAR = 2f;
-    public static final float WIDTH_HELLO = 2f;
-    public static final float HEIGHT_HELLO = 1.39f;
+    public static final float WIDTH_SPEAK = 2f;
+    public static final float HEIGHT_SPEAK = 1.39f;
 
     // Animation number of frames.
     private final int FRAMES_PER_ANIMATION = 4;
     // Animation seconds per frame.
     private final float TIME_PER_FRAME = 0.04f;
-    // Hello seconds per frame.
+    // Speak seconds per frame.
     private final float TIME_SPEAK = 1f;
 
     // Model.
@@ -43,9 +44,9 @@ public class PlayerV implements Observer
     private int mFrame;
     private float mDeltaAnimation;
     private boolean mIsAnimated;
-    // Hello frame.
-    private TextureRegion mHelloTexture;
-    private float mDeltaHello;
+    // Speak frames.
+    private TextureRegion[] mSpeakTextures;
+    private float mDeltaSpeak;
     private boolean mIsSpeaking;
     // Current orientation.
     private PlayerM.Event mOrientation;
@@ -61,8 +62,8 @@ public class PlayerV implements Observer
         mFrame = 0;
         mDeltaAnimation = 0f;
         mOrientation = PlayerM.Event.LEFT;
-        // "Hello!" animation.
-        mDeltaHello = 0f;
+        // Speak animation.
+        mDeltaSpeak = 0f;
         mIsSpeaking = false;
     }
 
@@ -73,7 +74,7 @@ public class PlayerV implements Observer
                 new Vector3(mPlayer.getI(), mPlayer.getJ(), mPlayer.getZone()));
 
         renderCharacter(delta, coord);
-        renderHello(delta, coord);
+        renderSpeak(delta, coord);
     }
 
     private void renderCharacter(float delta, Vector2 coord)
@@ -116,20 +117,20 @@ public class PlayerV implements Observer
         }
     }
 
-    private void renderHello(float delta, Vector2 coord)
+    private void renderSpeak(float delta, Vector2 coord)
     {
         if (mIsSpeaking)
         {
-            Main.mBatch.draw(mHelloTexture,
+            Main.mBatch.draw(mSpeakTextures[mPlayer.getSpeak().ordinal()],
                     coord.x,
-                    coord.y + HEIGHT_CHAR / 2f + HEIGHT_HELLO,
-                    WIDTH_HELLO, HEIGHT_HELLO);
-            mDeltaHello += delta;
+                    coord.y + HEIGHT_CHAR / 2f + HEIGHT_SPEAK,
+                    WIDTH_SPEAK, HEIGHT_SPEAK);
+            mDeltaSpeak += delta;
 
             // Stop animation?
-            if (mDeltaHello >= TIME_SPEAK)
+            if (mDeltaSpeak >= TIME_SPEAK)
             {
-                mDeltaHello = 0f;
+                mDeltaSpeak = 0f;
                 mIsSpeaking = false;
             }
         }
@@ -142,8 +143,8 @@ public class PlayerV implements Observer
         {
             if (o == null)
             {
-                // Player wants to say hello.
-                mDeltaHello = 0f;
+                // Player wants to speak.
+                mDeltaSpeak = 0f;
                 mIsSpeaking = true;
             }
             else
@@ -171,6 +172,12 @@ public class PlayerV implements Observer
             mDownAnimation[i] = GameScreen.mCharactersAtlas.findRegion(color + "_down", i);
         }
 
-        mHelloTexture = GameScreen.mCharactersAtlas.findRegion("hello");
+        mSpeakTextures = new TextureRegion[PlayerM.Speak.values().length];
+
+        for (int i = 0; i < PlayerM.Speak.values().length; i ++)
+        {
+            mSpeakTextures[i] = GameScreen.mCharactersAtlas.findRegion(
+                    PlayerM.Speak.values()[i].toString().toLowerCase());
+        }
     }
 }

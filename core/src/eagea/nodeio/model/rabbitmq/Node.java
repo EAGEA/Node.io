@@ -54,6 +54,8 @@ public class Node
      */
     private void openConnection()
     {
+        System.out.println("[DEBUG]: connection");
+
         ConnectionFactory factory = new ConnectionFactory();
 
         try
@@ -64,7 +66,8 @@ public class Node
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            System.err.println("[ERROR]: connection");
+            System.exit(-1);
         }
     }
 
@@ -82,7 +85,7 @@ public class Node
         {
             if (mChannel == null)
             {
-                System.err.println("[ERROR]: channel queue declaration");
+                System.err.println("[ERROR]: channel queue declaration 1");
                 System.exit(-1);
             }
 
@@ -98,7 +101,7 @@ public class Node
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            System.err.println("[ERROR]: channel queue declaration 2");
         }
     }
 
@@ -154,19 +157,9 @@ public class Node
                     null,
                     SerializationUtils.serialize(action));
         }
-        catch (IOException e)
+        catch (Exception e)
         {
-            e.printStackTrace();
-
-            try
-            {
-                openChannel();
-            }
-            catch (Exception ignored)
-            {
-                System.err.println("[ERROR]: channel notify host");
-                System.exit(-1);
-            }
+            System.err.println("[ERROR]: send action");
         }
     }
 
@@ -193,17 +186,7 @@ public class Node
             }
             catch (Exception e)
             {
-                e.printStackTrace();
-
-                try
-                {
-                    openChannel();
-                }
-                catch (Exception ignored)
-                {
-                    System.err.println("[ERROR]: channel host receive");
-                    System.exit(-1);
-                }
+                System.err.println("[ERROR]: HOST publish action");
             }
         }
     }
@@ -214,39 +197,20 @@ public class Node
     public void onReceive(String consumerTag, Delivery delivery)
     {
         System.out.println("[DEBUG]: receive action");
-        Action action = SerializationUtils.deserialize(delivery.getBody());
-        mModel.play(action);
+
+        try
+        {
+            Action action = SerializationUtils.deserialize(delivery.getBody());
+            mModel.play(action);
+        }
+        catch (Exception e)
+        {
+            System.err.println("[ERROR]: receive action");
+        }
     }
 
     public boolean isHost()
     {
         return mIsHost;
     }
-    /*
-
-    private void onReceiveNewNode(String consumertag, Delivery delivery)
-    {
-        Action receivedAction = SerializationUtils.deserialize(delivery.getBody());
-
-        if (receivedAction instanceof eagea.nodeio.model.rabbitmq.action.Connection)
-        {
-            //Add new player and new zone for each node map and model
-            mModel.getMap().add(((eagea.nodeio.model.rabbitmq.action.Connection) receivedAction).getZone());
-            mModel.addPlayer(((eagea.nodeio.model.rabbitmq.action.Connection) receivedAction).getPlayer());
-        }
-
-        if (receivedAction instanceof Disconnection)
-        {
-            //Remove player from the model and modify the owner of the zone. (Add removePlayer() to the model)
-            //mModel.removePlayer(((Disconnection) receivedAction).getPlayer());
-            mModel.getMap().getZone(((Disconnection) receivedAction).getZone().getPositionInMap()).setOwner(((Disconnection) receivedAction).getNewOwner());
-        }
-
-        if (receivedAction instanceof Move)
-        {
-            //PlayerM player = mModel.getInPlayers(((Move) receivedAction).getPlayer());
-            //player.setPos(((Move) receivedAction).getPosI(),((Move) receivedAction).getPosJ());
-        }
-    }
-     */
 }
