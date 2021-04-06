@@ -7,8 +7,14 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 public class Main extends Game
 {
+    public final boolean DEBUG = true;
+
     public static final int WORLD_WIDTH = 30;
     public static final int WORLD_HEIGHT = 30;
 
@@ -22,6 +28,8 @@ public class Main extends Game
     @Override
     public void create ()
     {
+        DEBUG();
+
         mBatch = new SpriteBatch();
         mCamera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         mViewPortGame = new FillViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
@@ -32,7 +40,6 @@ public class Main extends Game
 
         // World units when drawing.
         Main.mBatch.setProjectionMatrix(Main.mCamera.combined);
-
     }
 
     @Override
@@ -51,5 +58,25 @@ public class Main extends Game
         // Center the camera
         //resetCameraPosition() ;
         // And resize the current screen
+    }
+
+    public void DEBUG()
+    {
+        if (! DEBUG)
+        {
+            // Disable logs.
+            System.setOut(new PrintStream(new OutputStream()
+                    {
+                        @Override public void write(int b) { }
+                    }
+                )
+            );
+            System.setErr(new PrintStream(new OutputStream()
+                    {
+                        @Override public void write(int b) { }
+                    }
+                )
+            );
+        }
     }
 }
