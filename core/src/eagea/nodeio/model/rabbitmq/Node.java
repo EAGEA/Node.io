@@ -147,6 +147,11 @@ public class Node
 
         try
         {
+            if (mChannel == null)
+            {
+                openChannel();
+            }
+
             mChannel.basicPublish("", HOST_QUEUE_URI,
                     null,
                     SerializationUtils.serialize(action));
@@ -168,6 +173,11 @@ public class Node
 
         if (action != null)
         {
+            if (mChannel == null)
+            {
+                openChannel();
+            }
+
             // Action validated by host.
             // Send it to all the players.
             System.out.println("[DEBUG]: HOST publish action");
