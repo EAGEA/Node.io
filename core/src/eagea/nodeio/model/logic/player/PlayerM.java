@@ -3,6 +3,7 @@ package eagea.nodeio.model.logic.player;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.Serializable;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Observable;
 
 import eagea.nodeio.model.logic.map.MapM;
@@ -156,6 +157,19 @@ public class PlayerM extends Observable implements Serializable
     {
         setChanged();
         notifyObservers(event);
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof PlayerM)
+        {
+            return ((PlayerM) o).getI() == getI()
+                    && ((PlayerM) o).getJ() == getJ()
+                    && ((PlayerM) o).getZone() == getZone();
+        }
+
+        return false;
     }
 
     public void setMap(MapM map)

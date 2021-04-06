@@ -87,7 +87,6 @@ public class PlayerV implements Observer
             case RIGHT: toDraw = mRightAnimation[mFrame]; break;
             case UP: toDraw = mUpAnimation[mFrame]; break;
             case DOWN: toDraw = mDownAnimation[mFrame]; break;
-
         }
         // Draw.
         Main.mBatch.draw(toDraw,

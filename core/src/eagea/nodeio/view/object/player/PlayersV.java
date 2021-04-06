@@ -47,14 +47,25 @@ public class PlayersV implements Observer
             {
                 // Map has changed.
                 PlayersM.Event event = (PlayersM.Event) o;
+                PlayerM player;
 
                 switch (event)
                 {
                     case ADD:
-                        PlayerM player = mPlayers.get(mPlayers.getNbPlayers() - 1);
+                        player = mPlayers.get(mPlayers.getNbPlayers() - 1);
                         mPlayersV.add(new PlayerV(mPlayer, player,
                                 player.getColor().toString().toLowerCase()));
                         break;
+                    case REMOVE:
+                        // TODO
+                        /*
+                        mPlayersV.forEach(p ->
+                        {
+                            if (p)
+                        });
+                        player = mPlayers.get(mPlayers.getNbPlayers() - 1);
+                        break;
+                         */
                 }
             }
         }

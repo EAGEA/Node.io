@@ -1,9 +1,6 @@
 package eagea.nodeio.model.rabbitmq.action;
 
-import java.util.ArrayList;
-
 import eagea.nodeio.model.logic.map.MapM;
-import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.model.logic.player.PlayersM;
 
 /**

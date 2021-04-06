@@ -2,6 +2,8 @@ package eagea.nodeio.model;
 
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
+
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
@@ -9,6 +11,7 @@ import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.model.logic.player.PlayersM;
 import eagea.nodeio.model.rabbitmq.Node;
 import eagea.nodeio.model.rabbitmq.action.Action;
+import eagea.nodeio.model.rabbitmq.action.Catch;
 import eagea.nodeio.model.rabbitmq.action.Connection;
 import eagea.nodeio.model.rabbitmq.action.Disconnection;
 import eagea.nodeio.model.rabbitmq.action.Speak;
@@ -94,6 +97,16 @@ public class Model
 
     /**
      * Action.
+     * Ask the host for catching someone.
+     */
+    public void askForCatch()
+    {
+        // Request for catch.
+        mNode.notifyHost(new Catch(mPlayer));
+    }
+
+    /**
+     * Action.
      * Disconnect the player from the host.
      */
     public void askForDisconnection()
@@ -118,6 +131,10 @@ public class Model
         else if (action instanceof Speak)
         {
             playSpeak((Speak) action);
+        }
+        else if (action instanceof Catch)
+        {
+            playCatch((Catch) action);
         }
         else if (action instanceof Disconnection)
         {
@@ -187,6 +204,34 @@ public class Model
         player.speak(action.getSentence());
     }
 
+    private void playCatch(Catch action)
+    {
+        // Find the corresponding player (reference).
+        PlayerM player = mPlayers.find(action.getPlayer());
+        // Check if found.
+        if (player == null)
+        {
+            System.err.println("[ERROR]: can't play action");
+            return;
+        }
+        // Remove each player from the game.
+        action.getCaught().forEach(p ->
+                {
+                    // Change zones owner.
+                    mMap.getZones().forEach(z ->
+                            {
+                                if (z.getOwner().equals(p))
+                                {
+                                    z.setOwner(player);
+                                }
+                            }
+                    );
+                    // Remove players from list.
+                    mPlayers.remove(p);
+                }
+        );
+    }
+
     private void playDisconnection(Disconnection action)
     {
     }
@@ -211,6 +256,10 @@ public class Model
         else if (action instanceof Speak)
         {
             return checkSpeak((Speak) action);
+        }
+        else if (action instanceof Catch)
+        {
+            return checkCatch((Catch) action);
         }
         else if (action instanceof Disconnection)
         {
@@ -240,7 +289,7 @@ public class Model
         Vector3 position = new Vector3(player.getI(), player.getJ(),
                 player.getZone());
         // Get the cell in which the player would like to go.
-        switch (((Move) action).getOrientation())
+        switch (action.getOrientation())
         {
             case LEFT: position.y ++; break;
             case RIGHT: position.y --; break;
@@ -290,6 +339,27 @@ public class Model
         // TODO check if connected.
         // Send it.
         return action;
+    }
+
+    private Action checkCatch(Catch action)
+    {
+        PlayerM player = action.getPlayer();
+        Vector3 position = new Vector3(player.getI(), player.getJ(),
+                player.getZone());
+        ArrayList<PlayerM> caught = new ArrayList<>();
+        // Check if a player is adjacent to player cell.
+        mPlayers.getPlayers().forEach(p ->
+                {
+                    if (p.getZone() == position.z
+                            && p.getI() == position.x
+                            && p.getJ() == position.y)
+                    {
+                        caught.add(p);
+                    }
+                }
+        );
+        // Send it.
+        return caught.isEmpty() ? null : new Catch(player, caught);
     }
 
     private Action checkDisconnection(Disconnection action)

@@ -35,9 +35,7 @@ public class PlayersM extends Observable implements Serializable
 
         mPlayers.forEach(p ->
                 {
-                    if (p.getI() == player.getI()
-                            && p.getJ() == player.getJ()
-                            && p.getZone() == player.getZone())
+                    if (p.equals(player))
                     {
                         result[0] = p;
                     }

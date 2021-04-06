@@ -45,16 +45,19 @@ public class Controller implements InputProcessor
                 return true;
             case Input.Keys.RIGHT:
                 mModel.askForMove(PlayerM.Event.RIGHT);
-                return false;
+                return true;
             case Input.Keys.E:
                 mModel.askForSpeak(PlayerM.Speak.HELLO);
-                return false;
+                return true;
             case Input.Keys.R:
                 mModel.askForSpeak(PlayerM.Speak.LOOSER);
-                return false;
+                return true;
             case Input.Keys.T:
                 mModel.askForSpeak(PlayerM.Speak.BYE);
-                return false;
+                return true;
+            case Input.Keys.C:
+                mModel.askForCatch();
+                return true;
         }
 
         return false;
