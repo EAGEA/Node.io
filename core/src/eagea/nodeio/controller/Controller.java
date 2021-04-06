@@ -58,6 +58,9 @@ public class Controller implements InputProcessor
             case Input.Keys.C:
                 mModel.askForCatch();
                 return true;
+            case Input.Keys.Q:
+                mModel.askForDisconnection();
+                return true;
         }
 
         return false;
