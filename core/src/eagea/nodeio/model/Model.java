@@ -1,5 +1,8 @@
 package eagea.nodeio.model;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
@@ -21,10 +24,10 @@ public class Model
     public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
 
     // Context.
-    private GameScreen mGameScreen;
+    private final GameScreen mGameScreen;
 
     // RabbitMQ.
-    private Node mNode;
+    private final Node mNode;
     // The map.
     private MapM mMap;
     // The player.
@@ -83,7 +86,7 @@ public class Model
      * Action.
      * Disconnect the player from the host.
      */
-    public void askForDeconnection()
+    public void askForDisconnection()
     {
     }
 
@@ -109,13 +112,16 @@ public class Model
             }
             else
             {
-                // Update map and players.
-                MapM map = ((Connection) action).getMap();
-                PlayersM players = ((Connection) action).getPlayers();
+                if (! mNode.isHost())
+                {
+                    // Update map and players.
+                    MapM map = ((Connection) action).getMap();
+                    PlayersM players = ((Connection) action).getPlayers();
 
-                mMap.add(map.get(map.getNbZones() - 1));
-                mPlayers.add(players.get(players.getNbPlayers() - 1));
-                mMap.notify(MapM.Event.ADD);
+                    mMap.add(map.get(map.getNbZones() - 1));
+                    mPlayers.add(players.get(players.getNbPlayers() - 1));
+                    mMap.notify(MapM.Event.ADD);
+                }
             }
         }
         else if (action instanceof Disconnection)
@@ -128,21 +134,23 @@ public class Model
             final PlayerM[] player = new PlayerM[1];
             // Find the corresponding player (reference).
             mPlayers.getPlayers().forEach(p ->
-            {
-                if (p.getI() == p_[0].getI()
-                        && p.getJ() == p_[0].getJ()
-                        && p.getZone() == p_[0].getZone())
-                {
-                    player[0] = p;
-                }
-            });
-
-
+                    {
+                        if (p.getI() == p_[0].getI()
+                                && p.getJ() == p_[0].getJ()
+                                && p.getZone() == p_[0].getZone())
+                        {
+                            player[0] = p;
+                        }
+                    }
+            );
+            // Check if found.
             if (player[0] == null)
             {
                 System.err.println("[ERROR]: can't play action");
+                return;
+                //System.exit(-1);
             }
-
+            // Move it.
             switch (((Move) action).getOrientation())
             {
                 case LEFT: player[0].moveLeft(); break;
@@ -174,11 +182,59 @@ public class Model
         }
         else if (action instanceof Disconnection)
         {
-            return action;
+            return null;
         }
         else if (action instanceof Move)
         {
-            return action;
+            final Action[] result = {action};
+            PlayerM player = ((Move) action).getPlayer();
+            Vector3 position = new Vector3(player.getI(), player.getJ(),
+                    player.getZone());
+            // Get the cell in which the player would like to go.
+            switch (((Move) action).getOrientation())
+            {
+                case LEFT: position.y ++; break;
+                case RIGHT: position.y --; break;
+                case UP: position.x ++; break;
+                case DOWN: position.x --; break;
+            }
+
+            if (position.x >= ZoneM.SIZE)
+            {
+                position.x -= ZoneM.SIZE;
+                position.z += MapM.ZONE_LINE;
+            }
+            else if (position.x < 0)
+            {
+                position.x += ZoneM.SIZE;
+                position.z -= MapM.ZONE_LINE;
+            }
+            else if (position.y >= ZoneM.SIZE)
+            {
+                position.y -= ZoneM.SIZE;
+                position.z += 1;
+            }
+            else if (position.y < 0)
+            {
+                position.y += ZoneM.SIZE;
+                position.z -= 1;
+            }
+            System.out.println(position.x + " " + position.y + " " +position.z);
+            // Check if a player is already in this cell.
+            mPlayers.getPlayers().forEach(p ->
+                    {
+
+                        if (p.getZone() == position.z
+                                && p.getI() == position.x
+                                && p.getJ() == position.y)
+                        {
+                            // Can't do this move.
+                            result[0] = null;
+                        }
+                    }
+            );
+
+            return result[0];
         }
 
         return null;

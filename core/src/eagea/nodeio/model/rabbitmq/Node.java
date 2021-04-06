@@ -5,8 +5,11 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Delivery;
+import com.rabbitmq.client.ShutdownListener;
+import com.rabbitmq.client.ShutdownSignalException;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -79,7 +82,7 @@ public class Node
         {
             if (mChannel == null)
             {
-                System.err.println("[ERROR]: no internet connection");
+                System.err.println("[ERROR]: channel queue declaration");
                 System.exit(-1);
             }
 
@@ -147,11 +150,6 @@ public class Node
 
         try
         {
-            if (mChannel == null)
-            {
-                openChannel();
-            }
-
             mChannel.basicPublish("", HOST_QUEUE_URI,
                     null,
                     SerializationUtils.serialize(action));
@@ -159,13 +157,23 @@ public class Node
         catch (IOException e)
         {
             e.printStackTrace();
+
+            try
+            {
+                openChannel();
+            }
+            catch (Exception ignored)
+            {
+                System.err.println("[ERROR]: channel notify host");
+                System.exit(-1);
+            }
         }
     }
 
     /**
      * Host process Action received.
      */
-    private void onHostReceive(String consumerTag, Delivery delivery) throws IOException
+    private void onHostReceive(String consumerTag, Delivery delivery)
     {
         System.out.println("[DEBUG]: HOST receive action");
         Action action = SerializationUtils.deserialize(delivery.getBody());
@@ -173,17 +181,30 @@ public class Node
 
         if (action != null)
         {
-            if (mChannel == null)
-            {
-                openChannel();
-            }
-
             // Action validated by host.
             // Send it to all the players.
             System.out.println("[DEBUG]: HOST publish action");
-            mChannel.basicPublish(EXCHANGE_URI, "",
-                    null,
-                    SerializationUtils.serialize(action));
+
+            try
+            {
+                mChannel.basicPublish(EXCHANGE_URI, "",
+                        null,
+                        SerializationUtils.serialize(action));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+
+                try
+                {
+                    openChannel();
+                }
+                catch (Exception ignored)
+                {
+                    System.err.println("[ERROR]: channel host receive");
+                    System.exit(-1);
+                }
+            }
         }
     }
 
