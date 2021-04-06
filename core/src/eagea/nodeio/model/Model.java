@@ -354,8 +354,23 @@ public class Model
 
     private Action checkDisconnection(Disconnection action)
     {
-        // Send it.
-        return null;
+        int i;
+        PlayerM player = action.getPlayer();
+        //To modify just for testing the host will be the new owner
+        //TODO : RANDOM PICK THE NEW OWNER
+        PlayerM newOwner = mPlayers.get(0);
+        ArrayList<ZoneM> zones = mMap.getZones();
+        ArrayList<Integer> indexes = new ArrayList<>();
+
+        for(i = 0;i < zones.size();i++)
+        {
+            if(zones.get(i).getOwner().equals(player))
+            {
+                indexes.add(i);
+            }
+        }
+
+        return new Disconnection(newOwner, indexes);
     }
 
     public MapM getMap()
