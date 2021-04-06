@@ -34,7 +34,7 @@ public class PlayerV implements Observer
     private final float TIME_SPEAK = 1f;
 
     // Model.
-    private final PlayerM mRealPlayer;
+    private final PlayerM mRealPlayer; // Player who is playing
     private final PlayerM mPlayer;
     // Frames.
     private TextureRegion[] mLeftAnimation;
@@ -180,8 +180,8 @@ public class PlayerV implements Observer
         }
     }
 
-    public PlayerM getRealPlayer()
+    public PlayerM getPlayer()
     {
-        return mRealPlayer;
+        return mPlayer;
     }
 }

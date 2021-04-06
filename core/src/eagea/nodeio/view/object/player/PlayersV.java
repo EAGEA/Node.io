@@ -61,7 +61,7 @@ public class PlayersV implements Observer
                         // Search for player to remove.
                         mPlayersV.forEach(p ->
                         {
-                            if (p.getRealPlayer().equals(player))
+                            if (p.getPlayer().equals(player))
                             {
                                 to_remove[0] = p;
                             }

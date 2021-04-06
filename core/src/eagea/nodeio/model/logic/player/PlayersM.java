@@ -11,7 +11,7 @@ import eagea.nodeio.model.logic.map.ZoneM;
  */
 public class PlayersM extends Observable implements Serializable
 {
-    private static final long serialVersionUID = -4305329594662051817L;
+    private static final long serialVersionUID = -6069243052017409241L;
 
     // Event.
     public enum Event { ADD, REMOVE }
