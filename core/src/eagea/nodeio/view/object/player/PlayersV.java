@@ -46,26 +46,31 @@ public class PlayersV implements Observer
             if (o != null)
             {
                 // Map has changed.
-                PlayersM.Event event = (PlayersM.Event) o;
-                PlayerM player;
+                PlayersM.EventContainer container = (PlayersM.EventContainer) o;
+                PlayersM.Event event = container.getEvent();
+                PlayerM player = container.getPlayer();
 
                 switch (event)
                 {
                     case ADD:
-                        player = mPlayers.get(mPlayers.getNbPlayers() - 1);
                         mPlayersV.add(new PlayerV(mPlayer, player,
                                 player.getColor().toString().toLowerCase()));
                         break;
                     case REMOVE:
-                        // TODO
-                        /*
+                        final PlayerV[] to_remove = new PlayerV[1];
+                        // Search for player to remove.
                         mPlayersV.forEach(p ->
                         {
-                            if (p)
+                            if (p.getRealPlayer().equals(player))
+                            {
+                                to_remove[0] = p;
+                            }
                         });
-                        player = mPlayers.get(mPlayers.getNbPlayers() - 1);
-                        break;
-                         */
+                        // Remove it.
+                        if (to_remove[0] != null)
+                        {
+                            mPlayersV.remove(to_remove[0]);
+                        }
                 }
             }
         }

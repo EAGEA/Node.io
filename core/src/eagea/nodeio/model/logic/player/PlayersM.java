@@ -15,6 +15,28 @@ public class PlayersM extends Observable implements Serializable
 
     // Event.
     public enum Event { ADD, REMOVE }
+    // To notify observers.
+    public static class EventContainer
+    {
+        private final Event mEvent;
+        private final PlayerM mPlayer;
+
+        public EventContainer(Event event, PlayerM player)
+        {
+            mEvent = event;
+            mPlayer = player;
+        }
+
+        public Event getEvent()
+        {
+            return mEvent;
+        }
+
+        public PlayerM getPlayer()
+        {
+            return mPlayer;
+        }
+    }
 
     // Current players on the map.
     private final ArrayList<PlayerM> mPlayers;
@@ -49,14 +71,14 @@ public class PlayersM extends Observable implements Serializable
     {
         mPlayers.remove(player);
         // Notify the associated view.
-        notify(Event.REMOVE);
+        notify(Event.REMOVE, player);
     }
 
     public void add(PlayerM player)
     {
         mPlayers.add(player);
         // Notify the associated view.
-        notify(Event.ADD);
+        notify(Event.ADD, player);
     }
 
     public PlayerM get(int id)
@@ -64,10 +86,10 @@ public class PlayersM extends Observable implements Serializable
         return mPlayers.get(id);
     }
 
-    public void notify(Event event)
+    public void notify(Event event, PlayerM player)
     {
         setChanged();
-        notifyObservers(event);
+        notifyObservers(new EventContainer(event, player));
     }
 
     public int getNbPlayers()

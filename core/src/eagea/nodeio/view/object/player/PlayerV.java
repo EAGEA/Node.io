@@ -179,4 +179,9 @@ public class PlayerV implements Observer
                     PlayerM.Speak.values()[i].toString().toLowerCase());
         }
     }
+
+    public PlayerM getRealPlayer()
+    {
+        return mRealPlayer;
+    }
 }

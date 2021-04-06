@@ -172,6 +172,16 @@ public class PlayerM extends Observable implements Serializable
         return false;
     }
 
+    /**
+     * @return player position but relative to the whole map
+     * (not only her/his zone).
+     */
+    public Vector2 getMapPosition()
+    {
+        return new Vector2((getZone() / MapM.ZONE_LINE) * ZoneM.SIZE + getI(),
+                (getZone() % MapM.ZONE_LINE) * ZoneM.SIZE + getJ());
+    }
+
     public void setMap(MapM map)
     {
         mMap = map;

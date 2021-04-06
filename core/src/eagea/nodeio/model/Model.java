@@ -1,5 +1,6 @@
 package eagea.nodeio.model;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -286,8 +287,8 @@ public class Model
     {
         final Action[] result = { action };
         PlayerM player = action.getPlayer();
-        Vector3 position = new Vector3(player.getI(), player.getJ(),
-                player.getZone());
+        // Convert player position in the whole map ones.
+        Vector2 position = player.getMapPosition();
         // Get the cell in which the player would like to go.
         switch (action.getOrientation())
         {
@@ -296,34 +297,13 @@ public class Model
             case UP: position.x ++; break;
             case DOWN: position.x --; break;
         }
-        // Transform position (may change of zone).
-        if (position.x >= ZoneM.SIZE)
-        {
-            position.x -= ZoneM.SIZE;
-            position.z += MapM.ZONE_LINE;
-        }
-        else if (position.x < 0)
-        {
-            position.x += ZoneM.SIZE;
-            position.z -= MapM.ZONE_LINE;
-        }
-        else if (position.y >= ZoneM.SIZE)
-        {
-            position.y -= ZoneM.SIZE;
-            position.z += 1;
-        }
-        else if (position.y < 0)
-        {
-            position.y += ZoneM.SIZE;
-            position.z -= 1;
-        }
         // Check if a player is already in this cell.
         mPlayers.getPlayers().forEach(p ->
                 {
+                    Vector2 pPosition = p.getMapPosition();
 
-                    if (p.getZone() == position.z
-                            && p.getI() == position.x
-                            && p.getJ() == position.y)
+                    if (pPosition.x == position.x
+                            && pPosition.y == position.y)
                     {
                         // Can't do this move.
                         result[0] = null;
@@ -344,17 +324,27 @@ public class Model
     private Action checkCatch(Catch action)
     {
         PlayerM player = action.getPlayer();
-        Vector3 position = new Vector3(player.getI(), player.getJ(),
-                player.getZone());
         ArrayList<PlayerM> caught = new ArrayList<>();
+        // Convert player position in the whole map ones.
+        Vector2 position = player.getMapPosition();
         // Check if a player is adjacent to player cell.
         mPlayers.getPlayers().forEach(p ->
                 {
-                    if (p.getZone() == position.z
-                            && p.getI() == position.x
-                            && p.getJ() == position.y)
+                    Vector2 pPosition = p.getMapPosition();
+
+                    if (pPosition.y == position.y)
                     {
-                        caught.add(p);
+                        if (Math.abs(pPosition.x - position.x) == 1)
+                        {
+                            caught.add(p);
+                        }
+                    }
+                    else if (pPosition.x == position.x)
+                    {
+                        if (Math.abs(pPosition.y - position.y) == 1)
+                        {
+                            caught.add(p);
+                        }
                     }
                 }
         );
