@@ -4,23 +4,23 @@ import eagea.nodeio.model.logic.player.PlayerM;
 
 /**
  * Player has moved. Send this action to the host so that it can
- * confirm by sending it to everyone.
+ * confirm it if no collision, by sending it to everyone.
  */
 public class Move extends Action
 {
-    PlayerM mPlayer;
-    int mPosI,mPosJ;
+    private final PlayerM mPlayer;
+    private final PlayerM.Event mOrientation;
 
-    public Move(PlayerM player, int posi, int posj)
+    public Move(PlayerM player, PlayerM.Event orientation)
     {
         mPlayer = player;
-        mPosI = posi;
-        mPosJ = posj;
+        mOrientation = orientation;
     }
 
     public PlayerM getPlayer() { return mPlayer; }
 
-    public int getPosI() { return mPosI; }
-
-    public int getPosJ() { return mPosJ; }
+    public PlayerM.Event getOrientation()
+    {
+        return mOrientation;
+    }
 }

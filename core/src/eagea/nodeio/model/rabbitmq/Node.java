@@ -42,8 +42,8 @@ public class Node
         mModel = model;
 
         openConnection();
-        declareQueue();
         checkIfHost();
+        declareQueue();
     }
 
     /**
@@ -77,10 +77,14 @@ public class Node
     {
         try
         {
+            if (mChannel == null)
+            {
+                System.err.println("[ERROR]: no internet connection");
+                System.exit(-1);
+            }
+
             // Get a queue.
-            String queueName = mChannel.queueDeclare().getQueue(); // BUG: First assigned queue never
-                                                                   // exists on the cloud side.
-            queueName = mChannel.queueDeclare().getQueue();
+            String queueName = mChannel.queueDeclare().getQueue();
             // Bind it.
             mChannel.queueBind(queueName, EXCHANGE_URI, "");
             // Handler.

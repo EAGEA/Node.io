@@ -4,15 +4,17 @@ import java.util.ArrayList;
 
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.player.PlayerM;
+import eagea.nodeio.model.logic.player.PlayersM;
 
 /**
- * Player is connecting. Send this action to the host so that it
- * can notify everyone and send to everyone the updated map and players.
+ * Player is connecting. Send this empty action to the host so that it
+ * can notify everyone and send back this action to everyone,
+ * with the updated map and players.
  */
 public class Connection extends Action
 {
     private MapM mMap;
-    private ArrayList<PlayerM> mPlayers;
+    private PlayersM mPlayers;
 
     /**
      * Empty constructor send to host to request her/him the map and players.
@@ -22,7 +24,7 @@ public class Connection extends Action
     /**
      * Sent by the host to update map and players of everyone.
      */
-    public Connection(MapM map, ArrayList<PlayerM> players)
+    public Connection(MapM map, PlayersM players)
     {
         mMap = map;
         mPlayers = players;
@@ -33,7 +35,7 @@ public class Connection extends Action
         return mMap;
     }
 
-    public ArrayList<PlayerM> getPlayers()
+    public PlayersM getPlayers()
     {
         return mPlayers;
     }

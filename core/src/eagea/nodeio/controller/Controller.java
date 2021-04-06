@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 
 import eagea.nodeio.model.Model;
+import eagea.nodeio.model.logic.player.PlayerM;
 
 /**
  * Handle inputs from player.
@@ -34,19 +35,19 @@ public class Controller implements InputProcessor
         switch (keyCode)
         {
             case Input.Keys.UP:
-                mModel.getPlayer().moveUp();
+                mModel.askForMove(PlayerM.Event.UP);
                 mIsHolding = true;
                 return true;
             case Input.Keys.DOWN:
-                mModel.getPlayer().moveDown();
+                mModel.askForMove(PlayerM.Event.DOWN);
                 mIsHolding = true;
                 return true;
             case Input.Keys.LEFT:
-                mModel.getPlayer().moveLeft();
+                mModel.askForMove(PlayerM.Event.LEFT);
                 mIsHolding = true;
                 return true;
             case Input.Keys.RIGHT:
-                mModel.getPlayer().moveRight();
+                mModel.askForMove(PlayerM.Event.RIGHT);
                 mIsHolding = true;
                 return false;
             case Input.Keys.B:
@@ -93,22 +94,22 @@ public class Controller implements InputProcessor
         {
             if (screenY < center.y)
             {
-                mModel.getPlayer().moveLeft();
+                mModel.askForMove(PlayerM.Event.LEFT);
             }
             else
             {
-                mModel.getPlayer().moveDown();
+                mModel.askForMove(PlayerM.Event.DOWN);
             }
         }
         else
         {
             if (screenY < center.y)
             {
-                mModel.getPlayer().moveUp();
+                mModel.askForMove(PlayerM.Event.UP);
             }
             else
             {
-                mModel.getPlayer().moveRight();
+                mModel.askForMove(PlayerM.Event.RIGHT);
             }
         }
 

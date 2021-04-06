@@ -1,7 +1,5 @@
 package eagea.nodeio.view.object.map;
 
-import com.badlogic.gdx.math.Vector2;
-
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -26,7 +24,6 @@ public class MapV implements Observer
         mMap = map;
         mPlayer = player;
         mMap.addObserver(this);
-        mPlayer.addObserver(this);
         // Load the zones.
         mZones = new ArrayList<>();
         mMap.getZones().forEach(z -> mZones.add(new ZoneV(z, player)));
@@ -55,12 +52,10 @@ public class MapV implements Observer
                 switch (event)
                 {
                     case ADD:
-                        mZones.add(new ZoneV(mMap.getZone(mMap.getNbZones() - 1), mPlayer));
+                        mZones.add(new ZoneV(mMap.get(mMap.getNbZones() - 1), mPlayer));
                         break;
                 }
             }
-            // Add, remove zones.....
-//            mMap.getZones().forEach(z -> mZones.add(new ZoneV(z, mPlayer)));
         }
     }
 }

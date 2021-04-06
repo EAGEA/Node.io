@@ -39,13 +39,9 @@ public class GameScreen extends ScreenAdapter
         mModel = new Model(this);
     }
 
-    public void createView(Model model)
+    public void onModelIsReady(Model model)
     {
         mView = new View(model);
-    }
-
-    public void createController(Model model)
-    {
         mController = new Controller(model);
     }
 

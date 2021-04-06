@@ -1,11 +1,10 @@
 package eagea.nodeio.model;
 
-import java.util.ArrayList;
-
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
+import eagea.nodeio.model.logic.player.PlayersM;
 import eagea.nodeio.model.rabbitmq.Node;
 import eagea.nodeio.model.rabbitmq.action.Action;
 import eagea.nodeio.model.rabbitmq.action.Connection;
@@ -31,22 +30,22 @@ public class Model
     // The player.
     private PlayerM mPlayer;
     // All the players.
-    private ArrayList<PlayerM> mPlayers;
+    private PlayersM mPlayers;
 
     public Model(GameScreen screen)
     {
         mGameScreen = screen;
+        mNode = new Node(this);
 
-        initNode();
+        askForConnection();
     }
 
     /**
-     * Initialize the player node.
+     * Action.
+     * Connect player to the host.
      */
-    private void initNode()
+    private void askForConnection()
     {
-        mNode = new Node(this);
-
         if (! mNode.isHost())
         {
             // Not the host; request for game model.
@@ -59,17 +58,33 @@ public class Model
             mMap = new MapM();
             // - Create player.
             mPlayer = new PlayerM(0, 0, 0, mMap);
-            mPlayers = new ArrayList<>();
+            mPlayers = new PlayersM();
             mPlayers.add(mPlayer);
             // - Create player's zone.
             ZoneM zone = new ZoneM(mPlayer,
                     Type.values()[(int) (Math.random() * Type.values().length)], 0);
             mMap.add(zone);
-
-            // TODO REMOVE
-            mGameScreen.createView(this);
-            mGameScreen.createController(this);
+            // Start rendering.
+            mGameScreen.onModelIsReady(this);
         }
+    }
+
+    /**
+     * Action.
+     * Ask the host for moving player.
+     */
+    public void askForMove(PlayerM.Event orientation)
+    {
+        // Request for move.
+        mNode.notifyHost(new Move(mPlayer, orientation));
+    }
+
+    /**
+     * Action.
+     * Disconnect the player from the host.
+     */
+    public void askForDeconnection()
+    {
     }
 
     /**
@@ -85,33 +100,21 @@ public class Model
 
             if (iamTheNewGuy)
             {
-                // Get whole map and player list from host.
+                // Set map and players.
                 mMap = ((Connection) action).getMap();
                 mPlayers = ((Connection) action).getPlayers();
-                mPlayer = mPlayers.get(mPlayers.size() - 1);
-
-                // TODO REMOVE
-                mGameScreen.createView(this);
-                mGameScreen.createController(this);
-
-                // Place the character on the current cell i.e. (0, 0) of its zone.
-                for (int i = 0; i < ZoneM.SIZE * (mPlayer.getZone() % MapM.ZONE_LINE); i ++)
-                {
-                    mPlayer.notify(PlayerM.Event.LEFT);
-                }
-
-                for (int i = 0; i < ZoneM.SIZE * (mPlayer.getZone() / MapM.ZONE_LINE); i ++)
-                {
-                    mPlayer.notify(PlayerM.Event.UP);
-                }
+                mPlayer = mPlayers.get(mPlayers.getNbPlayers() - 1);
+                // Start rendering.
+                mGameScreen.onModelIsReady(this);
             }
             else
             {
-                // Get new map and updated player list from host.
+                // Update map and players.
                 MapM map = ((Connection) action).getMap();
+                PlayersM players = ((Connection) action).getPlayers();
 
-                mMap.add(map.getZone(map.getNbZones() - 1));
-                mPlayers = ((Connection) action).getPlayers();
+                mMap.add(map.get(map.getNbZones() - 1));
+                mPlayers.add(players.get(players.getNbPlayers() - 1));
                 mMap.notify(MapM.Event.ADD);
             }
         }
@@ -121,7 +124,32 @@ public class Model
         }
         else if (action instanceof Move)
         {
+            final PlayerM[] p_ = {((Move) action).getPlayer()};
+            final PlayerM[] player = new PlayerM[1];
+            // Find the corresponding player (reference).
+            mPlayers.getPlayers().forEach(p ->
+            {
+                if (p.getI() == p_[0].getI()
+                        && p.getJ() == p_[0].getJ()
+                        && p.getZone() == p_[0].getZone())
+                {
+                    player[0] = p;
+                }
+            });
 
+
+            if (player[0] == null)
+            {
+                System.err.println("[ERROR]: can't play action");
+            }
+
+            switch (((Move) action).getOrientation())
+            {
+                case LEFT: player[0].moveLeft(); break;
+                case RIGHT: player[0].moveRight(); break;
+                case UP: player[0].moveUp(); break;
+                case DOWN: player[0].moveDown(); break;
+            }
         }
     }
 
@@ -169,5 +197,10 @@ public class Model
     public PlayerM getPlayer()
     {
         return mPlayer;
+    }
+
+    public PlayersM getPlayers()
+    {
+        return mPlayers;
     }
 }

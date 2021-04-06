@@ -15,10 +15,14 @@ public class PlayerM extends Observable implements Serializable
 {
     // Event; Direction of movements.
     public enum Event { LEFT, RIGHT, UP, DOWN }
+    // Hair color.
+    public enum Color { RED, GREEN, BLUE }
 
     // Coordinate in its current zone (array like).
     private int mZone;
     private final Vector2 mPosition;
+    // Her/his hair color.
+    private final Color mColor;
     // Current environment.
     private MapM mMap;
 
@@ -27,6 +31,7 @@ public class PlayerM extends Observable implements Serializable
         mPosition = new Vector2(i, j);
         mZone = zone;
         mMap = map;
+        mColor = Color.values()[(int) (Math.random() * Color.values().length)];
     }
 
     public void moveRight()
@@ -169,5 +174,10 @@ public class PlayerM extends Observable implements Serializable
     public int getI()
     {
         return (int) mPosition.x;
+    }
+
+    public Color getColor()
+    {
+        return mColor;
     }
 }

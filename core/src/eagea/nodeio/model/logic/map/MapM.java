@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import eagea.nodeio.model.logic.player.PlayersM;
+
 /**
  * Manage game zones, and players.
  */
@@ -30,6 +32,8 @@ public class MapM extends Observable implements Serializable
     public void remove(ZoneM zone)
     {
         mZones.remove(zone);
+        // Notify the associated view.
+        notify(Event.REMOVE);
     }
 
     public void add(ZoneM zone)
@@ -37,6 +41,11 @@ public class MapM extends Observable implements Serializable
         mZones.add(zone);
         // Notify the associated view.
         notify(Event.ADD);
+    }
+
+    public ZoneM get(int id)
+    {
+        return mZones.get(id);
     }
 
     public void notify(Event event)
@@ -48,10 +57,5 @@ public class MapM extends Observable implements Serializable
     public int getNbZones()
     {
         return mZones.size();
-    }
-
-    public ZoneM getZone(int id)
-    {
-        return mZones.get(id);
     }
 }

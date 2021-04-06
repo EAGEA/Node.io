@@ -2,13 +2,17 @@ package eagea.nodeio.view.object.player;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.Main;
+import eagea.nodeio.model.logic.map.MapM;
+import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
+import eagea.nodeio.view.View;
 import eagea.nodeio.view.object.map.CellV;
 
 /**
@@ -29,6 +33,7 @@ public class PlayerV implements Observer
     private final float TIME_SPEAK = 1f;
 
     // Model.
+    private final PlayerM mRealPlayer;
     private final PlayerM mPlayer;
     // Frames.
     private TextureRegion[] mLeftAnimation;
@@ -42,39 +47,36 @@ public class PlayerV implements Observer
     private TextureRegion mHelloTexture;
     private float mDeltaHello;
     private boolean mIsSpeaking;
-    // Position in the world.
-    private final Vector2 mCoordinatesChar;
-    private final Vector2 mCoordinatesHello;
     // Current orientation.
     private PlayerM.Event mOrientation;
 
-    public PlayerV(PlayerM player, String color)
+    public PlayerV(PlayerM realPlayer, PlayerM player, String color)
     {
         loadTextures(color);
         // Get the model and observe it.
+        mRealPlayer = realPlayer;
         mPlayer = player;
         mPlayer.addObserver(this);
-        // Walking animation
+        // Walking animation.
         mFrame = 0;
         mDeltaAnimation = 0f;
         mOrientation = PlayerM.Event.LEFT;
-        // "Hello!" animation
+        // "Hello!" animation.
         mDeltaHello = 0f;
         mIsSpeaking = false;
-        // Always the same positions:
-        mCoordinatesChar = new Vector2(-WIDTH_CHAR / 2f,
-                -HEIGHT_CHAR / 2f + CellV.TILE_SIZE / 2f);
-        mCoordinatesHello = new Vector2(-WIDTH_HELLO / 2f,
-                mCoordinatesChar.y + HEIGHT_HELLO);
     }
 
     public void render(float delta)
     {
-        renderCharacter(delta);
-        renderHello(delta);
+        Vector2 coord = View.getCoordinates(
+                new Vector3(mRealPlayer.getI(), mRealPlayer.getJ(), mRealPlayer.getZone()),
+                new Vector3(mPlayer.getI(), mPlayer.getJ(), mPlayer.getZone()));
+
+        renderCharacter(delta, coord);
+        renderHello(delta, coord);
     }
 
-    private void renderCharacter(float delta)
+    private void renderCharacter(float delta, Vector2 coord)
     {
         TextureRegion toDraw = null;
         // Get the frame to draw.
@@ -87,7 +89,9 @@ public class PlayerV implements Observer
 
         }
         // Draw.
-        Main.mBatch.draw(toDraw, mCoordinatesChar.x, mCoordinatesChar.y,
+        Main.mBatch.draw(toDraw,
+                coord.x,
+                coord.y + HEIGHT_CHAR / 2f,
                 WIDTH_CHAR, HEIGHT_CHAR);
         // Change frame?
         if (mIsAnimated)
@@ -112,11 +116,13 @@ public class PlayerV implements Observer
         }
     }
 
-    private void renderHello(float delta)
+    private void renderHello(float delta, Vector2 coord)
     {
         if (mIsSpeaking)
         {
-            Main.mBatch.draw(mHelloTexture, mCoordinatesHello.x, mCoordinatesHello.y,
+            Main.mBatch.draw(mHelloTexture,
+                    coord.x,
+                    coord.y + HEIGHT_CHAR / 2f + HEIGHT_HELLO,
                     WIDTH_HELLO, HEIGHT_HELLO);
             mDeltaHello += delta;
 
