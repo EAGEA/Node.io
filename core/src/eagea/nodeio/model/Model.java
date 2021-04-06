@@ -248,7 +248,7 @@ public class Model
     private void playDisconnection(Disconnection action)
     {
         // Get the new zone owner.
-        PlayerM nOwner = action.getNewOwner();
+        PlayerM nOwner = mPlayers.find(action.getNewOwner());
         // Set to the corresponding zones.
         action.getIndexes().forEach(i ->
             {
@@ -382,9 +382,13 @@ public class Model
     private Action checkDisconnection(Disconnection action)
     {
         PlayerM player = action.getPlayer();
-        //To modify just for testing the host will be the new owner
-        //TODO : RANDOM PICK THE NEW OWNER
-        PlayerM newOwner = mPlayers.get(0);
+        // Create the a list to pick a random player to be the owner of
+        // the disconnected player's zone.
+        ArrayList<PlayerM> toPick = new ArrayList<>(mPlayers.getPlayers());
+        toPick.remove(player);
+        // Pick at random index.
+        PlayerM newOwner = toPick.get((int) (Math.random() * toPick.size()));
+        // Get the corresponding indexes of the zones.
         ArrayList<ZoneM> zones = mMap.getZones();
         ArrayList<Integer> indexes = new ArrayList<>();
 
@@ -395,7 +399,7 @@ public class Model
                 indexes.add(i);
             }
         }
-
+        // Send it.
         return new Disconnection(player, newOwner, indexes);
     }
 
