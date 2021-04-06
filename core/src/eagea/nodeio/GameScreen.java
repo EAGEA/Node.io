@@ -41,6 +41,7 @@ public class GameScreen extends ScreenAdapter
 
     public void onModelIsReady(Model model)
     {
+        model.setState(Model.State.START);
         mView = new View(model);
         mController = new Controller(model);
     }

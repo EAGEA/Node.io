@@ -26,6 +26,8 @@ public class Model
 {
     // Player ID (i.e. its color, and its zone type).
     public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
+    // Current game state.
+    public enum State { MENU, START, CAUGHT, DISCONNECTED }
 
     // Context.
     private final GameScreen mGameScreen;
@@ -38,11 +40,14 @@ public class Model
     private PlayerM mPlayer;
     // All the players.
     private PlayersM mPlayers;
+    // State.
+    private State mState;
 
     public Model(GameScreen screen)
     {
         mGameScreen = screen;
         mNode = new Node(this);
+        mState = State.MENU;
 
         askForConnection();
     }
@@ -112,7 +117,7 @@ public class Model
      */
     public void askForDisconnection()
     {
-        // Request for disconnection
+        // Request for disconnection.
         mNode.notifyHost(new Disconnection(mPlayer));
     }
 
@@ -233,17 +238,30 @@ public class Model
                     mPlayers.remove(p);
                 }
         );
+        // If I'm caught.
+        if (action.getCaught().contains(mPlayer))
+        {
+            mState = State.CAUGHT;
+        }
     }
 
     private void playDisconnection(Disconnection action)
     {
+        // Get the new zone owner.
         PlayerM nOwner = action.getNewOwner();
+        // Set to the corresponding zones.
         action.getIndexes().forEach(i ->
             {
                 mMap.getZones().get(i).setOwner(nOwner);
             }
         );
+        // And remove the disconnected user.
         mPlayers.remove(action.getPlayer());
+        // If I'm the disconnected guy.
+        if (mPlayer.equals(action.getPlayer()))
+        {
+            mState = State.DISCONNECTED;
+        }
     }
 
     /**
@@ -363,7 +381,6 @@ public class Model
 
     private Action checkDisconnection(Disconnection action)
     {
-        int i;
         PlayerM player = action.getPlayer();
         //To modify just for testing the host will be the new owner
         //TODO : RANDOM PICK THE NEW OWNER
@@ -371,15 +388,25 @@ public class Model
         ArrayList<ZoneM> zones = mMap.getZones();
         ArrayList<Integer> indexes = new ArrayList<>();
 
-        for(i = 0;i < zones.size();i++)
+        for (int i = 0; i < zones.size(); i ++)
         {
-            if(zones.get(i).getOwner().equals(player))
+            if (zones.get(i).getOwner().equals(player))
             {
                 indexes.add(i);
             }
         }
 
         return new Disconnection(player, newOwner, indexes);
+    }
+
+    public void setState(State state)
+    {
+        mState = state;
+    }
+
+    public State getState()
+    {
+        return mState;
     }
 
     public MapM getMap()

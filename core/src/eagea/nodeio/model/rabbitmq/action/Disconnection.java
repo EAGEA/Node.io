@@ -13,11 +13,12 @@ public class Disconnection extends Action
 {
     private static final long serialVersionUID = 2116895505000334818L;
 
-    private PlayerM mPlayer, mNewOwner;
+    private final PlayerM mPlayer;
+    private PlayerM mNewOwner;
     private ArrayList<Integer> mIndexes;
 
     /**
-     * Disconnection from a node to the host for check**
+     * Disconnection from a node to the host for check.
      */
     public Disconnection(PlayerM player)
     {
@@ -25,7 +26,7 @@ public class Disconnection extends Action
     }
 
     /**
-     * Disconnection from the host to the nodes**
+     * Disconnection from the host to the nodes.
      */
     public Disconnection(PlayerM player, PlayerM newOwner, ArrayList<Integer> indexes)
     {

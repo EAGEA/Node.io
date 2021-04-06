@@ -2,11 +2,9 @@ package eagea.nodeio;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Main extends Game
@@ -16,7 +14,8 @@ public class Main extends Game
 
     // Basic GDX rendering object.
     public static OrthographicCamera mCamera;
-    public static Viewport mViewPort;
+    public static Viewport mViewPortGame;
+    public static Viewport mViewPortGUI;
     public static SpriteBatch mBatch;
     private GameScreen mGameScreen;
 
@@ -25,8 +24,8 @@ public class Main extends Game
     {
         mBatch = new SpriteBatch();
         mCamera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
-        mViewPort = new FillViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
-
+        mViewPortGame = new FillViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
+        //mViewPortGUI = new ExtendViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
 
         mGameScreen = new GameScreen();
         setScreen(mGameScreen);
@@ -47,7 +46,8 @@ public class Main extends Game
     public void resize(int width, int height)
     {
         // Resize the viewport
-        mViewPort.update(width, height, true) ;
+        mViewPortGame.update(width, height, true) ;
+        //mViewPortGUI.update(width, height, true) ;
         // Center the camera
         //resetCameraPosition() ;
         // And resize the current screen

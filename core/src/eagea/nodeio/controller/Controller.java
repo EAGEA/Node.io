@@ -15,13 +15,10 @@ public class Controller implements InputProcessor
 {
     // The game model.
     private final Model mModel;
-    // True if user is holding the key/touch.
-    private boolean mIsHolding;
 
     public Controller(Model model)
     {
         mModel = model ;
-        mIsHolding = false;
         // Set as default input handler.
         Gdx.input.setInputProcessor(this);
     }
@@ -32,6 +29,12 @@ public class Controller implements InputProcessor
     @Override
     public boolean keyDown(int keyCode)
     {
+        if (mModel.getState() == Model.State.CAUGHT
+                || mModel.getState() == Model.State.DISCONNECTED)
+        {
+            return false;
+        }
+
         switch (keyCode)
         {
             case Input.Keys.UP:
@@ -84,6 +87,12 @@ public class Controller implements InputProcessor
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
+        if (mModel.getState() == Model.State.CAUGHT
+                || mModel.getState() == Model.State.DISCONNECTED)
+        {
+            return false;
+        }
+
         // Center of screen.
         Vector2 center = new Vector2(Gdx.graphics.getWidth() / 2f,
                 Gdx.graphics.getHeight() / 2f);
