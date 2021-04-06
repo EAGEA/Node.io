@@ -112,6 +112,8 @@ public class Model
      */
     public void askForDisconnection()
     {
+        // Request for disconnection
+        mNode.notifyHost(new Disconnection(mPlayer));
     }
 
     /**
@@ -235,6 +237,13 @@ public class Model
 
     private void playDisconnection(Disconnection action)
     {
+        PlayerM nOwner = action.getNewOwner();
+        action.getIndexes().forEach(i ->
+            {
+                mMap.getZones().get(i).setOwner(nOwner);
+            }
+        );
+        mPlayers.remove(action.getPlayer());
     }
 
     /**
@@ -370,7 +379,7 @@ public class Model
             }
         }
 
-        return new Disconnection(newOwner, indexes);
+        return new Disconnection(player, newOwner, indexes);
     }
 
     public MapM getMap()

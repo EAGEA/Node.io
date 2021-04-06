@@ -27,8 +27,9 @@ public class Disconnection extends Action
     /**
      * Disconnection from the host to the nodes**
      */
-    public Disconnection(PlayerM newOwner, ArrayList<Integer> indexes)
+    public Disconnection(PlayerM player, PlayerM newOwner, ArrayList<Integer> indexes)
     {
+        mPlayer = player;
         mNewOwner = newOwner;
         mIndexes = indexes;
     }
