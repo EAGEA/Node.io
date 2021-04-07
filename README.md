@@ -7,7 +7,7 @@
   To avoid this we could update the model of the _host_ by also sending validation messages to 
   her/him like every other player. But during this time lapse, _host_ could validate actions from
   other player with a non-updated model. This could lead to collisions. To avoid this we could add
-  a _Lamport timestamp_ system, and queue the `Actions` received to early on the _host_ side.
+  a **Lamport timestamp** system, and queue the `Actions` received to early on the _host_ side.
   
 ## Attributions
 

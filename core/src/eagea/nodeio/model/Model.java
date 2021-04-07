@@ -125,6 +125,11 @@ public class Model
      */
     public void play(Action action)
     {
+        if (mState != State.GAME)
+        {
+            return;
+        }
+
         System.out.println("[DEBUG]: play " + action.getClass().getSimpleName());
 
         if (action instanceof Connection)
@@ -272,6 +277,11 @@ public class Model
      */
     public Action check(Action action)
     {
+        if (mState != State.GAME)
+        {
+            return null;
+        }
+
         System.out.println("[DEBUG]: HOST check " + action.getClass().getSimpleName());
 
         if (action instanceof Connection)
