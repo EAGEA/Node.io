@@ -1,111 +1,111 @@
 
 hud.png
-size: 256, 64
+size: 512, 32
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 bye
   rotate: false
-  xy: 88, 26
-  size: 41, 30
-  orig: 41, 30
+  xy: 88, 2
+  size: 41, 27
+  orig: 41, 27
   offset: 0, 0
   index: -1
 digit_wendy_outlined_white
   rotate: false
-  xy: 2, 2
+  xy: 131, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 6
 digit_wendy_outlined_white
   rotate: false
-  xy: 131, 34
+  xy: 147, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 3
 digit_wendy_outlined_white
   rotate: false
-  xy: 18, 2
+  xy: 163, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 8
 digit_wendy_outlined_white
   rotate: false
-  xy: 147, 34
+  xy: 179, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 0
 digit_wendy_outlined_white
   rotate: false
-  xy: 34, 2
+  xy: 195, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 5
 digit_wendy_outlined_white
   rotate: false
-  xy: 163, 34
+  xy: 211, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 2
 digit_wendy_outlined_white
   rotate: false
-  xy: 50, 2
+  xy: 227, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 7
 digit_wendy_outlined_white
   rotate: false
-  xy: 179, 34
+  xy: 243, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 4
 digit_wendy_outlined_white
   rotate: false
-  xy: 66, 2
+  xy: 259, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 9
 digit_wendy_outlined_white
   rotate: false
-  xy: 195, 34
+  xy: 275, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 1
 exit
   rotate: false
-  xy: 211, 43
+  xy: 310, 16
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 82, 7
+  xy: 291, 12
   size: 17, 17
   orig: 17, 17
   offset: 0, 0
   index: -1
 hello
   rotate: false
-  xy: 45, 26
-  size: 41, 30
-  orig: 41, 30
+  xy: 45, 2
+  size: 41, 27
+  orig: 41, 27
   offset: 0, 0
   index: -1
 looser
   rotate: false
-  xy: 2, 26
-  size: 41, 30
-  orig: 41, 30
+  xy: 2, 2
+  size: 41, 27
+  orig: 41, 27
   offset: 0, 0
   index: -1

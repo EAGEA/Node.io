@@ -16,8 +16,8 @@ public class Speak
 {
     private final float SPACE_HORIZONTAL_ICONS = 0.75f;
 
-    private final float ICON_WIDTH = 2.1f;
-    private final float ICON_HEIGHT = 1.5f;
+    private final float ICON_WIDTH = 2f;
+    private final float ICON_HEIGHT = 1.3f;
 
     // Parent.
     private final View mView;

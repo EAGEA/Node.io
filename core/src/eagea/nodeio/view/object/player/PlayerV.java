@@ -23,8 +23,9 @@ public class PlayerV implements Observer
 {
     public static final float WIDTH_CHAR = 2f;
     public static final float HEIGHT_CHAR = 2f;
+
     public static final float WIDTH_SPEAK = 2f;
-    public static final float HEIGHT_SPEAK = 1.39f;
+    public static final float HEIGHT_SPEAK = 1.3f;
 
     // Animation number of frames.
     private final int FRAMES_PER_ANIMATION = 4;

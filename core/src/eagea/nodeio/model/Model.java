@@ -162,6 +162,17 @@ public class Model
             mPlayer = mPlayers.get(mPlayers.getNbPlayers() - 1);
             // Start rendering.
             mGameScreen.onModelIsReady(this);
+            // Auto-disconnection.
+            Runtime.getRuntime().addShutdownHook(new Thread(
+                    () ->
+                    {
+                        if (mState == State.START)
+                        {
+                            askForDisconnection();
+                        }
+                    }
+                )
+            );
         }
         else
         {
