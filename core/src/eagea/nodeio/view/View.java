@@ -7,17 +7,17 @@ import eagea.nodeio.model.Model;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.view.object.game.background.Parallax;
-import eagea.nodeio.view.object.game.hud.Catch;
-import eagea.nodeio.view.object.game.hud.Caught;
-import eagea.nodeio.view.object.game.hud.Exit;
+import eagea.nodeio.view.object.game.hud.CatchButton;
+import eagea.nodeio.view.object.game.hud.CaughtBox;
+import eagea.nodeio.view.object.game.hud.ExitButton;
 import eagea.nodeio.view.object.game.hud.Joystick;
 import eagea.nodeio.view.object.game.hud.Score;
-import eagea.nodeio.view.object.game.hud.Speak;
+import eagea.nodeio.view.object.game.hud.SpeakButtons;
 import eagea.nodeio.view.object.game.map.CellV;
 import eagea.nodeio.view.object.game.map.MapV;
 import eagea.nodeio.view.object.game.player.PlayersV;
 import eagea.nodeio.view.object.menu.Logo;
-import eagea.nodeio.view.object.menu.Start;
+import eagea.nodeio.view.object.menu.StartButton;
 
 /**
  * Handle all the graphical representations.
@@ -35,21 +35,21 @@ public class View
     private PlayersV mPlayers;
     // - HUD.
     private Score mScore;
-    private Exit mExit;
-    private Speak mSpeak;
+    private ExitButton mExitButton;
+    private SpeakButtons mSpeakButtons;
     private Joystick mJoystick;
-    private Catch mCatch;
-    private Caught mCaught;
+    private CatchButton mCatchButton;
+    private CaughtBox mCaughtBox;
     // Menu GUI:
     private final Logo mLogo;
-    private final Start mStart;
+    private final StartButton mStartButton;
 
     public View(Model model)
     {
         mModel = model;
         // Menu.
         mLogo = new Logo(this);
-        mStart = new Start(this);
+        mStartButton = new StartButton(this);
     }
 
     public void onStartGame()
@@ -58,11 +58,11 @@ public class View
         mMap = new MapV(mModel.getMap(), mModel.getPlayer());
         mPlayers = new PlayersV(mModel.getPlayers(), mModel.getPlayer());
         mScore = new Score(this);
-        mExit = new Exit(this);
-        mSpeak = new Speak(this);
+        mExitButton = new ExitButton(this);
+        mSpeakButtons = new SpeakButtons(this);
         mJoystick = new Joystick(this);
-        mCatch = new Catch(this);
-        mCaught = new Caught(this);
+        mCatchButton = new CatchButton(this);
+        mCaughtBox = new CaughtBox(this);
         // Can start game now.
         mModel.setState(Model.State.GAME);
     }
@@ -74,7 +74,7 @@ public class View
             case MENU:
                 // Render menu screen.
                 mLogo.render(delta);
-                mStart.render(delta);
+                mStartButton.render(delta);
                 break;
             case CAUGHT:
             case GAME:
@@ -83,11 +83,11 @@ public class View
                 mMap.render(delta);
                 mPlayers.render(delta);
                 mScore.render(delta);
-                mExit.render(delta);
-                mSpeak.render(delta);
+                mExitButton.render(delta);
+                mSpeakButtons.render(delta);
                 mJoystick.render(delta);
-                mCatch.render(delta);
-                mCaught.render(delta);
+                mCatchButton.render(delta);
+                mCaughtBox.render(delta);
                 break;
         }
     }
@@ -100,14 +100,14 @@ public class View
         switch (mModel.getState())
         {
             case MENU:
-                return mStart.isTouched(position);
+                return mStartButton.isTouched(position);
             case GAME:
-                return mExit.isTouched(position)
-                        || mSpeak.isTouched(position)
+                return mExitButton.isTouched(position)
+                        || mSpeakButtons.isTouched(position)
                         || mJoystick.isTouched(position)
-                        || mCatch.isTouched(position);
+                        || mCatchButton.isTouched(position);
             case CAUGHT:
-                return mCaught.isTouched(position);
+                return mCaughtBox.isTouched(position);
         }
 
         return false;

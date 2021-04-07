@@ -6,12 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.Main;
+import eagea.nodeio.model.Model;
 import eagea.nodeio.view.View;
 
 /**
- * Buttons to exit game.
+ * Buttons in main menu to start game (the blinking one).
  */
-public class Start
+public class StartButton
 {
     private final float ICON_WIDTH = 10f;
     private final float ICON_HEIGHT = 1f;
@@ -28,7 +29,7 @@ public class Start
     private boolean mIsShown;
     private float mTimeSinceLastRender;
 
-    public Start(View view)
+    public StartButton(View view)
     {
         mView = view;
         mPosition = new Vector2(-ICON_WIDTH / 2f, 0f);
@@ -67,14 +68,19 @@ public class Start
     {
         Vector2 world = Main.mViewPortGame.unproject(new Vector2(0f,
                 Gdx.app.getGraphics().getHeight()));
-        mPosition.y = world.y + 2f;
+        mPosition.y = world.y + 1f;
     }
 
     public boolean isTouched(Vector2 position)
     {
-        // Whole screen touchable in this state.
-        System.out.println("[DEBUG]: on click start");
-        mView.getModel().goToGame();
-        return true;
+        if (mView.getModel().getState() == Model.State.MENU)
+        {
+            // Whole screen touchable in this state.
+            System.out.println("[DEBUG]: on click start");
+            mView.getModel().goToGame();
+            return true;
+        }
+
+        return false;
     }
 }

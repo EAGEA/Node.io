@@ -34,7 +34,8 @@ public class Controller implements InputProcessor
     public boolean keyDown(int keyCode)
     {
         // Can't play.
-        if (mModel.getState() == Model.State.CAUGHT)
+        if (mModel.getState() == Model.State.CAUGHT
+                || mModel.getState() == Model.State.MENU)
         {
             return false;
         }

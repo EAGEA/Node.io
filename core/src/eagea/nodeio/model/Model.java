@@ -27,7 +27,7 @@ public class Model
     // Player ID (i.e. its color, and its zone type).
     public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
     // Current game state.
-    public enum State { MENU, GAME, CAUGHT }
+    public enum State { MENU, STARTING, GAME, CAUGHT }
 
     // Context.
     private final GameScreen mGameScreen;
@@ -52,7 +52,7 @@ public class Model
 
     /**
      * Action.
-     * Connect player to the host.
+     * Connect player to the host, and create model.
      */
     private void askForConnection()
     {
@@ -160,8 +160,6 @@ public class Model
             // Set map and players.
             mMap = action.getMap();
             mPlayers = action.getPlayers();
-            System.out.println(mPlayers.getNbPlayers());
-            System.out.println(action.getPlayers().getNbPlayers());
             mPlayer = mPlayers.get(mPlayers.getNbPlayers() - 1);
             // Start rendering.
             mGameScreen.onStartGame();
@@ -186,7 +184,7 @@ public class Model
                 PlayersM players = action.getPlayers();
 
                 mMap.add(map.get(map.getNbZones() - 1));
-                mPlayers.addWithoutNotify(players.get(players.getNbPlayers() - 1));
+                mPlayers.add(players.get(players.getNbPlayers() - 1));
                 mMap.notify(MapM.Event.ADD);
             }
         }
@@ -419,9 +417,8 @@ public class Model
 
     public void goToGame()
     {
-        mNode.openConnection();
-        mNode.checkIfHost();
-        mNode.declareQueue();
+        mState = State.STARTING;
+        mNode.create();
         askForConnection();
     }
 

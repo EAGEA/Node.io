@@ -74,11 +74,6 @@ public class PlayersM extends Observable implements Serializable
         notify(Event.REMOVE, player);
     }
 
-    public void addWithoutNotify(PlayerM player)
-    {
-        mPlayers.add(player);
-    }
-
     public void add(PlayerM player)
     {
         mPlayers.add(player);

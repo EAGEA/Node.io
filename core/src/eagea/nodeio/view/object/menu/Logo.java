@@ -1,6 +1,5 @@
 package eagea.nodeio.view.object.menu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -9,12 +8,12 @@ import eagea.nodeio.Main;
 import eagea.nodeio.view.View;
 
 /**
- * Buttons to exit game.
+ * Main menu logo (with head and title).
  */
 public class Logo
 {
-    private final float ICON_WIDTH = 12f;
-    private final float ICON_HEIGHT = 14f;
+    private final float ICON_WIDTH = 10f;
+    private final float ICON_HEIGHT = 12f;
 
     // Parent.
     private final View mView;
@@ -42,6 +41,6 @@ public class Logo
     private void updatePosition()
     {
         Vector2 world = Main.mViewPortGame.unproject(new Vector2());
-        mPosition.y = world.y - ICON_HEIGHT - 2f;
+        mPosition.y = world.y - ICON_HEIGHT - 1f;
     }
 }

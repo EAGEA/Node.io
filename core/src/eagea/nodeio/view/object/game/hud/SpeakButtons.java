@@ -12,7 +12,7 @@ import eagea.nodeio.view.View;
 /**
  * Buttons to speak.
  */
-public class Speak
+public class SpeakButtons
 {
     private final float SPACE_HORIZONTAL_ICONS = 0.75f;
 
@@ -39,7 +39,7 @@ public class Speak
     private boolean mByeAnimated;
     private float mByeDeltaTime;
 
-    public Speak(View view)
+    public SpeakButtons(View view)
     {
         mView = view;
         mPosition = new Vector2(

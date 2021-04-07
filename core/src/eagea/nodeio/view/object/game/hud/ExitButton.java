@@ -11,7 +11,7 @@ import eagea.nodeio.view.View;
 /**
  * Buttons to exit game.
  */
-public class Exit
+public class ExitButton
 {
     private final float ICON_WIDTH = 1f;
     private final float ICON_HEIGHT = 1f;
@@ -23,7 +23,7 @@ public class Exit
     // Icon.
     private final TextureRegion mTexture;
 
-    public Exit(View view)
+    public ExitButton(View view)
     {
         mView = view;
         mPosition = new Vector2();

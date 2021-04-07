@@ -11,10 +11,10 @@ import eagea.nodeio.view.View;
 /**
  * Message shown when user got caught.
  */
-public class Caught
+public class CaughtBox
 {
     private final float ICON_WIDTH = 6f;
-    private final float ICON_HEIGHT = 6f;
+    private final float ICON_HEIGHT = 7.1f;
 
     private final float SENTENCE_WIDTH = 8.2f;
     private final float SENTENCE_HEIGHT = 2f;
@@ -31,7 +31,7 @@ public class Caught
     private boolean mIsShown;
     private float mTimeSinceLastRender;
 
-    public Caught(View view)
+    public CaughtBox(View view)
     {
         mView = view;
         mPosition = new Vector2(- ICON_WIDTH / 2f, - ICON_HEIGHT / 2f);

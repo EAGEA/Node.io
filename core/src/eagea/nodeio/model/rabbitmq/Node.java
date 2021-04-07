@@ -39,22 +39,36 @@ public class Node
     private Channel mChannel;
     private final Model mModel;
     private boolean mIsHost;
+    private boolean mIsCreated;
 
     public Node(Model model)
     {
         mModel = model;
+        mIsCreated = false;
+    }
+
+    /**
+     * Create the rabbitMQ entity associated to this player.
+     */
+    public void create()
+    {
+        if (mIsCreated)
+        {
+            return;
+        }
+
+        openConnection();
+        checkIfHost();
+        declareQueue();
+
+        mIsCreated = true;
     }
 
     /**
      * Start RabbitMQ connection.
      */
-    public void openConnection()
+    private void openConnection()
     {
-        if (mConnection != null)
-        {
-            return;
-        }
-
         System.out.println("[DEBUG]: connection");
 
         ConnectionFactory factory = new ConnectionFactory();
@@ -80,7 +94,7 @@ public class Node
     /**
      * Declare the queue which receives players actions.
      */
-    public void declareQueue()
+    private void declareQueue()
     {
         try
         {
@@ -109,7 +123,7 @@ public class Node
     /**
      * Check if the user is the first one to connect. If so, she/he is the host.
      */
-    public void checkIfHost()
+    private void checkIfHost()
     {
         try
         {

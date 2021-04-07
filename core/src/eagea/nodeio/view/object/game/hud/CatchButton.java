@@ -12,7 +12,7 @@ import eagea.nodeio.view.View;
 /**
  * Button to catch characters.
  */
-public class Catch
+public class CatchButton
 {
     private final float ICON_WIDTH = 3f;
     private final float ICON_HEIGHT = 3f;
@@ -31,7 +31,7 @@ public class Catch
     private boolean mIsAnimated;
     private float mTimeSinceLastRender;
 
-    public Catch(View view)
+    public CatchButton(View view)
     {
         mView = view;
         mPosition = new Vector2();
