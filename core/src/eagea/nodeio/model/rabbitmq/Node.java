@@ -60,7 +60,6 @@ public class Node
 
         openConnection();
         checkIfHost();
-        declareQueue();
 
         mIsCreated = true;
     }
@@ -93,7 +92,7 @@ public class Node
     }
 
     /**
-     * Declare the queue which receives players actions.
+     * Declare the queue which receives all players actions (only for non-host players).
      */
     private void declareQueue()
     {
@@ -130,6 +129,9 @@ public class Node
         {
             // If no exception, host queue already exists, so host too.
             AMQP.Queue.DeclareOk hostQueue = mChannel.queueDeclarePassive(HOST_QUEUE_URI);
+            // Non-host players have a queue to receive actions.
+            declareQueue();
+
             mIsHost = false;
             System.out.println("[DEBUG]: i'm not HOST");
         }
@@ -147,6 +149,9 @@ public class Node
                 mChannel.basicConsume(HOST_QUEUE_URI, true,
                         this::onHostReceive,
                         consumerTag -> { });
+                // Just to get and ID:
+                mQueueName = mChannel.queueDeclare().getQueue();
+                mChannel.queueDelete(mQueueName);
                 // She/he is the host!
                 mIsHost = true;
                 System.out.println("[DEBUG]: i'm HOST");

@@ -3,6 +3,7 @@ package eagea.nodeio.model;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.nio.channels.ScatteringByteChannel;
 import java.util.ArrayList;
 
 import eagea.nodeio.GameScreen;
@@ -316,7 +317,7 @@ public class Model
         PlayerM player = mPlayers.find(action.getPlayer());
         // Convert player position in the whole map ones.
         Vector2 position = player.getMapPosition();
-        // Get the cell in which the player would like to go.
+        // Get the cel in which the player would like to go.
         switch (action.getOrientation())
         {
             case LEFT: position.y ++; break;
@@ -337,14 +338,20 @@ public class Model
                     }
                 }
         );
-        // Send it if not null.
-        return result[0];
+        // Play it for the host.
+        if (result[0] != null)
+        {
+            playMove((Move) result[0]);
+        }
+        // And send it.
+        return action;
     }
 
     private Action checkSpeak(Speak action)
     {
-        // TODO check if connected.
-        // Send it.
+        // Play it for the host.
+        playSpeak(action);
+        // And send it.
         return action;
     }
 
@@ -375,8 +382,20 @@ public class Model
                     }
                 }
         );
-        // Send it.
-        return caught.isEmpty() ? null : new Catch(action.getPlayer(), caught);
+
+        if (caught.isEmpty())
+        {
+            // Send nothing.
+            return null;
+        }
+        else
+        {
+            Catch catch_ = new Catch(action.getPlayer(), caught);
+            // Play it for the host.
+            playCatch(catch_);
+            // And send it.
+            return catch_;
+        }
     }
 
     private Action checkDisconnection(Disconnection action)
@@ -399,8 +418,12 @@ public class Model
                 indexes.add(i);
             }
         }
-        // Send it.
-        return new Disconnection(action.getPlayer(), newOwner.getID(), indexes);
+        Disconnection disconnection = new Disconnection(action.getPlayer(),
+                newOwner.getID(), indexes);
+        // Play it for the host.
+        playDisconnection(disconnection);
+        // And send it.
+        return action;
     }
 
     public void goToGame()
