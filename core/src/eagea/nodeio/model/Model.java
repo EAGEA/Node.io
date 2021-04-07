@@ -151,6 +151,11 @@ public class Model
 
     private void playConnection(Connection action)
     {
+        if (mState == State.CAUGHT)
+        {
+            return;
+        }
+
         // Check if we are the new player.
         if (action.getPlayer().equals(mNode.getID()))
         {
@@ -190,11 +195,6 @@ public class Model
 
     private void playMove(Move action)
     {
-        if (mState != State.GAME)
-        {
-            return;
-        }
-
         // Find the corresponding player (reference).
         PlayerM player = mPlayers.find(action.getPlayer());
         // Check if found.
@@ -215,11 +215,6 @@ public class Model
 
     private void playSpeak(Speak action)
     {
-        if (mState != State.GAME)
-        {
-            return;
-        }
-
         // Find the corresponding player (reference).
         PlayerM player = mPlayers.find(action.getPlayer());
         // Check if found.
@@ -234,11 +229,6 @@ public class Model
 
     private void playCatch(Catch action)
     {
-        if (mState != State.GAME)
-        {
-            return;
-        }
-
         // Remove each player from the game.
         action.getCaught().forEach(p ->
                 {
@@ -264,11 +254,6 @@ public class Model
 
     private void playDisconnection(Disconnection action)
     {
-        if (mState != State.GAME)
-        {
-            return;
-        }
-
         // If I'm the disconnected guy.
         if (mPlayer.getID().equals(action.getPlayer()))
         {
@@ -430,6 +415,12 @@ public class Model
     private Action checkDisconnection(Disconnection action)
     {
         PlayerM player = mPlayers.find(action.getPlayer());
+
+        if (player == null)
+        {
+            // Caught before being able to disconnect.
+            return null;
+        }
         // Create the a list to pick a random player to be the owner of
         // the disconnected player's zone.
         ArrayList<PlayerM> toPick = new ArrayList<>(mPlayers.getPlayers());
@@ -447,6 +438,7 @@ public class Model
                 indexes.add(i);
             }
         }
+
         Disconnection disconnection = new Disconnection(action.getPlayer(),
                 newOwner.getID(), indexes);
         // Play it for the host.
