@@ -302,7 +302,8 @@ public class Model
     {
         // Add new player and zone.
         PlayerM player = new PlayerM(action.getPlayer(),
-                0, 0, mMap.getNbZones(), mMap);
+                (int) (Math.random() * (MapM.ZONE_LINE - 1)),
+                (int) (Math.random() * (MapM.ZONE_LINE - 1)), mMap.getNbZones(), mMap);
         ZoneM zone = new ZoneM(action.getPlayer(),
                 Type.values()[(int) (Math.random() * Type.values().length)],
                 mMap.getNbZones());
