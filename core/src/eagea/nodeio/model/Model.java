@@ -342,9 +342,11 @@ public class Model
         if (result[0] != null)
         {
             playMove((Move) result[0]);
+            // And send it.
+            return action;
         }
         // And send it.
-        return action;
+        return null;
     }
 
     private Action checkSpeak(Speak action)
