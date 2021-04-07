@@ -249,6 +249,12 @@ public class Model
 
     private void playDisconnection(Disconnection action)
     {
+        // If I'm the disconnected guy.
+        if (mPlayer.getID().equals(action.getPlayer()))
+        {
+            goToMenu();
+            return;
+        }
         // Set to the corresponding zones.
         action.getIndexes().forEach(i ->
             {
@@ -257,11 +263,6 @@ public class Model
         );
         // And remove the disconnected user.
         mPlayers.remove(mPlayers.find(action.getPlayer()));
-        // If I'm the disconnected guy.
-        if (mPlayer.getID().equals(action.getPlayer()))
-        {
-            goToMenu();
-        }
     }
 
     /**
