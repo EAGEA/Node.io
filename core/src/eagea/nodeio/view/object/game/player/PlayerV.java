@@ -1,20 +1,16 @@
-package eagea.nodeio.view.object.player;
+package eagea.nodeio.view.object.game.player;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import java.lang.management.PlatformLoggingMXBean;
 import java.util.Observable;
 import java.util.Observer;
 
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.Main;
-import eagea.nodeio.model.logic.map.MapM;
-import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.view.View;
-import eagea.nodeio.view.object.map.CellV;
 
 /**
  * The player representation.

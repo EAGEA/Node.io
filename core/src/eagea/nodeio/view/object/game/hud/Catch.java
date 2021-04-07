@@ -1,4 +1,4 @@
-package eagea.nodeio.view.object.hud;
+package eagea.nodeio.view.object.game.hud;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

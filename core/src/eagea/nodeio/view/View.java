@@ -1,25 +1,23 @@
 package eagea.nodeio.view;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import eagea.nodeio.GameScreen;
-import eagea.nodeio.Main;
 import eagea.nodeio.model.Model;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
-import eagea.nodeio.view.object.background.Parallax;
-import eagea.nodeio.view.object.hud.Catch;
-import eagea.nodeio.view.object.hud.Caught;
-import eagea.nodeio.view.object.hud.Exit;
-import eagea.nodeio.view.object.hud.Joystick;
-import eagea.nodeio.view.object.hud.Score;
-import eagea.nodeio.view.object.hud.Speak;
-import eagea.nodeio.view.object.map.CellV;
-import eagea.nodeio.view.object.map.MapV;
-import eagea.nodeio.view.object.player.PlayersV;
+import eagea.nodeio.view.object.game.background.Parallax;
+import eagea.nodeio.view.object.game.hud.Catch;
+import eagea.nodeio.view.object.game.hud.Caught;
+import eagea.nodeio.view.object.game.hud.Exit;
+import eagea.nodeio.view.object.game.hud.Joystick;
+import eagea.nodeio.view.object.game.hud.Score;
+import eagea.nodeio.view.object.game.hud.Speak;
+import eagea.nodeio.view.object.game.map.CellV;
+import eagea.nodeio.view.object.game.map.MapV;
+import eagea.nodeio.view.object.game.player.PlayersV;
+import eagea.nodeio.view.object.menu.Logo;
+import eagea.nodeio.view.object.menu.Start;
 
 /**
  * Handle all the graphical representations.
@@ -28,45 +26,70 @@ public class View
 {
     // Model.
     private final Model mModel;
-    // The background.
-    private final Parallax mBackground;
-    // The world map.
-    private final MapV mMap;
-    // Associated players.
-    private final PlayersV mPlayers;
-    // HUD.
-    private final Score mScore;
-    private final Exit mExit;
-    private final Speak mSpeak;
-    private final Joystick mJoystick;
-    private final Catch mCatch;
-    private final Caught mCaught;
+    // Game:
+    // - The background.
+    private Parallax mBackground;
+    // - The world map.
+    private MapV mMap;
+    // - Associated players.
+    private PlayersV mPlayers;
+    // - HUD.
+    private Score mScore;
+    private Exit mExit;
+    private Speak mSpeak;
+    private Joystick mJoystick;
+    private Catch mCatch;
+    private Caught mCaught;
+    // Menu GUI:
+    private final Logo mLogo;
+    private final Start mStart;
 
     public View(Model model)
     {
         mModel = model;
+        // Menu.
+        mLogo = new Logo(this);
+        mStart = new Start(this);
+    }
+
+    public void onStartGame()
+    {
         mBackground = new Parallax();
-        mMap = new MapV(model.getMap(), model.getPlayer());
-        mPlayers = new PlayersV(model.getPlayers(), model.getPlayer());
+        mMap = new MapV(mModel.getMap(), mModel.getPlayer());
+        mPlayers = new PlayersV(mModel.getPlayers(), mModel.getPlayer());
         mScore = new Score(this);
         mExit = new Exit(this);
         mSpeak = new Speak(this);
         mJoystick = new Joystick(this);
         mCatch = new Catch(this);
         mCaught = new Caught(this);
+        // Can start game now.
+        mModel.setState(Model.State.GAME);
     }
 
     public void render(float delta)
     {
-        mBackground.render(delta);
-        mMap.render(delta);
-        mPlayers.render(delta);
-        mScore.render(delta);
-        mExit.render(delta);
-        mSpeak.render(delta);
-        mJoystick.render(delta);
-        mCatch.render(delta);
-        mCaught.render(delta);
+        switch (mModel.getState())
+        {
+            case MENU:
+                // Render menu screen.
+                mLogo.render(delta);
+                mStart.render(delta);
+                break;
+            case CAUGHT:
+            case GAME:
+                // Render game screen.
+                mBackground.render(delta);
+                mMap.render(delta);
+                mPlayers.render(delta);
+                mScore.render(delta);
+                mExit.render(delta);
+                mSpeak.render(delta);
+                mJoystick.render(delta);
+                mCatch.render(delta);
+                mCaught.render(delta);
+                break;
+        }
     }
 
     /**
@@ -74,10 +97,20 @@ public class View
      */
     public boolean isTouched(Vector2 position)
     {
-        return mExit.isTouched(position)
-                || mSpeak.isTouched(position)
-                || mJoystick.isTouched(position)
-                || mCatch.isTouched(position);
+        switch (mModel.getState())
+        {
+            case MENU:
+                return mStart.isTouched(position);
+            case GAME:
+                return mExit.isTouched(position)
+                        || mSpeak.isTouched(position)
+                        || mJoystick.isTouched(position)
+                        || mCatch.isTouched(position);
+            case CAUGHT:
+                return mCaught.isTouched(position);
+        }
+
+        return false;
     }
 
     public Model getModel()

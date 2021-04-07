@@ -27,7 +27,7 @@ public class Model
     // Player ID (i.e. its color, and its zone type).
     public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
     // Current game state.
-    public enum State { MENU, START, CAUGHT, DISCONNECTED }
+    public enum State { MENU, GAME, CAUGHT }
 
     // Context.
     private final GameScreen mGameScreen;
@@ -48,8 +48,6 @@ public class Model
         mGameScreen = screen;
         mNode = new Node(this);
         mState = State.MENU;
-
-        askForConnection();
     }
 
     /**
@@ -60,6 +58,9 @@ public class Model
     {
         if (! mNode.isHost())
         {
+            mPlayer = null;
+            mPlayers = null;
+            mMap = null;
             // Not the host; request for game model.
             mNode.notifyHost(new Connection());
         }
@@ -77,7 +78,7 @@ public class Model
                     Type.values()[(int) (Math.random() * Type.values().length)], 0);
             mMap.add(zone);
             // Start rendering.
-            mGameScreen.onModelIsReady(this);
+            mGameScreen.onStartGame();
         }
     }
 
@@ -159,14 +160,16 @@ public class Model
             // Set map and players.
             mMap = action.getMap();
             mPlayers = action.getPlayers();
+            System.out.println(mPlayers.getNbPlayers());
+            System.out.println(action.getPlayers().getNbPlayers());
             mPlayer = mPlayers.get(mPlayers.getNbPlayers() - 1);
             // Start rendering.
-            mGameScreen.onModelIsReady(this);
+            mGameScreen.onStartGame();
             // Auto-disconnection.
             Runtime.getRuntime().addShutdownHook(new Thread(
                     () ->
                     {
-                        if (mState == State.START)
+                        if (mState == State.GAME)
                         {
                             askForDisconnection();
                         }
@@ -183,7 +186,7 @@ public class Model
                 PlayersM players = action.getPlayers();
 
                 mMap.add(map.get(map.getNbZones() - 1));
-                mPlayers.add(players.get(players.getNbPlayers() - 1));
+                mPlayers.addWithoutNotify(players.get(players.getNbPlayers() - 1));
                 mMap.notify(MapM.Event.ADD);
             }
         }
@@ -271,7 +274,7 @@ public class Model
         // If I'm the disconnected guy.
         if (mPlayer.equals(action.getPlayer()))
         {
-            mState = State.DISCONNECTED;
+            goToMenu();
         }
     }
 
@@ -412,6 +415,19 @@ public class Model
         }
         // Send it.
         return new Disconnection(player, newOwner, indexes);
+    }
+
+    public void goToGame()
+    {
+        mNode.openConnection();
+        mNode.checkIfHost();
+        mNode.declareQueue();
+        askForConnection();
+    }
+
+    public void goToMenu()
+    {
+        mState = State.MENU;
     }
 
     public void setState(State state)

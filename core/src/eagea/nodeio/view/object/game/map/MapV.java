@@ -1,4 +1,4 @@
-package eagea.nodeio.view.object.map;
+package eagea.nodeio.view.object.game.map;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -19,7 +19,7 @@ public class MapV implements Observer
     private final MapM mMap;
     private final PlayerM mPlayer;
     // Current zones on the map.
-    private final ArrayList<ZoneV> mZones;
+    private final ArrayList<eagea.nodeio.view.object.game.map.ZoneV> mZones;
     // Cells' animation.
     private boolean mHighlighted;
     private float mTimeSinceLastRender;
@@ -32,7 +32,7 @@ public class MapV implements Observer
         mMap.addObserver(this);
         // Load the zones.
         mZones = new ArrayList<>();
-        mMap.getZones().forEach(z -> mZones.add(new ZoneV(z, player)));
+        mMap.getZones().forEach(z -> mZones.add(new eagea.nodeio.view.object.game.map.ZoneV(z, player)));
         // Load cells' animation.
         mHighlighted = false;
         mTimeSinceLastRender = 0f;
@@ -44,7 +44,7 @@ public class MapV implements Observer
         // Reverse render order because of isometric rendering.
         for (int i = mZones.size() - 1 ; i >= 0 ; i --)
         {
-            ZoneV zone = mZones.get(i);
+            eagea.nodeio.view.object.game.map.ZoneV zone = mZones.get(i);
             // Update cell highlighted animation
             mTimeSinceLastRender += delta;
 

@@ -1,4 +1,4 @@
-package eagea.nodeio.view.object.map;
+package eagea.nodeio.view.object.game.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;

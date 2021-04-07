@@ -1,4 +1,4 @@
-package eagea.nodeio.view.object.hud;
+package eagea.nodeio.view.object.game.hud;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -81,9 +81,16 @@ public class Caught
 
     public boolean isTouched(Vector2 position)
     {
-        // Whole screen touchable in this state.
-        System.out.println("[DEBUG]: on click caught");
-        mView.getModel().askForDisconnection();
-        return true;
+        // Check if player got caught.
+        if (mView.getModel().getState() == Model.State.CAUGHT)
+        {
+            // Whole screen touchable in this state.
+            System.out.println("[DEBUG]: on click caught");
+            // Go to menu.
+            mView.getModel().goToMenu();
+            return true;
+        }
+
+        return false;
     }
 }

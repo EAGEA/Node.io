@@ -23,7 +23,7 @@ public class Main extends Game
     public static OrthographicCamera mCamera;
     public static Viewport mViewPortGame;
     public static SpriteBatch mBatch;
-    private GameScreen mGameScreen;
+    private static GameScreen mGameScreen;
 
     @Override
     public void create ()

@@ -18,6 +18,7 @@ public class GameScreen extends ScreenAdapter
     public static TextureAtlas mEnvironmentAtlas;
     public static TextureAtlas mCharactersAtlas;
     public static TextureAtlas mHUDAtlas;
+    public static TextureAtlas mGUIAtlas;
     // Model:
     private Model mModel;
     // View:
@@ -32,20 +33,11 @@ public class GameScreen extends ScreenAdapter
         mEnvironmentAtlas = new TextureAtlas(Gdx.files.internal("environment.atlas")) ;
         mCharactersAtlas = new TextureAtlas(Gdx.files.internal("characters.atlas")) ;
         mHUDAtlas = new TextureAtlas(Gdx.files.internal("hud.atlas")) ;
+        mGUIAtlas = new TextureAtlas(Gdx.files.internal("gui.atlas")) ;
         // Game objects.
-        createModel();
-    }
-
-    private void createModel()
-    {
         mModel = new Model(this);
-    }
-
-    public void onModelIsReady(Model model)
-    {
-        model.setState(Model.State.START);
-        mView = new View(model);
-        mController = new Controller(model, mView);
+        mView = new View(mModel);
+        mController = new Controller(mModel, mView);
     }
 
     @Override
@@ -70,5 +62,10 @@ public class GameScreen extends ScreenAdapter
             mView.render(delta);
             Main.mBatch.end();
         }
+    }
+
+    public void onStartGame()
+    {
+        mView.onStartGame();
     }
 }

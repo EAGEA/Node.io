@@ -1,9 +1,6 @@
-package eagea.nodeio.view.object.map;
+package eagea.nodeio.view.object.game.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
-import java.util.Observable;
-import java.util.Observer;
 
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.model.logic.map.ZoneM;

@@ -34,8 +34,7 @@ public class Controller implements InputProcessor
     public boolean keyDown(int keyCode)
     {
         // Can't play.
-        if (mModel.getState() == Model.State.CAUGHT
-                || mModel.getState() == Model.State.DISCONNECTED)
+        if (mModel.getState() == Model.State.CAUGHT)
         {
             return false;
         }
@@ -92,13 +91,6 @@ public class Controller implements InputProcessor
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-        // Can't play.
-        if (mModel.getState() == Model.State.CAUGHT
-                || mModel.getState() == Model.State.DISCONNECTED)
-        {
-            return false;
-        }
-
         // Check if HUD touched.
         return mView.isTouched(Main.mViewPortGame.unproject(new Vector2(screenX, screenY)));
     }

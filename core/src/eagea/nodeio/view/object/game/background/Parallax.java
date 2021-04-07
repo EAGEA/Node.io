@@ -1,4 +1,4 @@
-package eagea.nodeio.view.object.background;
+package eagea.nodeio.view.object.game.background;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ public class Parallax
     private final int LAYERS = 4;
 
     // Layers.
-    private final ArrayList<Layer> mLayers;
+    private final ArrayList<eagea.nodeio.view.object.game.background.Layer> mLayers;
 
     public Parallax()
     {

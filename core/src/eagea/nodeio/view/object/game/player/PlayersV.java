@@ -1,4 +1,4 @@
-package eagea.nodeio.view.object.player;
+package eagea.nodeio.view.object.game.player;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -16,7 +16,7 @@ public class PlayersV implements Observer
     private final PlayersM mPlayers;
     private final PlayerM mPlayer;
     // Current zones on the map.
-    private final ArrayList<PlayerV> mPlayersV;
+    private final ArrayList<eagea.nodeio.view.object.game.player.PlayerV> mPlayersV;
 
     public PlayersV(PlayersM players, PlayerM player)
     {
@@ -26,7 +26,8 @@ public class PlayersV implements Observer
         mPlayers.addObserver(this);
         // Load the players.
         mPlayersV = new ArrayList<>();
-        mPlayers.getPlayers().forEach(p -> mPlayersV.add(new PlayerV(mPlayer, p,
+        mPlayers.getPlayers().forEach(p -> mPlayersV.add(
+                new eagea.nodeio.view.object.game.player.PlayerV(mPlayer, p,
                 p.getColor().toString().toLowerCase())));
 
     }
@@ -51,11 +52,12 @@ public class PlayersV implements Observer
                 switch (event)
                 {
                     case ADD:
-                        mPlayersV.add(new PlayerV(mPlayer, player,
+                        mPlayersV.add(new eagea.nodeio.view.object.game.player.PlayerV(mPlayer, player,
                                 player.getColor().toString().toLowerCase()));
                         break;
                     case REMOVE:
-                        final PlayerV[] to_remove = new PlayerV[1];
+                        System.out.println("TA MER");
+                        final eagea.nodeio.view.object.game.player.PlayerV[] to_remove = new PlayerV[1];
                         // Search for player to remove.
                         mPlayersV.forEach(p ->
                         {

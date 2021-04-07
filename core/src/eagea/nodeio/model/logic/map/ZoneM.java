@@ -5,7 +5,6 @@ import java.util.Observable;
 
 import eagea.nodeio.model.Model;
 import eagea.nodeio.model.logic.player.PlayerM;
-import eagea.nodeio.view.object.player.PlayerV;
 
 /**
  * A zone of the game map.

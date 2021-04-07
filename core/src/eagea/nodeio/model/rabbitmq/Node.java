@@ -43,17 +43,18 @@ public class Node
     public Node(Model model)
     {
         mModel = model;
-
-        openConnection();
-        checkIfHost();
-        declareQueue();
     }
 
     /**
      * Start RabbitMQ connection.
      */
-    private void openConnection()
+    public void openConnection()
     {
+        if (mConnection != null)
+        {
+            return;
+        }
+
         System.out.println("[DEBUG]: connection");
 
         ConnectionFactory factory = new ConnectionFactory();
@@ -79,7 +80,7 @@ public class Node
     /**
      * Declare the queue which receives players actions.
      */
-    private void declareQueue()
+    public void declareQueue()
     {
         try
         {
@@ -108,7 +109,7 @@ public class Node
     /**
      * Check if the user is the first one to connect. If so, she/he is the host.
      */
-    private void checkIfHost()
+    public void checkIfHost()
     {
         try
         {
