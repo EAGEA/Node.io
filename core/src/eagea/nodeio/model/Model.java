@@ -125,11 +125,6 @@ public class Model
      */
     public void play(Action action)
     {
-        if (mState != State.GAME)
-        {
-            return;
-        }
-
         System.out.println("[DEBUG]: play " + action.getClass().getSimpleName());
 
         if (action instanceof Connection)
@@ -195,6 +190,11 @@ public class Model
 
     private void playMove(Move action)
     {
+        if (mState != State.GAME)
+        {
+            return;
+        }
+
         // Find the corresponding player (reference).
         PlayerM player = mPlayers.find(action.getPlayer());
         // Check if found.
@@ -215,6 +215,11 @@ public class Model
 
     private void playSpeak(Speak action)
     {
+        if (mState != State.GAME)
+        {
+            return;
+        }
+
         // Find the corresponding player (reference).
         PlayerM player = mPlayers.find(action.getPlayer());
         // Check if found.
@@ -229,6 +234,11 @@ public class Model
 
     private void playCatch(Catch action)
     {
+        if (mState != State.GAME)
+        {
+            return;
+        }
+
         // Remove each player from the game.
         action.getCaught().forEach(p ->
                 {
@@ -254,6 +264,11 @@ public class Model
 
     private void playDisconnection(Disconnection action)
     {
+        if (mState != State.GAME)
+        {
+            return;
+        }
+
         // If I'm the disconnected guy.
         if (mPlayer.getID().equals(action.getPlayer()))
         {
