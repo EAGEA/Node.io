@@ -196,7 +196,7 @@ public class Model
     private void playMove(Move action)
     {
         // Find the corresponding player (reference).
-        PlayerM player = mPlayers.find(action.getPlayer());
+       PlayerM player = mPlayers.find(action.getPlayer());
         // Check if found.
         if (player == null)
         {
