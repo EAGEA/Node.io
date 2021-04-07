@@ -1,12 +1,19 @@
 package eagea.nodeio.view;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import eagea.nodeio.GameScreen;
+import eagea.nodeio.Main;
 import eagea.nodeio.model.Model;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.view.object.background.Parallax;
+import eagea.nodeio.view.object.hud.Exit;
+import eagea.nodeio.view.object.hud.Score;
+import eagea.nodeio.view.object.hud.Speak;
 import eagea.nodeio.view.object.map.CellV;
 import eagea.nodeio.view.object.map.MapV;
 import eagea.nodeio.view.object.player.PlayersV;
@@ -24,6 +31,10 @@ public class View
     private final MapV mMap;
     // Associated players.
     private final PlayersV mPlayers;
+    // HUD.
+    private final Exit mExit;
+    private final Score mScore;
+    private final Speak mSpeak;
 
     public View(Model model)
     {
@@ -31,6 +42,9 @@ public class View
         mBackground = new Parallax();
         mMap = new MapV(model.getMap(), model.getPlayer());
         mPlayers = new PlayersV(model.getPlayers(), model.getPlayer());
+        mExit = new Exit(this);
+        mScore = new Score(this);
+        mSpeak = new Speak(this);
     }
 
     public void render(float delta)
@@ -38,11 +52,38 @@ public class View
         mBackground.render(delta);
         mMap.render(delta);
         mPlayers.render(delta);
+        mExit.render(delta);
+        mScore.render(delta);
+        mSpeak.render(delta);
+    }
+
+    /**
+     * Check if an item of the HUD was touched. Return true if so.
+     */
+    public boolean isTouched(Vector2 position)
+    {
+        //System.out.println(position.x + " " +position.y);
+        return mExit.isTouched(position);
+    }
+
+    public Model getModel()
+    {
+        return mModel;
     }
 
     public MapV getMap()
     {
         return mMap;
+    }
+
+    public PlayersV getPlayers()
+    {
+        return mPlayers;
+    }
+
+    public Score getScore()
+    {
+        return mScore;
     }
 
     /**

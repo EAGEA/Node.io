@@ -13,8 +13,7 @@ import eagea.nodeio.model.logic.player.PlayerM;
 public class MapV implements Observer
 {
     // Cells' animation.
-    private final int FRAMES_PER_ANIMATION = 2;
-    private final float TIME_PER_FRAME = 0.5f;
+    private final float TIME_PER_FRAME = 1f;
 
     // Model.
     private final MapM mMap;

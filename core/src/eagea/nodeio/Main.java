@@ -3,6 +3,7 @@ package eagea.nodeio;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -21,7 +22,7 @@ public class Main extends Game
     // Basic GDX rendering object.
     public static OrthographicCamera mCamera;
     public static Viewport mViewPortGame;
-    public static Viewport mViewPortGUI;
+    //public static Viewport mViewPortGUI;
     public static SpriteBatch mBatch;
     private GameScreen mGameScreen;
 
@@ -29,17 +30,18 @@ public class Main extends Game
     public void create ()
     {
         DEBUG();
-
+        // GDX objects.
         mBatch = new SpriteBatch();
         mCamera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         mViewPortGame = new FillViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
-        //mViewPortGUI = new ExtendViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
 
-        mGameScreen = new GameScreen();
-        setScreen(mGameScreen);
+        //mViewPortGUI = new ExtendViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
 
         // World units when drawing.
         Main.mBatch.setProjectionMatrix(Main.mCamera.combined);
+        // Screens.
+        mGameScreen = new GameScreen();
+        setScreen(mGameScreen);
     }
 
     @Override
@@ -52,19 +54,16 @@ public class Main extends Game
     @Override
     public void resize(int width, int height)
     {
-        // Resize the viewport
-        mViewPortGame.update(width, height, true) ;
+        // Resize the viewports.
         //mViewPortGUI.update(width, height, true) ;
-        // Center the camera
-        //resetCameraPosition() ;
-        // And resize the current screen
+        mViewPortGame.update(width, height, true) ;
     }
 
     public void DEBUG()
     {
         if (! DEBUG)
         {
-            // Disable logs.
+            // Disable all logs.
             System.setOut(new PrintStream(new OutputStream()
                     {
                         @Override public void write(int b) { }

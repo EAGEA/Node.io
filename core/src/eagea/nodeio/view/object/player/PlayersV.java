@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.model.logic.player.PlayersM;
-import eagea.nodeio.view.object.map.ZoneV;
 
 /**
  * Manage all the game players.
@@ -74,5 +72,10 @@ public class PlayersV implements Observer
                 }
             }
         }
+    }
+
+    public int getNbPlayers()
+    {
+        return mPlayersV.size();
     }
 }

@@ -5,20 +5,24 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 
+import eagea.nodeio.Main;
 import eagea.nodeio.model.Model;
 import eagea.nodeio.model.logic.player.PlayerM;
+import eagea.nodeio.view.View;
 
 /**
  * Handle inputs from player.
  */
 public class Controller implements InputProcessor
 {
-    // The game model.
+    // The game model and view.
     private final Model mModel;
+    private final View mView;
 
-    public Controller(Model model)
+    public Controller(Model model, View view)
     {
         mModel = model ;
+        mView = view;
         // Set as default input handler.
         Gdx.input.setInputProcessor(this);
     }
@@ -29,6 +33,7 @@ public class Controller implements InputProcessor
     @Override
     public boolean keyDown(int keyCode)
     {
+        // Can't play.
         if (mModel.getState() == Model.State.CAUGHT
                 || mModel.getState() == Model.State.DISCONNECTED)
         {
@@ -87,15 +92,21 @@ public class Controller implements InputProcessor
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
+        // Can't play.
         if (mModel.getState() == Model.State.CAUGHT
                 || mModel.getState() == Model.State.DISCONNECTED)
         {
             return false;
         }
-
+        // Check if HUD touched.
+        if (mView.isTouched(new Vector2(screenX, screenY)))
+        {
+            return true;
+        }
+        // Otherwise it is a movement:
         // Center of screen.
-        Vector2 center = new Vector2(Gdx.graphics.getWidth() / 2f,
-                Gdx.graphics.getHeight() / 2f);
+        Vector2 center = new Vector2(Gdx.app.getGraphics().getWidth() / 2f,
+                Gdx.app.getGraphics().getHeight() / 2f);
 
         if (screenX < center.x)
         {
