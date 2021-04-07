@@ -98,40 +98,9 @@ public class Controller implements InputProcessor
         {
             return false;
         }
+
         // Check if HUD touched.
-        if (mView.isTouched(Main.mViewPortGame.unproject(new Vector2(screenX, screenY))))
-        {
-            return true;
-        }
-        // Otherwise it is a movement:
-        // Center of screen.
-        Vector2 center = new Vector2(Gdx.app.getGraphics().getWidth() / 2f,
-                Gdx.app.getGraphics().getHeight() / 2f);
-
-        if (screenX < center.x)
-        {
-            if (screenY < center.y)
-            {
-                mModel.askForMove(PlayerM.Event.LEFT);
-            }
-            else
-            {
-                mModel.askForMove(PlayerM.Event.DOWN);
-            }
-        }
-        else
-        {
-            if (screenY < center.y)
-            {
-                mModel.askForMove(PlayerM.Event.UP);
-            }
-            else
-            {
-                mModel.askForMove(PlayerM.Event.RIGHT);
-            }
-        }
-
-        return true;
+        return mView.isTouched(Main.mViewPortGame.unproject(new Vector2(screenX, screenY)));
     }
 
     @Override

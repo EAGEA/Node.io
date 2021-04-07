@@ -17,9 +17,7 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onStop()
 	{
 		super.onStop();
-		/*
 		// Trigger the shutdown hook.
 		Runtime.getRuntime().exit(0);
-		 */
 	}
 }

@@ -1,117 +1,180 @@
 
 hud.png
-size: 256, 64
+size: 512, 64
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 bye
   rotate: false
-  xy: 45, 34
+  xy: 88, 2
   size: 41, 27
   orig: 41, 27
   offset: 0, 0
   index: -1
+bye_on_touch
+  rotate: false
+  xy: 2, 2
+  size: 41, 27
+  orig: 41, 27
+  offset: 0, 0
+  index: -1
+catch
+  rotate: false
+  xy: 291, 36
+  size: 22, 22
+  orig: 22, 22
+  offset: 0, 0
+  index: -1
+catch_on_touch
+  rotate: false
+  xy: 131, 4
+  size: 22, 22
+  orig: 22, 22
+  offset: 0, 0
+  index: -1
 digit_wendy_outlined_white
   rotate: false
-  xy: 88, 39
+  xy: 155, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 6
 digit_wendy_outlined_white
   rotate: false
-  xy: 104, 39
+  xy: 315, 36
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 3
 digit_wendy_outlined_white
   rotate: false
-  xy: 120, 39
+  xy: 171, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 8
 digit_wendy_outlined_white
   rotate: false
-  xy: 136, 39
+  xy: 331, 36
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 0
 digit_wendy_outlined_white
   rotate: false
-  xy: 152, 39
+  xy: 187, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 5
 digit_wendy_outlined_white
   rotate: false
-  xy: 168, 39
+  xy: 347, 36
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 2
 digit_wendy_outlined_white
   rotate: false
-  xy: 184, 39
+  xy: 203, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 7
 digit_wendy_outlined_white
   rotate: false
-  xy: 200, 39
+  xy: 363, 36
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 4
 digit_wendy_outlined_white
   rotate: false
-  xy: 216, 39
+  xy: 219, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 9
 digit_wendy_outlined_white
   rotate: false
-  xy: 232, 39
+  xy: 379, 36
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 1
 exit
   rotate: false
-  xy: 96, 24
+  xy: 395, 45
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 77, 15
+  xy: 235, 9
   size: 17, 17
   orig: 17, 17
   offset: 0, 0
   index: -1
 hello
   rotate: false
-  xy: 2, 5
+  xy: 45, 31
+  size: 41, 27
+  orig: 41, 27
+  offset: 0, 0
+  index: -1
+hello_on_touch
+  rotate: false
+  xy: 45, 2
   size: 41, 27
   orig: 41, 27
   offset: 0, 0
   index: -1
 joystick
   rotate: false
-  xy: 45, 2
+  xy: 131, 28
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+joystick_on_touch_down
+  rotate: false
+  xy: 259, 28
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+joystick_on_touch_left
+  rotate: false
+  xy: 163, 28
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+joystick_on_touch_right
+  rotate: false
+  xy: 227, 28
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+joystick_on_touch_up
+  rotate: false
+  xy: 195, 28
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 looser
   rotate: false
-  xy: 2, 34
+  xy: 2, 31
+  size: 41, 27
+  orig: 41, 27
+  offset: 0, 0
+  index: -1
+looser_on_touch
+  rotate: false
+  xy: 88, 31
   size: 41, 27
   orig: 41, 27
   offset: 0, 0
