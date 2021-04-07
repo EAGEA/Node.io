@@ -12,6 +12,7 @@ import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.view.object.background.Parallax;
 import eagea.nodeio.view.object.hud.Catch;
+import eagea.nodeio.view.object.hud.Caught;
 import eagea.nodeio.view.object.hud.Exit;
 import eagea.nodeio.view.object.hud.Joystick;
 import eagea.nodeio.view.object.hud.Score;
@@ -34,11 +35,12 @@ public class View
     // Associated players.
     private final PlayersV mPlayers;
     // HUD.
-    private final Exit mExit;
     private final Score mScore;
+    private final Exit mExit;
     private final Speak mSpeak;
     private final Joystick mJoystick;
     private final Catch mCatch;
+    private final Caught mCaught;
 
     public View(Model model)
     {
@@ -46,11 +48,12 @@ public class View
         mBackground = new Parallax();
         mMap = new MapV(model.getMap(), model.getPlayer());
         mPlayers = new PlayersV(model.getPlayers(), model.getPlayer());
-        mExit = new Exit(this);
         mScore = new Score(this);
+        mExit = new Exit(this);
         mSpeak = new Speak(this);
         mJoystick = new Joystick(this);
         mCatch = new Catch(this);
+        mCaught = new Caught(this);
     }
 
     public void render(float delta)
@@ -58,11 +61,12 @@ public class View
         mBackground.render(delta);
         mMap.render(delta);
         mPlayers.render(delta);
-        mExit.render(delta);
         mScore.render(delta);
+        mExit.render(delta);
         mSpeak.render(delta);
         mJoystick.render(delta);
         mCatch.render(delta);
+        mCaught.render(delta);
     }
 
     /**

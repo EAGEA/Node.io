@@ -6,175 +6,196 @@ filter: Nearest, Nearest
 repeat: none
 bye
   rotate: false
-  xy: 88, 2
+  xy: 256, 31
   size: 41, 27
   orig: 41, 27
   offset: 0, 0
   index: -1
 bye_on_touch
   rotate: false
-  xy: 2, 2
+  xy: 84, 31
   size: 41, 27
   orig: 41, 27
   offset: 0, 0
   index: -1
 catch
   rotate: false
-  xy: 291, 36
+  xy: 483, 36
   size: 22, 22
   orig: 22, 22
   offset: 0, 0
   index: -1
 catch_on_touch
   rotate: false
-  xy: 131, 4
+  xy: 459, 36
   size: 22, 22
   orig: 22, 22
   offset: 0, 0
   index: -1
+caught
+  rotate: false
+  xy: 2, 21
+  size: 37, 37
+  orig: 37, 37
+  offset: 0, 0
+  index: -1
+caught_bg
+  rotate: false
+  xy: 350, 57
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+caught_menu
+  rotate: false
+  xy: 299, 46
+  size: 49, 12
+  orig: 49, 12
+  offset: 0, 0
+  index: -1
 digit_wendy_outlined_white
   rotate: false
-  xy: 155, 4
+  xy: 363, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 6
 digit_wendy_outlined_white
   rotate: false
-  xy: 315, 36
+  xy: 379, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 3
 digit_wendy_outlined_white
   rotate: false
-  xy: 171, 4
+  xy: 395, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 8
 digit_wendy_outlined_white
   rotate: false
-  xy: 331, 36
+  xy: 411, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 0
 digit_wendy_outlined_white
   rotate: false
-  xy: 187, 4
+  xy: 427, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 5
 digit_wendy_outlined_white
   rotate: false
-  xy: 347, 36
+  xy: 443, 4
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 2
 digit_wendy_outlined_white
   rotate: false
-  xy: 203, 4
+  xy: 459, 12
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 7
 digit_wendy_outlined_white
   rotate: false
-  xy: 363, 36
+  xy: 475, 12
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 4
 digit_wendy_outlined_white
   rotate: false
-  xy: 219, 4
+  xy: 491, 12
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 9
 digit_wendy_outlined_white
   rotate: false
-  xy: 379, 36
+  xy: 41, 7
   size: 14, 22
   orig: 14, 22
   offset: 0, 0
   index: 1
 exit
   rotate: false
-  xy: 395, 45
+  xy: 21, 6
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 235, 9
+  xy: 2, 2
   size: 17, 17
   orig: 17, 17
   offset: 0, 0
   index: -1
 hello
   rotate: false
-  xy: 45, 31
+  xy: 127, 31
   size: 41, 27
   orig: 41, 27
   offset: 0, 0
   index: -1
 hello_on_touch
   rotate: false
-  xy: 45, 2
+  xy: 170, 31
   size: 41, 27
   orig: 41, 27
   offset: 0, 0
   index: -1
 joystick
   rotate: false
-  xy: 131, 28
+  xy: 299, 14
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 joystick_on_touch_down
   rotate: false
-  xy: 259, 28
+  xy: 427, 28
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 joystick_on_touch_left
   rotate: false
-  xy: 163, 28
+  xy: 331, 14
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 joystick_on_touch_right
   rotate: false
-  xy: 227, 28
+  xy: 395, 28
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 joystick_on_touch_up
   rotate: false
-  xy: 195, 28
+  xy: 363, 28
   size: 30, 30
   orig: 30, 30
   offset: 0, 0
   index: -1
 looser
   rotate: false
-  xy: 2, 31
+  xy: 41, 31
   size: 41, 27
   orig: 41, 27
   offset: 0, 0
   index: -1
 looser_on_touch
   rotate: false
-  xy: 88, 31
+  xy: 213, 31
   size: 41, 27
   orig: 41, 27
   offset: 0, 0
