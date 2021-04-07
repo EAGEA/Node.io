@@ -10,16 +10,13 @@ public class Move extends Action
 {
     private static final long serialVersionUID = -2331051169444334502L;
 
-    private final PlayerM mPlayer;
     private final PlayerM.Event mOrientation;
 
-    public Move(PlayerM player, PlayerM.Event orientation)
+    public Move(String ID, PlayerM.Event orientation)
     {
-        mPlayer = player;
+        super(ID);
         mOrientation = orientation;
     }
-
-    public PlayerM getPlayer() { return mPlayer; }
 
     public PlayerM.Event getOrientation()
     {

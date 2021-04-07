@@ -16,15 +16,19 @@ public class Connection extends Action
     private PlayersM mPlayers;
 
     /**
-     * Empty constructor send to host to request her/him the map and players.
+     * Constructor to send host, to request her/him the map and players.
      */
-    public Connection() { }
+    public Connection(String ID)
+    {
+        super(ID);
+    }
 
     /**
      * Sent by the host to update map and players of everyone.
      */
-    public Connection(MapM map, PlayersM players)
+    public Connection(String ID, MapM map, PlayersM players)
     {
+        super(ID);
         mMap = map;
         mPlayers = players;
     }

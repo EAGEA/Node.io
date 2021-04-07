@@ -8,4 +8,17 @@ import java.io.Serializable;
 public abstract class Action implements Serializable
 {
     private static final long serialVersionUID = 48659982445051210L;
+
+    // The player identified with it's ID
+    private final String mPlayer;
+
+    public Action(String ID)
+    {
+        mPlayer = ID;
+    }
+
+    public String getPlayer()
+    {
+        return mPlayer;
+    }
 }

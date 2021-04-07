@@ -14,7 +14,7 @@ import eagea.nodeio.model.logic.map.ZoneM;
  */
 public class PlayerM extends Observable implements Serializable
 {
-    private static final long serialVersionUID = 4604898990645685618L;
+    private static final long serialVersionUID = 4863938596442714449L;
 
     // Event; Direction of movements.
     public enum Event { LEFT, RIGHT, UP, DOWN }
@@ -23,6 +23,8 @@ public class PlayerM extends Observable implements Serializable
     // Hair color.
     public enum Color { RED, GREEN, BLUE }
 
+    // Unique ID (ie.e the rabbit queue name).
+    private final String mID;
     // Coordinate in its current zone (array like).
     private int mZone;
     private final Vector2 mPosition;
@@ -33,8 +35,9 @@ public class PlayerM extends Observable implements Serializable
     // Current environment.
     private MapM mMap;
 
-    public PlayerM(int i, int j, int zone, MapM map)
+    public PlayerM(String ID, int i, int j, int zone, MapM map)
     {
+        mID = ID;
         mPosition = new Vector2(i, j);
         mZone = zone;
         mMap = map;
@@ -164,9 +167,7 @@ public class PlayerM extends Observable implements Serializable
     {
         if (o instanceof PlayerM)
         {
-            return ((PlayerM) o).getI() == getI()
-                    && ((PlayerM) o).getJ() == getJ()
-                    && ((PlayerM) o).getZone() == getZone();
+            return mID == ((PlayerM) o).getID();
         }
 
         return false;
@@ -190,6 +191,11 @@ public class PlayerM extends Observable implements Serializable
     public void setZone(int zone)
     {
         mZone = zone;
+    }
+
+    public String getID()
+    {
+        return mID;
     }
 
     public int getZone()

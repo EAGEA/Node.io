@@ -16,20 +16,21 @@ public class ZoneM extends Observable implements Serializable
     // Width and height.
     public static final int SIZE = 4;
 
-    private PlayerM mOwner;
+    // ID of the player who owns this zone.
+    private String mOwner;
     // Type of zone.
     private Model.Type mType;
     // Zone position in map.
     private final int mPositionInMap;
 
-    public ZoneM(PlayerM owner, Model.Type type, int position)
+    public ZoneM(String owner, Model.Type type, int position)
     {
         mOwner = owner;
         mType = type;
         mPositionInMap = position;
     }
 
-    public void setOwner(PlayerM owner)
+    public void setOwner(String owner)
     {
         mOwner = owner;
     }
@@ -39,7 +40,7 @@ public class ZoneM extends Observable implements Serializable
         mType = type;
     }
 
-    public PlayerM getOwner()
+    public String getOwner()
     {
         return mOwner;
     }

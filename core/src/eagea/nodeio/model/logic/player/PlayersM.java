@@ -51,13 +51,13 @@ public class PlayersM extends Observable implements Serializable
         return mPlayers;
     }
 
-    public PlayerM find(PlayerM player)
+    public PlayerM find(String ID)
     {
         final PlayerM[] result = { null };
 
         mPlayers.forEach(p ->
                 {
-                    if (p.equals(player))
+                    if (p.getID().equals(ID))
                     {
                         result[0] = p;
                     }

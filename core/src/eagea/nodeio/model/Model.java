@@ -58,23 +58,20 @@ public class Model
     {
         if (! mNode.isHost())
         {
-            mPlayer = null;
-            mPlayers = null;
-            mMap = null;
             // Not the host; request for game model.
-            mNode.notifyHost(new Connection());
+            mNode.notifyHost(new Connection(mNode.getID()));
         }
         else
         {
-            // The host initiates game model:
+            // The host initiates game model (the one who create it):
             // - Create Map.
             mMap = new MapM();
             // - Create player.
-            mPlayer = new PlayerM(0, 0, 0, mMap);
+            mPlayer = new PlayerM(mNode.getID(), 0, 0, 0, mMap);
             mPlayers = new PlayersM();
             mPlayers.add(mPlayer);
             // - Create player's zone.
-            ZoneM zone = new ZoneM(mPlayer,
+            ZoneM zone = new ZoneM(mNode.getID(),
                     Type.values()[(int) (Math.random() * Type.values().length)], 0);
             mMap.add(zone);
             // Start rendering.
@@ -89,7 +86,7 @@ public class Model
     public void askForMove(PlayerM.Event orientation)
     {
         // Request for move.
-        mNode.notifyHost(new Move(mPlayer, orientation));
+        mNode.notifyHost(new Move(mNode.getID(), orientation));
     }
 
     /**
@@ -99,7 +96,7 @@ public class Model
     public void askForSpeak(PlayerM.Speak sentence)
     {
         // Request for move.
-        mNode.notifyHost(new Speak(mPlayer, sentence));
+        mNode.notifyHost(new Speak(mNode.getID(), sentence));
     }
 
     /**
@@ -109,7 +106,7 @@ public class Model
     public void askForCatch()
     {
         // Request for catch.
-        mNode.notifyHost(new Catch(mPlayer));
+        mNode.notifyHost(new Catch(mNode.getID()));
     }
 
     /**
@@ -119,7 +116,7 @@ public class Model
     public void askForDisconnection()
     {
         // Request for disconnection.
-        mNode.notifyHost(new Disconnection(mPlayer));
+        mNode.notifyHost(new Disconnection(mNode.getID()));
     }
 
     /**
@@ -153,9 +150,8 @@ public class Model
 
     private void playConnection(Connection action)
     {
-        boolean iamTheNewGuy = (mPlayer == null);
-
-        if (iamTheNewGuy)
+        // Check if we are the new player.
+        if (action.getPlayer().equals(mNode.getID()))
         {
             // Set map and players.
             mMap = action.getMap();
@@ -177,6 +173,7 @@ public class Model
         }
         else
         {
+            // Already updated for the host (she/he is the one who sent the model).
             if (! mNode.isHost())
             {
                 // Update map and players.
@@ -226,14 +223,6 @@ public class Model
 
     private void playCatch(Catch action)
     {
-        // Find the corresponding player (reference).
-        PlayerM player = mPlayers.find(action.getPlayer());
-        // Check if found.
-        if (player == null)
-        {
-            System.err.println("[ERROR]: can't play action");
-            return;
-        }
         // Remove each player from the game.
         action.getCaught().forEach(p ->
                 {
@@ -242,16 +231,16 @@ public class Model
                             {
                                 if (z.getOwner().equals(p))
                                 {
-                                    z.setOwner(player);
+                                    z.setOwner(action.getPlayer());
                                 }
                             }
                     );
                     // Remove players from list.
-                    mPlayers.remove(p);
+                    mPlayers.remove(mPlayers.find(p));
                 }
         );
         // If I'm caught.
-        if (action.getCaught().contains(mPlayer))
+        if (action.getCaught().contains(mPlayer.getID()))
         {
             mState = State.CAUGHT;
         }
@@ -259,18 +248,16 @@ public class Model
 
     private void playDisconnection(Disconnection action)
     {
-        // Get the new zone owner.
-        PlayerM nOwner = mPlayers.find(action.getNewOwner());
         // Set to the corresponding zones.
         action.getIndexes().forEach(i ->
             {
-                mMap.getZones().get(i).setOwner(nOwner);
+                mMap.getZones().get(i).setOwner(action.getNewOwner());
             }
         );
         // And remove the disconnected user.
-        mPlayers.remove(action.getPlayer());
+        mPlayers.remove(mPlayers.find(action.getPlayer()));
         // If I'm the disconnected guy.
-        if (mPlayer.equals(action.getPlayer()))
+        if (mPlayer.getID().equals(action.getPlayer()))
         {
             goToMenu();
         }
@@ -312,20 +299,21 @@ public class Model
     private Action checkConnection(Connection action)
     {
         // Add new player and zone.
-        PlayerM player = new PlayerM(0, 0, mMap.getNbZones(), mMap);
-        ZoneM zone = new ZoneM(player,
+        PlayerM player = new PlayerM(action.getPlayer(),
+                0, 0, mMap.getNbZones(), mMap);
+        ZoneM zone = new ZoneM(action.getPlayer(),
                 Type.values()[(int) (Math.random() * Type.values().length)],
                 mMap.getNbZones());
         mPlayers.add(player);
         mMap.add(zone);
         // Send it.
-        return new Connection(mMap, mPlayers);
+        return new Connection(action.getPlayer(), mMap, mPlayers);
     }
 
     private Action checkMove(Move action)
     {
         final Action[] result = { action };
-        PlayerM player = action.getPlayer();
+        PlayerM player = mPlayers.find(action.getPlayer());
         // Convert player position in the whole map ones.
         Vector2 position = player.getMapPosition();
         // Get the cell in which the player would like to go.
@@ -362,8 +350,8 @@ public class Model
 
     private Action checkCatch(Catch action)
     {
-        PlayerM player = action.getPlayer();
-        ArrayList<PlayerM> caught = new ArrayList<>();
+        ArrayList<String> caught = new ArrayList<>();
+        PlayerM player = mPlayers.find(action.getPlayer());
         // Convert player position in the whole map ones.
         Vector2 position = player.getMapPosition();
         // Check if a player is adjacent to player cell.
@@ -375,25 +363,25 @@ public class Model
                     {
                         if (Math.abs(pPosition.x - position.x) == 1)
                         {
-                            caught.add(p);
+                            caught.add(p.getID());
                         }
                     }
                     else if (pPosition.x == position.x)
                     {
                         if (Math.abs(pPosition.y - position.y) == 1)
                         {
-                            caught.add(p);
+                            caught.add(p.getID());
                         }
                     }
                 }
         );
         // Send it.
-        return caught.isEmpty() ? null : new Catch(player, caught);
+        return caught.isEmpty() ? null : new Catch(action.getPlayer(), caught);
     }
 
     private Action checkDisconnection(Disconnection action)
     {
-        PlayerM player = action.getPlayer();
+        PlayerM player = mPlayers.find(action.getPlayer());
         // Create the a list to pick a random player to be the owner of
         // the disconnected player's zone.
         ArrayList<PlayerM> toPick = new ArrayList<>(mPlayers.getPlayers());
@@ -406,13 +394,13 @@ public class Model
 
         for (int i = 0; i < zones.size(); i ++)
         {
-            if (zones.get(i).getOwner().equals(player))
+            if (zones.get(i).getOwner().equals(player.getID()))
             {
                 indexes.add(i);
             }
         }
         // Send it.
-        return new Disconnection(player, newOwner, indexes);
+        return new Disconnection(action.getPlayer(), newOwner.getID(), indexes);
     }
 
     public void goToGame()

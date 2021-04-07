@@ -10,16 +10,13 @@ public class Speak extends Action
 {
     private static final long serialVersionUID = -9101801388966315170L;
 
-    private final PlayerM mPlayer;
     private final PlayerM.Speak mSentence;
 
-    public Speak(PlayerM player, PlayerM.Speak sentence)
+    public Speak(String ID, PlayerM.Speak sentence)
     {
-        mPlayer = player;
+        super(ID);
         mSentence = sentence;
     }
-
-    public PlayerM getPlayer() { return mPlayer; }
 
     public PlayerM.Speak getSentence()
     {

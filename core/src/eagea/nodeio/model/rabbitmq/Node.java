@@ -38,6 +38,7 @@ public class Node
     private Connection mConnection;
     private Channel mChannel;
     private final Model mModel;
+    private String mQueueName;
     private boolean mIsHost;
     private boolean mIsCreated;
 
@@ -105,14 +106,14 @@ public class Node
             }
 
             // Get a queue.
-            String queueName = mChannel.queueDeclare().getQueue();
+            mQueueName = mChannel.queueDeclare().getQueue();
             // Bind it.
-            mChannel.queueBind(queueName, EXCHANGE_URI, "");
+            mChannel.queueBind(mQueueName, EXCHANGE_URI, "");
             // Handler.
-            mChannel.basicConsume(queueName, true,
+            mChannel.basicConsume(mQueueName, true,
                     this::onReceive,
                     consumerTag -> { });
-            System.out.println("[DEBUG]: queue created");
+            System.out.println("[DEBUG]: queue created " + mQueueName);
         }
         catch (IOException e)
         {
@@ -221,11 +222,17 @@ public class Node
         catch (Exception e)
         {
             System.err.println("[ERROR]: receive action");
+            e.printStackTrace();
         }
     }
 
     public boolean isHost()
     {
         return mIsHost;
+    }
+
+    public String getID()
+    {
+        return mQueueName;
     }
 }

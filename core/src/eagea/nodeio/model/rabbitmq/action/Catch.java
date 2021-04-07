@@ -12,30 +12,27 @@ public class Catch extends Action
 {
     private static final long serialVersionUID = 2505852453794582472L;
 
-    private final PlayerM mPlayer;
-    private final ArrayList<PlayerM> mCaught;
+    private final ArrayList<String> mCaught;
 
     /**
      * Sent by the player to request.
      */
-    public Catch(PlayerM player)
+    public Catch(String ID)
     {
-        mPlayer = player;
+        super(ID);
         mCaught = null;
     }
 
     /**
      * Sent by the host in response.
      */
-    public Catch(PlayerM player, ArrayList<PlayerM> caught)
+    public Catch(String ID, ArrayList<String> IDs)
     {
-        mPlayer = player;
-        mCaught = caught;
+        super(ID);
+        mCaught = IDs;
     }
 
-    public PlayerM getPlayer() { return mPlayer; }
-
-    public ArrayList<PlayerM> getCaught()
+    public ArrayList<String> getCaught()
     {
         return mCaught;
     }

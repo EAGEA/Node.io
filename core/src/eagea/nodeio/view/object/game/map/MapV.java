@@ -54,7 +54,8 @@ public class MapV implements Observer
                 mHighlighted = ! mHighlighted;
             }
 
-            zone.render(delta, mHighlighted && zone.getZone().getOwner() == mPlayer);
+            zone.render(delta, mHighlighted && zone.getZone().getOwner()
+                    .equals(mPlayer.getID()));
         }
     }
 
