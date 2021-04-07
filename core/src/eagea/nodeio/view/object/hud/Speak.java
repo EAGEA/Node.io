@@ -19,6 +19,9 @@ public class Speak
     private final float ICON_WIDTH = 2f;
     private final float ICON_HEIGHT = 1.3f;
 
+    // Delta error when clicking on button, on the y axis.
+    private final float TOUCH_DELTA = 0.5f;
+
     // Parent.
     private final View mView;
     // Position.
@@ -62,7 +65,8 @@ public class Speak
     public boolean isTouched(Vector2 position)
     {
         if (mPosition.x <= position.x && position.x <= mPosition.x + ICON_WIDTH
-                && mPosition.y <= position.y && position.y <= mPosition.y + ICON_HEIGHT)
+                && mPosition.y - TOUCH_DELTA <= position.y
+                && position.y <= mPosition.y + TOUCH_DELTA + ICON_HEIGHT)
         {
             System.out.println("[DEBUG]: on click speak hello");
             mView.getModel().askForSpeak(PlayerM.Speak.HELLO);
@@ -70,7 +74,8 @@ public class Speak
         }
         else if (mPosition.x + ICON_WIDTH + SPACE_HORIZONTAL_ICONS <= position.x
                 && position.x <= mPosition.x + ICON_WIDTH + SPACE_HORIZONTAL_ICONS + ICON_WIDTH
-                && mPosition.y <= position.y && position.y <= mPosition.y + ICON_HEIGHT)
+                && mPosition.y - TOUCH_DELTA <= position.y
+                && position.y <= mPosition.y + TOUCH_DELTA + ICON_HEIGHT)
         {
             System.out.println("[DEBUG]: on click speak looser");
             mView.getModel().askForSpeak(PlayerM.Speak.LOOSER);
@@ -78,7 +83,8 @@ public class Speak
         }
         else if (mPosition.x + 2f * (ICON_WIDTH + SPACE_HORIZONTAL_ICONS) <= position.x
                 && position.x <= mPosition.x + 2f * (ICON_WIDTH + SPACE_HORIZONTAL_ICONS) + ICON_WIDTH
-                && mPosition.y <= position.y && position.y <= mPosition.y + ICON_HEIGHT)
+                && mPosition.y - TOUCH_DELTA <= position.y
+                && position.y <= mPosition.y + TOUCH_DELTA+ ICON_HEIGHT)
         {
             System.out.println("[DEBUG]: on click speak bye");
             mView.getModel().askForSpeak(PlayerM.Speak.BYE);

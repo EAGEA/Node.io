@@ -9,7 +9,7 @@ import eagea.nodeio.Main;
 import eagea.nodeio.view.View;
 
 /**
- * Buttons to speak.
+ * Buttons to exit game.
  */
 public class Exit
 {

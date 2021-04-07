@@ -12,6 +12,7 @@ import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.view.object.background.Parallax;
 import eagea.nodeio.view.object.hud.Exit;
+import eagea.nodeio.view.object.hud.Joystick;
 import eagea.nodeio.view.object.hud.Score;
 import eagea.nodeio.view.object.hud.Speak;
 import eagea.nodeio.view.object.map.CellV;
@@ -35,6 +36,7 @@ public class View
     private final Exit mExit;
     private final Score mScore;
     private final Speak mSpeak;
+    private final Joystick mJoystick;
 
     public View(Model model)
     {
@@ -45,6 +47,7 @@ public class View
         mExit = new Exit(this);
         mScore = new Score(this);
         mSpeak = new Speak(this);
+        mJoystick = new Joystick(this);
     }
 
     public void render(float delta)
@@ -55,6 +58,7 @@ public class View
         mExit.render(delta);
         mScore.render(delta);
         mSpeak.render(delta);
+        mJoystick.render(delta);
     }
 
     /**
@@ -62,7 +66,9 @@ public class View
      */
     public boolean isTouched(Vector2 position)
     {
-        return mExit.isTouched(position) || mSpeak.isTouched(position);
+        return mExit.isTouched(position)
+                || mSpeak.isTouched(position)
+                || mJoystick.isTouched(position);
     }
 
     public Model getModel()
