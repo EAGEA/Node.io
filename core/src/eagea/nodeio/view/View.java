@@ -62,8 +62,7 @@ public class View
      */
     public boolean isTouched(Vector2 position)
     {
-        //System.out.println(position.x + " " +position.y);
-        return mExit.isTouched(position);
+        return mExit.isTouched(position) || mSpeak.isTouched(position);
     }
 
     public Model getModel()
@@ -79,11 +78,6 @@ public class View
     public PlayersV getPlayers()
     {
         return mPlayers;
-    }
-
-    public Score getScore()
-    {
-        return mScore;
     }
 
     /**

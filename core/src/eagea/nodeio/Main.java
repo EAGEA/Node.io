@@ -22,7 +22,6 @@ public class Main extends Game
     // Basic GDX rendering object.
     public static OrthographicCamera mCamera;
     public static Viewport mViewPortGame;
-    //public static Viewport mViewPortGUI;
     public static SpriteBatch mBatch;
     private GameScreen mGameScreen;
 
@@ -34,11 +33,6 @@ public class Main extends Game
         mBatch = new SpriteBatch();
         mCamera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         mViewPortGame = new FillViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
-
-        //mViewPortGUI = new ExtendViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
-
-        // World units when drawing.
-        Main.mBatch.setProjectionMatrix(Main.mCamera.combined);
         // Screens.
         mGameScreen = new GameScreen();
         setScreen(mGameScreen);
@@ -54,9 +48,10 @@ public class Main extends Game
     @Override
     public void resize(int width, int height)
     {
-        // Resize the viewports.
-        //mViewPortGUI.update(width, height, true) ;
-        mViewPortGame.update(width, height, true) ;
+        // Resize the viewport.
+        mViewPortGame.update(width, height, false) ;
+        // World units when drawing.
+        mBatch.setProjectionMatrix(mCamera.combined);
     }
 
     public void DEBUG()

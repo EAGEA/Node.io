@@ -99,7 +99,7 @@ public class Controller implements InputProcessor
             return false;
         }
         // Check if HUD touched.
-        if (mView.isTouched(new Vector2(screenX, screenY)))
+        if (mView.isTouched(Main.mViewPortGame.unproject(new Vector2(screenX, screenY))))
         {
             return true;
         }

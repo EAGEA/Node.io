@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.Main;
+import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.view.View;
 
 /**
@@ -28,7 +29,8 @@ public class Speak
     public Speak(View view)
     {
         mView = view;
-        mPosition = new Vector2((-3 * ICON_WIDTH -2 * SPACE_HORIZONTAL_ICONS) / 2f, 0f);
+        mPosition = new Vector2(
+                (-3 * ICON_WIDTH -2 * SPACE_HORIZONTAL_ICONS) / 2f, 0f);
         // Load textures
         mTexture = new TextureRegion[3];
         mTexture[0] = GameScreen.mHUDAtlas.findRegion("hello");
@@ -52,6 +54,37 @@ public class Speak
 
     private void updatePosition()
     {
-        mPosition.y = -mView.getScore().getY() - 1f;
+        Vector2 world = Main.mViewPortGame.unproject(new Vector2(
+                0, Gdx.app.getGraphics().getHeight()));
+        mPosition.y = world.y + ICON_HEIGHT / 2f;
+    }
+
+    public boolean isTouched(Vector2 position)
+    {
+        if (mPosition.x <= position.x && position.x <= mPosition.x + ICON_WIDTH
+                && mPosition.y <= position.y && position.y <= mPosition.y + ICON_HEIGHT)
+        {
+            System.out.println("[DEBUG]: on click speak hello");
+            mView.getModel().askForSpeak(PlayerM.Speak.HELLO);
+            return true;
+        }
+        else if (mPosition.x + ICON_WIDTH + SPACE_HORIZONTAL_ICONS <= position.x
+                && position.x <= mPosition.x + ICON_WIDTH + SPACE_HORIZONTAL_ICONS + ICON_WIDTH
+                && mPosition.y <= position.y && position.y <= mPosition.y + ICON_HEIGHT)
+        {
+            System.out.println("[DEBUG]: on click speak looser");
+            mView.getModel().askForSpeak(PlayerM.Speak.LOOSER);
+            return true;
+        }
+        else if (mPosition.x + 2f * (ICON_WIDTH + SPACE_HORIZONTAL_ICONS) <= position.x
+                && position.x <= mPosition.x + 2f * (ICON_WIDTH + SPACE_HORIZONTAL_ICONS) + ICON_WIDTH
+                && mPosition.y <= position.y && position.y <= mPosition.y + ICON_HEIGHT)
+        {
+            System.out.println("[DEBUG]: on click speak bye");
+            mView.getModel().askForSpeak(PlayerM.Speak.BYE);
+            return true;
+        }
+
+        return false;
     }
 }

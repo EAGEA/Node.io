@@ -68,22 +68,6 @@ public class Score
     {
         Vector2 world = Main.mViewPortGame.unproject(new Vector2(0, 0));
         mPosition.x = (-nbDigits * DIGIT_WIDTH - ICON_WIDTH - SPACE_ICON_DIGIT) / 2f;
-        mPosition.y = world.y / 2f - ICON_HEIGHT;
-
-        if (Gdx.app.getGraphics().getWidth() < Gdx.app.getGraphics().getHeight())
-        {
-            // Vertical orientation.
-            mPosition.y -= 1f;
-        }
-        else
-        {
-            // Horizontal orientation.
-            mPosition.y -= 4f;
-        }
-    }
-
-    public float getY()
-    {
-        return mPosition.y;
+        mPosition.y = world.y - 2 * ICON_HEIGHT;
     }
 }

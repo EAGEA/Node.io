@@ -45,32 +45,16 @@ public class Exit
     {
         Vector2 world = Main.mViewPortGame.unproject(
                 new Vector2(Gdx.app.getGraphics().getWidth(), 0));
-        mPosition.x = world.x / 2f - 5.25f;
-        mPosition.y = world.y / 2f - ICON_HEIGHT;
-
-        if (Gdx.app.getGraphics().getWidth() < Gdx.app.getGraphics().getHeight())
-        {
-            // Vertical orientation.
-            mPosition.y -= 1f;
-        }
-        else
-        {
-            // Horizontal orientation.
-            mPosition.y -= 4f;
-        }
+        mPosition.x = world.x - 2f * ICON_WIDTH;
+        mPosition.y = world.y - 2f * ICON_HEIGHT;
     }
 
     public boolean isTouched(Vector2 position)
     {
-        Vector2 screenPosition = Main.mViewPortGame.toScreenCoordinates(
-                new Vector2(1, 2),
-                Main.mCamera.invProjectionView);
-
-        System.out.println(screenPosition.x + " " + screenPosition.y);
-        System.out.println(position.x + " " + position.y);
-        if (screenPosition.x <= position.x && position.x <= screenPosition.x
-                && screenPosition.y <= position.y && position.y <= screenPosition.y)
+        if (mPosition.x <= position.x && position.x <= mPosition.x + ICON_WIDTH
+                && mPosition.y <= position.y && position.y <= mPosition.y + ICON_HEIGHT)
         {
+            System.out.println("[DEBUG]: on click exit");
             mView.getModel().askForDisconnection();
             return true;
         }
