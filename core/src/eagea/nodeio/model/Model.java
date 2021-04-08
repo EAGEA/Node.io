@@ -260,6 +260,13 @@ public class Model
             goToMenu();
             return;
         }
+
+        // If I'm the new host.
+        if (mPlayer.getID().equals(action.getNewHost()))
+        {
+            mNode.checkIfHost();
+        }
+
         // Set to the corresponding zones.
         action.getIndexes().forEach(i ->
             {
@@ -412,6 +419,7 @@ public class Model
 
     private Action checkDisconnection(Disconnection action)
     {
+        Disconnection disconnection;
         PlayerM player = mPlayers.find(action.getPlayer());
 
         if (player == null)
@@ -442,12 +450,20 @@ public class Model
         if (player.equals(mPlayer))
         {
             //Node elicitation : new host (let's say newOwner)
+            PlayerM newHost = newOwner;
             //Remove host
-            //Send special action to notify the new host
+            mNode.setHost(false);
+            //Send special disconnection action to notify the new host
+            disconnection = new Disconnection(action.getPlayer(),
+                    newHost.getID(),
+                    newOwner.getID(), indexes);
         }
 
-        Disconnection disconnection = new Disconnection(action.getPlayer(),
-                newOwner.getID(), indexes);
+        else
+        {
+            disconnection = new Disconnection(action.getPlayer(),
+                    newOwner.getID(), indexes);
+        }
         // Play it for the host.
         playDisconnection(disconnection);
         // And send it.

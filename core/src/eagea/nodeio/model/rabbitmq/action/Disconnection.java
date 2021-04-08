@@ -13,9 +13,8 @@ public class Disconnection extends Action
 {
     private static final long serialVersionUID = 2116895505000334818L;
 
-    private String mNewOwner;
+    private String mNewOwner, mNewHost;
     private ArrayList<Integer> mIndexes;
-    private Boolean mIsHost;
 
     /**
      * Disconnection from a node to the host for check.
@@ -35,9 +34,20 @@ public class Disconnection extends Action
         mIndexes = indexes;
     }
 
+    /**
+     * Disconnection from the host to the nodes : disconnection of the host
+     */
+    public Disconnection(String ID, String newHost, String newOwner, ArrayList<Integer> indexes)
+    {
+        super(ID);
+        mNewHost = newHost;
+        mNewOwner = newOwner;
+        mIndexes = indexes;
+    }
+
     public String getNewOwner() { return mNewOwner; }
 
-    public ArrayList<Integer> getIndexes() { return mIndexes; }
+    public String getNewHost() { return mNewHost; }
 
-    public Boolean getIsHost() { return mIsHost ;}
+    public ArrayList<Integer> getIndexes() { return mIndexes; }
 }
