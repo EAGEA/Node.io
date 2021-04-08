@@ -357,7 +357,7 @@ public class Model
             // And send it.
             return action;
         }
-        // And send it.
+        // The move was not validated.
         return null;
     }
 
