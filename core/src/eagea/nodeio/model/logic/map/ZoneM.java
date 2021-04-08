@@ -3,9 +3,6 @@ package eagea.nodeio.model.logic.map;
 import java.io.Serializable;
 import java.util.Observable;
 
-import eagea.nodeio.model.Model;
-import eagea.nodeio.model.logic.player.PlayerM;
-
 /**
  * A zone of the game map.
  */
@@ -13,17 +10,20 @@ public class ZoneM extends Observable implements Serializable
 {
     private static final long serialVersionUID = -3060804350757580941L;
 
+    // Type of zone.
+    public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
+
     // Width and height.
     public static final int SIZE = 5;
 
     // ID of the player who owns this zone.
     private String mOwner;
     // Type of zone.
-    private Model.Type mType;
+    private Type mType;
     // Zone position in map.
     private final int mPositionInMap;
 
-    public ZoneM(String owner, Model.Type type, int position)
+    public ZoneM(String owner, Type type, int position)
     {
         mOwner = owner;
         mType = type;
@@ -35,7 +35,7 @@ public class ZoneM extends Observable implements Serializable
         mOwner = owner;
     }
 
-    public void setType(Model.Type type)
+    public void setType(Type type)
     {
         mType = type;
     }
@@ -45,7 +45,7 @@ public class ZoneM extends Observable implements Serializable
         return mOwner;
     }
 
-    public Model.Type getType()
+    public Type getType()
     {
         return mType;
     }

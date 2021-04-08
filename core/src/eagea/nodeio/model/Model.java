@@ -1,9 +1,7 @@
 package eagea.nodeio.model;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
-import java.nio.channels.ScatteringByteChannel;
 import java.util.ArrayList;
 
 import eagea.nodeio.GameScreen;
@@ -25,8 +23,6 @@ import eagea.nodeio.model.rabbitmq.action.Move;
  */
 public class Model
 {
-    // Player ID (i.e. its color, and its zone type).
-    public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
     // Current game state.
     public enum State { MENU, STARTING, GAME, CAUGHT }
 
@@ -74,7 +70,7 @@ public class Model
             mPlayers.add(mPlayer);
             // - Create player's zone.
             ZoneM zone = new ZoneM(mNode.getID(),
-                    Type.values()[(int) (Math.random() * Type.values().length)], 0);
+                    ZoneM.Type.values()[(int) (Math.random() * ZoneM.Type.values().length)], 0);
             mMap.add(zone);
             // Start rendering.
             mGameScreen.onStartGame();
@@ -261,19 +257,14 @@ public class Model
             goToMenu();
             return;
         }
-
         // If I'm the new host.
         if (mPlayer.getID().equals(action.getNewHost()))
         {
-            System.out.println("[DEBUG] I'm the new host");
+            System.out.println("[DEBUG]: I'm the new HOST");
         }
-
         // Set to the corresponding zones.
-        action.getIndexes().forEach(i ->
-            {
-                mMap.getZones().get(i).setOwner(action.getNewOwner());
-            }
-        );
+        action.getIndexes().forEach(i -> mMap.getZones().get(i)
+                .setOwner(action.getNewOwner()));
         // And remove the disconnected user.
         mPlayers.remove(mPlayers.find(action.getPlayer()));
     }
@@ -323,7 +314,7 @@ public class Model
                 (int) (Math.random() * (ZoneM.SIZE - 1)),
                 (int) (Math.random() * (ZoneM.SIZE - 1)), mMap.getNbZones(), mMap);
         ZoneM zone = new ZoneM(action.getPlayer(),
-                Type.values()[(int) (Math.random() * Type.values().length)],
+                ZoneM.Type.values()[(int) (Math.random() * ZoneM.Type.values().length)],
                 mMap.getNbZones());
         mPlayers.add(player);
         mMap.add(zone);
@@ -447,17 +438,14 @@ public class Model
             }
         }
 
-        //If the disconnection received is from the host (host->host)
+        // If the disconnection received is from the host (host->host).
         if (player.equals(mPlayer))
         {
-            //Node elicitation : new host (let's say newOwner)
-            PlayerM newHost = newOwner;
-            //Send special disconnection action to notify the new host
+            // Node elicitation: new host (let's say newOwner).
+            // Send special disconnection action to notify the new host.
             disconnection = new Disconnection(action.getPlayer(),
-                    newHost.getID(),
-                    newOwner.getID(), indexes);
+                    newOwner.getID(), indexes, newOwner.getID());
         }
-
         else
         {
             disconnection = new Disconnection(action.getPlayer(),
@@ -466,7 +454,7 @@ public class Model
         // Play it for the host.
         playDisconnection(disconnection);
         // And send it.
-        return action;
+        return disconnection;
     }
 
     public void goToGame()

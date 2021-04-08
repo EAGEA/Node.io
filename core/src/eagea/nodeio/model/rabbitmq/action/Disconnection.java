@@ -25,7 +25,7 @@ public class Disconnection extends Action
     }
 
     /**
-     * Disconnection from the host to the nodes.
+     * Disconnection from the host to the nodes: disconnection of a non-host player.
      */
     public Disconnection(String ID, String newOwner, ArrayList<Integer> indexes)
     {
@@ -35,14 +35,14 @@ public class Disconnection extends Action
     }
 
     /**
-     * Disconnection from the host to the nodes : disconnection of the host
+     * Disconnection from the host to the nodes: disconnection of the host
      */
-    public Disconnection(String ID, String newHost, String newOwner, ArrayList<Integer> indexes)
+    public Disconnection(String ID, String newOwner, ArrayList<Integer> indexes, String newHost)
     {
         super(ID);
-        mNewHost = newHost;
         mNewOwner = newOwner;
         mIndexes = indexes;
+        mNewHost = newHost;
     }
 
     public String getNewOwner() { return mNewOwner; }
