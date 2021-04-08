@@ -68,7 +68,8 @@ public class Model
             // - Create Map.
             mMap = new MapM();
             // - Create player.
-            mPlayer = new PlayerM(mNode.getID(), 0, 0, 0, mMap);
+            mPlayer = new PlayerM(mNode.getID(),
+                    (int) (Math.random() * (ZoneM.SIZE - 1)), (int) (Math.random() * (ZoneM.SIZE - 1)), 0, mMap);
             mPlayers = new PlayersM();
             mPlayers.add(mPlayer);
             // - Create player's zone.
@@ -319,8 +320,8 @@ public class Model
     {
         // Add new player and zone.
         PlayerM player = new PlayerM(action.getPlayer(),
-                (int) (Math.random() * (MapM.ZONE_LINE - 1)),
-                (int) (Math.random() * (MapM.ZONE_LINE - 1)), mMap.getNbZones(), mMap);
+                (int) (Math.random() * (ZoneM.SIZE - 1)),
+                (int) (Math.random() * (ZoneM.SIZE - 1)), mMap.getNbZones(), mMap);
         ZoneM zone = new ZoneM(action.getPlayer(),
                 Type.values()[(int) (Math.random() * Type.values().length)],
                 mMap.getNbZones());
