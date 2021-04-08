@@ -117,7 +117,7 @@ public class Model
     public void askForDisconnection()
     {
         // Request for disconnection.
-        mNode.notifyHost(new Disconnection(mNode.getID(),mNode.isHost()));
+        mNode.notifyHost(new Disconnection(mNode.getID()));
     }
 
     /**
@@ -419,6 +419,7 @@ public class Model
             // Caught before being able to disconnect.
             return null;
         }
+
         // Create the a list to pick a random player to be the owner of
         // the disconnected player's zone.
         ArrayList<PlayerM> toPick = new ArrayList<>(mPlayers.getPlayers());
@@ -435,6 +436,14 @@ public class Model
             {
                 indexes.add(i);
             }
+        }
+
+        //If the disconnection received is from the host (host->host)
+        if (player.equals(mPlayer))
+        {
+            //Node elicitation : new host (let's say newOwner)
+            //Remove host
+            //Send special action to notify the new host
         }
 
         Disconnection disconnection = new Disconnection(action.getPlayer(),

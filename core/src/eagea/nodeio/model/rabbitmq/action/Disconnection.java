@@ -20,10 +20,9 @@ public class Disconnection extends Action
     /**
      * Disconnection from a node to the host for check.
      */
-    public Disconnection(String ID,Boolean host)
+    public Disconnection(String ID)
     {
         super(ID);
-        mIsHost = host;
     }
 
     /**
@@ -39,4 +38,6 @@ public class Disconnection extends Action
     public String getNewOwner() { return mNewOwner; }
 
     public ArrayList<Integer> getIndexes() { return mIndexes; }
+
+    public Boolean getIsHost() { return mIsHost ;}
 }
