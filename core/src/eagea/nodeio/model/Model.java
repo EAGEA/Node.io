@@ -265,7 +265,7 @@ public class Model
         // If I'm the new host.
         if (mPlayer.getID().equals(action.getNewHost()))
         {
-            mNode.checkIfHost();
+            System.out.println("[DEBUG] I'm the new host");
         }
 
         // Set to the corresponding zones.
@@ -452,8 +452,6 @@ public class Model
         {
             //Node elicitation : new host (let's say newOwner)
             PlayerM newHost = newOwner;
-            //Remove host
-            mNode.setHost(false);
             //Send special disconnection action to notify the new host
             disconnection = new Disconnection(action.getPlayer(),
                     newHost.getID(),

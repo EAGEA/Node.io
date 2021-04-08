@@ -123,7 +123,7 @@ public class Node
     /**
      * Check if the user is the first one to connect. If so, she/he is the host.
      */
-    public void checkIfHost()
+    private void checkIfHost()
     {
         try
         {
@@ -240,6 +240,4 @@ public class Node
     {
         return mQueueName;
     }
-
-    public void setHost(Boolean b) { mIsHost = b; }
 }
