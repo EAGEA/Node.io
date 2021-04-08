@@ -83,6 +83,7 @@ public class Model
      */
     public void askForMove(PlayerM.Event orientation)
     {
+        System.out.println(mNode.getID());
         // Request for move.
         mNode.notifyHost(new Move(mNode.getID(), orientation));
     }
@@ -261,6 +262,7 @@ public class Model
         if (mPlayer.getID().equals(action.getNewHost()))
         {
             System.out.println("[DEBUG]: I'm the new HOST");
+            mNode.becomeHost();
         }
         // Set to the corresponding zones.
         action.getIndexes().forEach(i -> mMap.getZones().get(i)
@@ -325,6 +327,7 @@ public class Model
     private Action checkMove(Move action)
     {
         final Action[] result = { action };
+        System.out.println(action.getPlayer());
         PlayerM player = mPlayers.find(action.getPlayer());
         // Convert player position in the whole map ones.
         Vector2 position = player.getMapPosition();
@@ -411,7 +414,6 @@ public class Model
 
     private Action checkDisconnection(Disconnection action)
     {
-        Disconnection disconnection;
         PlayerM player = mPlayers.find(action.getPlayer());
 
         if (player == null)
@@ -424,37 +426,61 @@ public class Model
         // the disconnected player's zone.
         ArrayList<PlayerM> toPick = new ArrayList<>(mPlayers.getPlayers());
         toPick.remove(player);
-        // Pick at random index.
-        PlayerM newOwner = toPick.get((int) (Math.random() * toPick.size()));
-        // Get the corresponding indexes of the zones.
-        ArrayList<ZoneM> zones = mMap.getZones();
+        PlayerM newOwner = null;
         ArrayList<Integer> indexes = new ArrayList<>();
 
-        for (int i = 0; i < zones.size(); i ++)
+        if (! toPick.isEmpty())
         {
-            if (zones.get(i).getOwner().equals(player.getID()))
+            // Pick new owner at random index.
+            newOwner = toPick.get((int) (Math.random() * toPick.size()));
+            // Get the corresponding indexes of the zones.
+            ArrayList<ZoneM> zones = mMap.getZones();
+
+            for (int i = 0; i < zones.size(); i ++)
             {
-                indexes.add(i);
+                if (zones.get(i).getOwner().equals(player.getID()))
+                {
+                    indexes.add(i);
+                }
             }
         }
 
-        // If the disconnection received is from the host (host->host).
+        if (newOwner != null)
+        {
+            if (player.equals(mPlayer))
+            {
+                // If the disconnection received is from the host (host->host).
+                // Node elicitation: new host (let's say newOwner).
+                // Send special disconnection action to notify the new host.
+                action = new Disconnection(action.getPlayer(),
+                        newOwner.getID(), indexes, newOwner.getID());
+                mNode.looseHost(false);
+                // Play it for the host.
+                playDisconnection(action);
+            }
+            else
+            {
+                // If the disconnection is not from the host.
+                action = new Disconnection(action.getPlayer(),
+                        newOwner.getID(), indexes);
+                // Play it for the host.
+                playDisconnection(action);
+            }
+            // And send it.
+            return action;
+        }
+
+        // Play it for the host.
+        playDisconnection(action);
+
         if (player.equals(mPlayer))
         {
-            // Node elicitation: new host (let's say newOwner).
-            // Send special disconnection action to notify the new host.
-            disconnection = new Disconnection(action.getPlayer(),
-                    newOwner.getID(), indexes, newOwner.getID());
+            // If the disconnection received is from the host (host->host).
+            // Loose host state, and destroy the host queue because last person in game.
+            mNode.looseHost(true);
         }
-        else
-        {
-            disconnection = new Disconnection(action.getPlayer(),
-                    newOwner.getID(), indexes);
-        }
-        // Play it for the host.
-        playDisconnection(disconnection);
-        // And send it.
-        return disconnection;
+
+        return null;
     }
 
     public void goToGame()

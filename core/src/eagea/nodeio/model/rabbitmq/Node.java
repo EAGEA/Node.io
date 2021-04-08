@@ -53,15 +53,14 @@ public class Node
      */
     public void create()
     {
-        if (mIsCreated)
+        if (! mIsCreated)
         {
-            return;
+            // On first game.
+            openConnection();
+            mIsCreated = true;
         }
 
-        openConnection();
         checkIfHost();
-
-        mIsCreated = true;
     }
 
     /**
@@ -104,6 +103,11 @@ public class Node
                 System.exit(-1);
             }
 
+            if (mQueueName != null)
+            {
+                // Not the first game.
+                mChannel.queueDelete(mQueueName);
+            }
             // Get a queue.
             mQueueName = mChannel.queueDeclare().getQueue();
             // Bind it.
@@ -142,23 +146,60 @@ public class Node
             {
                 // Re-open the channel (closed with exception before).
                 openChannel();
-                // Declare the host queue.
-                mChannel.queueDeclare(HOST_QUEUE_URI,
-                        false, false, true,
-                        null);
-                mChannel.basicConsume(HOST_QUEUE_URI, true,
-                        this::onHostReceive,
-                        consumerTag -> { });
-                // Just to get and ID:
-                mQueueName = mChannel.queueDeclare().getQueue();
-                mChannel.queueDelete(mQueueName);
-                // She/he is the host!
-                mIsHost = true;
+                becomeHost();
                 System.out.println("[DEBUG]: i'm HOST");
             }
             catch (Exception e_)
             {
                 e_.printStackTrace();
+            }
+        }
+    }
+
+    public void becomeHost()
+    {
+        try
+        {
+            if (mQueueName != null)
+            {
+                // If was a non-host player.
+                mChannel.queueDelete(mQueueName);
+            }
+            else
+            {
+                // Firs game, just to get and ID:
+                mQueueName = mChannel.queueDeclare().getQueue();
+                mChannel.queueDelete(mQueueName);
+            }
+            // Declare the host queue.
+            mChannel.queueDeclare(HOST_QUEUE_URI,
+                    false, false, true,
+                    null);
+            mChannel.basicConsume(HOST_QUEUE_URI, true,
+                    this::onHostReceive,
+                    consumerTag -> { });
+            // She/he is the host!
+            mIsHost = true;
+        }
+        catch (Exception e_)
+        {
+            e_.printStackTrace();
+        }
+    }
+
+    public void looseHost(boolean destroy)
+    {
+        mIsHost = false;
+
+        if (destroy)
+        {
+            try
+            {
+                mChannel.queueDelete(HOST_QUEUE_URI);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
             }
         }
     }
