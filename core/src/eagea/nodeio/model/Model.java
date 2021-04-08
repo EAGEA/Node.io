@@ -354,11 +354,9 @@ public class Model
         if (result[0] != null)
         {
             playMove((Move) result[0]);
-            // And send it.
-            return action;
         }
-        // The move was not validated.
-        return null;
+        // Send it.
+        return result[0];
     }
 
     private Action checkSpeak(Speak action)
