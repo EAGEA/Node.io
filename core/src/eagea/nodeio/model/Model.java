@@ -117,7 +117,7 @@ public class Model
     public void askForDisconnection()
     {
         // Request for disconnection.
-        mNode.notifyHost(new Disconnection(mNode.getID()));
+        mNode.notifyHost(new Disconnection(mNode.getID(),mNode.isHost()));
     }
 
     /**

@@ -15,13 +15,15 @@ public class Disconnection extends Action
 
     private String mNewOwner;
     private ArrayList<Integer> mIndexes;
+    private Boolean mIsHost;
 
     /**
      * Disconnection from a node to the host for check.
      */
-    public Disconnection(String ID)
+    public Disconnection(String ID,Boolean host)
     {
         super(ID);
+        mIsHost = host;
     }
 
     /**
