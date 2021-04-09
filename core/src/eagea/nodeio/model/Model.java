@@ -344,7 +344,6 @@ public class Model
     private Action checkMove(Move action)
     {
         final Action[] result = { action };
-        System.out.println(action.getPlayer());
         PlayerM player = mPlayers.find(action.getPlayer());
         // Convert player position in the whole map ones.
         Vector2 position = player.getMapPosition();

@@ -47,14 +47,6 @@ public class PlayerM extends Observable implements Serializable
 
     public void moveRight()
     {
-        if (mMap.get(mZone).getCells()[(int) mPosition.x][(int) (mPosition.y - 1)].getType()
-                != CellM.Type.EMPTY)
-        {
-            // Cell is not empty (there is a bush
-            // or something else on it), can't go on it.
-            return;
-        }
-
         if (mPosition.y - 1 < 0)
         {
             // Next zone or impossible move.
@@ -65,6 +57,13 @@ public class PlayerM extends Observable implements Serializable
             }
             else
             {
+                if (mMap.get(mZone - 1).getCells()[(int) mPosition.x]
+                        [(int) (mPosition.y - ZoneM.SIZE)].getType() != CellM.Type.EMPTY)
+                {
+                    // Cell is not empty (there is a bush
+                    // or something else on it), can't go on it.
+                    return;
+                }
                 // The player exit the current zone.
                 mPosition.y = ZoneM.SIZE - 1;
                 mZone --;
@@ -72,6 +71,13 @@ public class PlayerM extends Observable implements Serializable
         }
         else
         {
+            if (mMap.get(mZone).getCells()[(int) mPosition.x][(int) (mPosition.y - 1)].getType()
+                    != CellM.Type.EMPTY)
+            {
+                // Cell is not empty (there is a bush
+                // or something else on it), can't go on it.
+                return;
+            }
             // Move within the zone.
             mPosition.y --;
         }
@@ -81,14 +87,6 @@ public class PlayerM extends Observable implements Serializable
 
     public void moveLeft()
     {
-        if (mMap.get(mZone).getCells()[(int) mPosition.x][(int) (mPosition.y + 1)].getType()
-                != CellM.Type.EMPTY)
-        {
-            // Cell is not empty (there is a bush
-            // or something else on it), can't go on it.
-            return;
-        }
-
         if (mPosition.y + 1 >= ZoneM.SIZE)
         {
             // Next zone or impossible move.
@@ -99,6 +97,13 @@ public class PlayerM extends Observable implements Serializable
             }
             else
             {
+                if (mMap.get(mZone + 1).getCells()[(int) mPosition.x][0].getType()
+                        != CellM.Type.EMPTY)
+                {
+                    // Cell is not empty (there is a bush
+                    // or something else on it), can't go on it.
+                    return;
+                }
                 // The player exit the current zone.
                 mPosition.y = 0;
                 mZone ++;
@@ -106,6 +111,13 @@ public class PlayerM extends Observable implements Serializable
         }
         else
         {
+            if (mMap.get(mZone).getCells()[(int) mPosition.x][(int) (mPosition.y + 1)].getType()
+                    != CellM.Type.EMPTY)
+            {
+                // Cell is not empty (there is a bush
+                // or something else on it), can't go on it.
+                return;
+            }
             // Move within the zone.
             mPosition.y ++;
         }
@@ -115,14 +127,6 @@ public class PlayerM extends Observable implements Serializable
 
     public void moveUp()
     {
-        if (mMap.get(mZone).getCells()[(int) mPosition.x + 1][(int) (mPosition.y)].getType()
-                != CellM.Type.EMPTY)
-        {
-            // Cell is not empty (there is a bush
-            // or something else on it), can't go on it.
-            return;
-        }
-
         if (mPosition.x + 1 >= ZoneM.SIZE)
         {
             // Next zone or impossible move.
@@ -133,6 +137,13 @@ public class PlayerM extends Observable implements Serializable
             }
             else
             {
+                if (mMap.get(mZone + MapM.ZONE_LINE).getCells()[0][(int) (mPosition.y)].getType()
+                        != CellM.Type.EMPTY)
+                {
+                    // Cell is not empty (there is a bush
+                    // or something else on it), can't go on it.
+                    return;
+                }
                 // The player exit the current zone.
                 mPosition.x = 0;
                 mZone += MapM.ZONE_LINE;
@@ -140,6 +151,13 @@ public class PlayerM extends Observable implements Serializable
         }
         else
         {
+            if (mMap.get(mZone).getCells()[(int) mPosition.x + 1][(int) (mPosition.y)].getType()
+                    != CellM.Type.EMPTY)
+            {
+                // Cell is not empty (there is a bush
+                // or something else on it), can't go on it.
+                return;
+            }
             // Move within the zone.
             mPosition.x ++;
         }
@@ -149,14 +167,6 @@ public class PlayerM extends Observable implements Serializable
 
     public void moveDown()
     {
-        if (mMap.get(mZone).getCells()[(int) mPosition.x - 1][(int) (mPosition.y)].getType()
-                != CellM.Type.EMPTY)
-        {
-            // Cell is not empty (there is a bush
-            // or something else on it), can't go on it.
-            return;
-        }
-
         if (mPosition.x - 1 < 0)
         {
             // Next zone or impossible move.
@@ -167,6 +177,13 @@ public class PlayerM extends Observable implements Serializable
             }
             else
             {
+                if (mMap.get(mZone - MapM.ZONE_LINE).getCells()[ZoneM.SIZE - 1]
+                        [(int) (mPosition.y)].getType() != CellM.Type.EMPTY)
+                {
+                    // Cell is not empty (there is a bush
+                    // or something else on it), can't go on it.
+                    return;
+                }
                 // The player exit the current zone.
                 mPosition.x = ZoneM.SIZE - 1;
                 mZone -= MapM.ZONE_LINE;
@@ -174,6 +191,13 @@ public class PlayerM extends Observable implements Serializable
         }
         else
         {
+            if (mMap.get(mZone).getCells()[(int) mPosition.x - 1][(int) (mPosition.y)].getType()
+                    != CellM.Type.EMPTY)
+            {
+                // Cell is not empty (there is a bush
+                // or something else on it), can't go on it.
+                return;
+            }
             // Move within the zone.
             mPosition.x --;
         }

@@ -160,17 +160,12 @@ public class Node
     {
         try
         {
-            if (mQueueName != null)
+            if (mQueueName == null)
             {
-                // If was a non-host player.
-                mChannel.queueDelete(mQueueName);
-            }
-            else
-            {
-                // Firs game, just to get and ID:
+                // First game, just to get and ID:
                 mQueueName = mChannel.queueDeclare().getQueue();
-                mChannel.queueDelete(mQueueName);
             }
+            mChannel.queueDelete(mQueueName);
             // Declare the host queue.
             mChannel.queueDeclare(HOST_QUEUE_URI,
                     false, false, true,
