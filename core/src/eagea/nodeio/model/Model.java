@@ -31,7 +31,6 @@ public class Model
 
     // Context.
     private final GameScreen mGameScreen;
-    private Sound mSound;
 
     // RabbitMQ.
     private final Node mNode;
@@ -49,7 +48,6 @@ public class Model
         mGameScreen = screen;
         mNode = new Node(this);
         mState = State.MENU;
-        mSound = Gdx.audio.newSound(Gdx.files.internal("footstep.ogg"));
     }
 
     /**
@@ -197,26 +195,28 @@ public class Model
 
     private void playMove(Move action)
     {
+        boolean move = false;
         // Find the corresponding player (reference).
-       PlayerM player = mPlayers.find(action.getPlayer());
+        PlayerM player = mPlayers.find(action.getPlayer());
         // Check if found.
         if (player == null)
         {
             System.err.println("[ERROR]: can't play action");
             return;
         }
-
-        if(player.getZone() == mPlayer.getZone())
-        {
-            mSound.play();
-        }
         // Move it.
         switch (action.getOrientation())
         {
-            case LEFT: player.moveLeft(); break;
-            case RIGHT: player.moveRight(); break;
-            case UP: player.moveUp(); break;
-            case DOWN: player.moveDown(); break;
+            case LEFT: move = player.moveLeft(); break;
+            case RIGHT: move = player.moveRight(); break;
+            case UP: move = player.moveUp(); break;
+            case DOWN: move = player.moveDown(); break;
+        }
+        // If player moves, and she/he is on the same zone,
+        // play a footstep sound.
+        if (move && player.getZone() == mPlayer.getZone())
+        {
+            GameScreen.mSound.play();
         }
     }
 

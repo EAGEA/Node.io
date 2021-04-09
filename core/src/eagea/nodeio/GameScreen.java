@@ -2,6 +2,7 @@ package eagea.nodeio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
@@ -19,6 +20,8 @@ public class GameScreen extends ScreenAdapter
     public static TextureAtlas mCharactersAtlas;
     public static TextureAtlas mHUDAtlas;
     public static TextureAtlas mGUIAtlas;
+    // Sounds.
+    public static Sound mSound;
     // Model:
     private Model mModel;
     // View:
@@ -38,6 +41,8 @@ public class GameScreen extends ScreenAdapter
         mModel = new Model(this);
         mView = new View(mModel);
         mController = new Controller(mModel, mView);
+        // Sounds.
+        mSound = Gdx.audio.newSound(Gdx.files.internal("footstep.ogg"));
     }
 
     @Override
@@ -45,6 +50,7 @@ public class GameScreen extends ScreenAdapter
     {
         mEnvironmentAtlas.dispose();
         mCharactersAtlas.dispose();
+        mSound.dispose();
     }
 
     @Override

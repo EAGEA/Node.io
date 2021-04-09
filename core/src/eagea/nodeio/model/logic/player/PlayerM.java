@@ -45,7 +45,7 @@ public class PlayerM extends Observable implements Serializable
         mColor = Color.values()[(int) (Math.random() * Color.values().length)];
     }
 
-    public void moveRight()
+    public boolean moveRight()
     {
         if (mPosition.y - 1 < 0)
         {
@@ -53,7 +53,7 @@ public class PlayerM extends Observable implements Serializable
             if (mZone % MapM.ZONE_LINE == 0)
             {
                 // The player can not go over limits.
-                return;
+                return false;
             }
             else
             {
@@ -62,7 +62,7 @@ public class PlayerM extends Observable implements Serializable
                 {
                     // Cell is not empty (there is a bush
                     // or something else on it), can't go on it.
-                    return;
+                    return false;
                 }
                 // The player exit the current zone.
                 mPosition.y = ZoneM.SIZE - 1;
@@ -76,16 +76,18 @@ public class PlayerM extends Observable implements Serializable
             {
                 // Cell is not empty (there is a bush
                 // or something else on it), can't go on it.
-                return;
+                return false;
             }
             // Move within the zone.
             mPosition.y --;
         }
         // Notify that player has moved to the left.
         notify(Event.RIGHT);
+
+        return true;
     }
 
-    public void moveLeft()
+    public boolean moveLeft()
     {
         if (mPosition.y + 1 >= ZoneM.SIZE)
         {
@@ -93,7 +95,7 @@ public class PlayerM extends Observable implements Serializable
             if (mZone >= mMap.getNbZones() -1 || ((mZone + 1) % MapM.ZONE_LINE) == 0)
             {
                 // The player can not go over limits.
-                return;
+                return false;
             }
             else
             {
@@ -102,7 +104,7 @@ public class PlayerM extends Observable implements Serializable
                 {
                     // Cell is not empty (there is a bush
                     // or something else on it), can't go on it.
-                    return;
+                    return false;
                 }
                 // The player exit the current zone.
                 mPosition.y = 0;
@@ -116,16 +118,18 @@ public class PlayerM extends Observable implements Serializable
             {
                 // Cell is not empty (there is a bush
                 // or something else on it), can't go on it.
-                return;
+                return false;
             }
             // Move within the zone.
             mPosition.y ++;
         }
         // Notify that player has moved to the right.
         notify(Event.LEFT);
+
+        return true;
     }
 
-    public void moveUp()
+    public boolean moveUp()
     {
         if (mPosition.x + 1 >= ZoneM.SIZE)
         {
@@ -133,7 +137,7 @@ public class PlayerM extends Observable implements Serializable
             if (((mZone + 1) + MapM.ZONE_LINE) > mMap.getNbZones())
             {
                 // The player can not go over limits.
-                return;
+                return false;
             }
             else
             {
@@ -142,7 +146,7 @@ public class PlayerM extends Observable implements Serializable
                 {
                     // Cell is not empty (there is a bush
                     // or something else on it), can't go on it.
-                    return;
+                    return false;
                 }
                 // The player exit the current zone.
                 mPosition.x = 0;
@@ -156,16 +160,18 @@ public class PlayerM extends Observable implements Serializable
             {
                 // Cell is not empty (there is a bush
                 // or something else on it), can't go on it.
-                return;
+                return false;
             }
             // Move within the zone.
             mPosition.x ++;
         }
         // Notify that player has moved upwards.
         notify(Event.UP);
+
+        return true;
     }
 
-    public void moveDown()
+    public boolean moveDown()
     {
         if (mPosition.x - 1 < 0)
         {
@@ -173,7 +179,7 @@ public class PlayerM extends Observable implements Serializable
             if ((mZone - MapM.ZONE_LINE) < 0)
             {
                 // The player can not go over limits.
-                return;
+                return false;
             }
             else
             {
@@ -182,7 +188,7 @@ public class PlayerM extends Observable implements Serializable
                 {
                     // Cell is not empty (there is a bush
                     // or something else on it), can't go on it.
-                    return;
+                    return false;
                 }
                 // The player exit the current zone.
                 mPosition.x = ZoneM.SIZE - 1;
@@ -196,13 +202,15 @@ public class PlayerM extends Observable implements Serializable
             {
                 // Cell is not empty (there is a bush
                 // or something else on it), can't go on it.
-                return;
+                return false;
             }
             // Move within the zone.
             mPosition.x --;
         }
         // Notify that player has moved downwards.
         notify(Event.DOWN);
+
+        return true;
     }
 
     public void speak(Speak sentence)
