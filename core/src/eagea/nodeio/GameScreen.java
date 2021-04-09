@@ -15,13 +15,25 @@ import eagea.nodeio.view.View;
  */
 public class GameScreen extends ScreenAdapter
 {
+    public static float FOOTSTEP_SOUND_VOLUME = 1f;
+    public static float CATCH_SOUND_VOLUME = 0.5f;
+    public static float BUTTON_SOUND_VOLUME = 0.15f;
+    public static float SPEAK_SOUND_VOLUME = 0.4f;
+    public static float MENU_MUSIC_VOLUME = 0.3f;
+    public static float GAME_MUSIC_VOLUME = 0.3f;
+
     // Textures.
     public static TextureAtlas mEnvironmentAtlas;
     public static TextureAtlas mCharactersAtlas;
     public static TextureAtlas mHUDAtlas;
     public static TextureAtlas mGUIAtlas;
     // Sounds.
-    public static Sound mSound;
+    public static Sound mFootStepSound;
+    public static Sound mButtonSound;
+    public static Sound mCatchSound;
+    public static Sound mSpeakSound;
+    public static Sound mMenuMusic;
+    public static Sound mGameMusic;
     // Model:
     private Model mModel;
     // View:
@@ -33,16 +45,23 @@ public class GameScreen extends ScreenAdapter
     public void show()
     {
         // Textures.
-        mEnvironmentAtlas = new TextureAtlas(Gdx.files.internal("environment.atlas")) ;
-        mCharactersAtlas = new TextureAtlas(Gdx.files.internal("characters.atlas")) ;
-        mHUDAtlas = new TextureAtlas(Gdx.files.internal("hud.atlas")) ;
-        mGUIAtlas = new TextureAtlas(Gdx.files.internal("gui.atlas")) ;
+        mEnvironmentAtlas = new TextureAtlas(Gdx.files.internal("atlases/environment.atlas")) ;
+        mCharactersAtlas = new TextureAtlas(Gdx.files.internal("atlases/characters.atlas")) ;
+        mHUDAtlas = new TextureAtlas(Gdx.files.internal("atlases/hud.atlas")) ;
+        mGUIAtlas = new TextureAtlas(Gdx.files.internal("atlases/gui.atlas")) ;
         // Game objects.
         mModel = new Model(this);
         mView = new View(mModel);
         mController = new Controller(mModel, mView);
         // Sounds.
-        mSound = Gdx.audio.newSound(Gdx.files.internal("footstep.ogg"));
+        mFootStepSound = Gdx.audio.newSound(Gdx.files.internal("sounds/footstep.ogg"));
+        mCatchSound = Gdx.audio.newSound(Gdx.files.internal("sounds/catch.wav"));
+        mButtonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.wav"));
+        mSpeakSound = Gdx.audio.newSound(Gdx.files.internal("sounds/speak.wav"));
+        mMenuMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/menu.mp3"));
+        mGameMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/game.mp3"));
+
+        startMenuMusic();
     }
 
     @Override
@@ -50,7 +69,12 @@ public class GameScreen extends ScreenAdapter
     {
         mEnvironmentAtlas.dispose();
         mCharactersAtlas.dispose();
-        mSound.dispose();
+        mFootStepSound.dispose();
+        mButtonSound.dispose();
+        mCatchSound.dispose();
+        mSpeakSound.dispose();
+        mMenuMusic.dispose();
+        mGameMusic.dispose();
     }
 
     @Override
@@ -73,5 +97,45 @@ public class GameScreen extends ScreenAdapter
     public void onStartGame()
     {
         mView.onStartGame();
+    }
+
+    public static void playFootstepSound()
+    {
+        mFootStepSound.play(FOOTSTEP_SOUND_VOLUME);
+    }
+
+    public static void playCatchSound()
+    {
+        mCatchSound.play(CATCH_SOUND_VOLUME);
+    }
+
+    public static void playButtonSound()
+    {
+        mButtonSound.play(BUTTON_SOUND_VOLUME);
+    }
+
+    public static void playSpeakSound()
+    {
+        mSpeakSound.play(SPEAK_SOUND_VOLUME);
+    }
+
+    public static void startMenuMusic()
+    {
+        mMenuMusic.loop(MENU_MUSIC_VOLUME);
+    }
+
+    public static void stopMenuMusic()
+    {
+        mMenuMusic.stop();
+    }
+
+    public static void startGameMusic()
+    {
+        mGameMusic.loop(GAME_MUSIC_VOLUME);
+    }
+
+    public static void stopGameMusic()
+    {
+        mGameMusic.stop();
     }
 }

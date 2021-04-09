@@ -54,6 +54,10 @@ public class ExitButton
                 && mPosition.y <= position.y && position.y <= mPosition.y + ICON_HEIGHT)
         {
             System.out.println("[DEBUG]: on click exit");
+            GameScreen.playButtonSound();
+            GameScreen.stopGameMusic();
+            GameScreen.startMenuMusic();
+            // Disconnect user.
             mView.getModel().askForDisconnection();
             return true;
         }

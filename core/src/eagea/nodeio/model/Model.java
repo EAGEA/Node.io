@@ -216,7 +216,7 @@ public class Model
         // play a footstep sound.
         if (move && player.getZone() == mPlayer.getZone())
         {
-            GameScreen.mSound.play();
+            GameScreen.playFootstepSound();
         }
     }
 
@@ -232,6 +232,12 @@ public class Model
         }
         // Make her/him speak.
         player.speak(action.getSentence());
+        // If player speaks, and she/he is on the same zone,
+        // play a speak sound.
+        if (player.getZone() == mPlayer.getZone())
+        {
+            GameScreen.playSpeakSound();
+        }
     }
 
     private void playCatch(Catch action)
@@ -255,6 +261,7 @@ public class Model
         // If I'm caught.
         if (action.getCaught().contains(mPlayer.getID()))
         {
+            GameScreen.playCatchSound();
             mState = State.CAUGHT;
         }
     }

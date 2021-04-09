@@ -86,6 +86,9 @@ public class CaughtBox
         {
             // Whole screen touchable in this state.
             System.out.println("[DEBUG]: on click caught");
+            GameScreen.playButtonSound();
+            GameScreen.stopGameMusic();
+            GameScreen.startMenuMusic();
             // Go to menu.
             mView.getModel().goToMenu();
             return true;

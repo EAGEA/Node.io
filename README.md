@@ -17,4 +17,10 @@
 
 * Character made by **[Gamekrazzy](https://gamekrazzy.itch.io/)**.
 
-* Bushes made by **[Dreammix](https://dreammix.itch.io/)**.
+* Bush made by **[Dreammix](https://dreammix.itch.io/)**.
+
+* Footstep sound made by **[GleenM](https://freesound.org/people/GlennM)**.
+
+* Speak sound made by **[Juaner_](https://freesound.org/people/Juaner_/)**.
+
+* Music _"BLOB MONSTERS ON THE LOOSE"_ made by **[Eric Matyas](https://soundimage.org/)**.

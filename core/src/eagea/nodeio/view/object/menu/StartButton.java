@@ -77,6 +77,10 @@ public class StartButton
         {
             // Whole screen touchable in this state.
             System.out.println("[DEBUG]: on click start");
+            GameScreen.playButtonSound();
+            GameScreen.stopMenuMusic();
+            GameScreen.startGameMusic();
+            // Start the game
             mView.getModel().goToGame();
             return true;
         }
