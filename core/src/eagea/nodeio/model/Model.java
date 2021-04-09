@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 
 import eagea.nodeio.GameScreen;
+import eagea.nodeio.model.logic.map.CellM;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
@@ -83,7 +84,6 @@ public class Model
      */
     public void askForMove(PlayerM.Event orientation)
     {
-        System.out.println(mNode.getID());
         // Request for move.
         mNode.notifyHost(new Move(mNode.getID(), orientation));
     }
@@ -311,16 +311,33 @@ public class Model
 
     private Action checkConnection(Connection action)
     {
-        // Add new player and zone.
-        PlayerM player = new PlayerM(action.getPlayer(),
-                (int) (Math.random() * (ZoneM.SIZE - 1)),
-                (int) (Math.random() * (ZoneM.SIZE - 1)), mMap.getNbZones(), mMap);
+
+        // Add new zone.
         ZoneM zone = new ZoneM(action.getPlayer(),
                 ZoneM.Type.values()[(int) (Math.random() * ZoneM.Type.values().length)],
                 mMap.getNbZones());
+        // Get a cell on which the player can appear.
+        ArrayList<CellM> cells = new ArrayList<>();
+
+        for (int i = 0; i < ZoneM.SIZE; i ++)
+        {
+            for (int j = 0; j < ZoneM.SIZE; j ++)
+            {
+                if (zone.getCells()[i][j].getType() == CellM.Type.EMPTY)
+                {
+                    cells.add(zone.getCells()[i][j]);
+                }
+            }
+        }
+        CellM appear = cells.get((int) (Math.random() * cells.size()));
+        // Add new player on this cell.
+        PlayerM player = new PlayerM(action.getPlayer(),
+                (int) appear.getPosition().x, (int) appear.getPosition().y,
+                mMap.getNbZones(), mMap);
+        // Update the model.
         mPlayers.add(player);
         mMap.add(zone);
-        // Send it.
+        // Send model.
         return new Connection(action.getPlayer(), mMap, mPlayers);
     }
 

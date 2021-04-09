@@ -16,11 +16,11 @@ public class ZoneM extends Observable implements Serializable
     // Type of zone.
     public enum Type { BLACK, GRASS, GRAVEL, ROCK, SAND, SNOW }
     // Max number of type of cells per zone.
-    public final int MAX_CELL_VOID = 5;
-    public final int MAX_CELL_BUSH = 5;
+    public final int MAX_CELL_VOID = SIZE / 2 - 1;
+    public final int MAX_CELL_BUSH = SIZE / 2 - 1;
 
     // Width and height.
-    public static final int SIZE = 5;
+    public static final int SIZE = 6;
 
     // ID of the player who owns this zone.
     private String mOwner;
@@ -49,7 +49,7 @@ public class ZoneM extends Observable implements Serializable
         {
             for (int j = 0; j < SIZE; j ++)
             {
-                mCells[i][j] = new CellM();
+                mCells[i][j] = new CellM(i, j);
                 indexes.add(new Vector2(i, j));
             }
         }

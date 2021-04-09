@@ -1,5 +1,7 @@
 package eagea.nodeio.model.logic.map;
 
+import com.badlogic.gdx.math.Vector2;
+
 import java.io.Serializable;
 import java.util.Observable;
 
@@ -15,11 +17,15 @@ public class CellM extends Observable implements Serializable
 
     // Type of cell.
     private Type mType;
+    // Position in zone.
+    private Vector2 mPosition;
 
-    public CellM()
+    public CellM(int i, int j)
     {
         // Default.
         mType = Type.EMPTY;
+
+        mPosition = new Vector2(i, j);
     }
 
     public void setType(Type type)
@@ -30,5 +36,10 @@ public class CellM extends Observable implements Serializable
     public Type getType()
     {
         return mType;
+    }
+
+    public Vector2 getPosition()
+    {
+        return mPosition;
     }
 }
