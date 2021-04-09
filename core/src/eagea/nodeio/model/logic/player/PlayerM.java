@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Observable;
 
+import eagea.nodeio.model.logic.map.CellM;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
 
@@ -46,6 +47,14 @@ public class PlayerM extends Observable implements Serializable
 
     public void moveRight()
     {
+        if (mMap.get(mZone).getCells()[(int) mPosition.x][(int) (mPosition.y - 1)].getType()
+                != CellM.Type.EMPTY)
+        {
+            // Cell is not empty (there is a bush
+            // or something else on it), can't go on it.
+            return;
+        }
+
         if (mPosition.y - 1 < 0)
         {
             // Next zone or impossible move.
@@ -72,6 +81,14 @@ public class PlayerM extends Observable implements Serializable
 
     public void moveLeft()
     {
+        if (mMap.get(mZone).getCells()[(int) mPosition.x][(int) (mPosition.y + 1)].getType()
+                != CellM.Type.EMPTY)
+        {
+            // Cell is not empty (there is a bush
+            // or something else on it), can't go on it.
+            return;
+        }
+
         if (mPosition.y + 1 >= ZoneM.SIZE)
         {
             // Next zone or impossible move.
@@ -98,6 +115,14 @@ public class PlayerM extends Observable implements Serializable
 
     public void moveUp()
     {
+        if (mMap.get(mZone).getCells()[(int) mPosition.x + 1][(int) (mPosition.y)].getType()
+                != CellM.Type.EMPTY)
+        {
+            // Cell is not empty (there is a bush
+            // or something else on it), can't go on it.
+            return;
+        }
+
         if (mPosition.x + 1 >= ZoneM.SIZE)
         {
             // Next zone or impossible move.
@@ -124,6 +149,14 @@ public class PlayerM extends Observable implements Serializable
 
     public void moveDown()
     {
+        if (mMap.get(mZone).getCells()[(int) mPosition.x - 1][(int) (mPosition.y)].getType()
+                != CellM.Type.EMPTY)
+        {
+            // Cell is not empty (there is a bush
+            // or something else on it), can't go on it.
+            return;
+        }
+
         if (mPosition.x - 1 < 0)
         {
             // Next zone or impossible move.

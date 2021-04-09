@@ -6,119 +6,161 @@ filter: Nearest, Nearest
 repeat: none
 background
   rotate: false
-  xy: 2, 2
+  xy: 2, 22
   size: 256, 224
   orig: 256, 224
   offset: 0, 0
   index: 3
 background
   rotate: false
-  xy: 260, 2
+  xy: 260, 22
   size: 256, 224
   orig: 256, 224
   offset: 0, 0
   index: 0
 background
   rotate: false
-  xy: 518, 2
+  xy: 518, 22
   size: 256, 224
   orig: 256, 224
   offset: 0, 0
   index: 2
 background
   rotate: false
-  xy: 776, 2
+  xy: 776, 22
   size: 256, 224
   orig: 256, 224
   offset: 0, 0
   index: 1
 black
   rotate: false
-  xy: 1034, 162
+  xy: 1034, 182
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 black
   rotate: false
-  xy: 1232, 162
+  xy: 1232, 182
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
-grass
+bush_black
   rotate: false
-  xy: 1166, 162
-  size: 64, 64
-  orig: 64, 64
+  xy: 1054, 30
+  size: 18, 18
+  orig: 18, 18
   offset: 0, 0
-  index: 2
-grass
+  index: -1
+bush_grass
+  rotate: false
+  xy: 2, 2
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+bush_gravel
   rotate: false
   xy: 1298, 162
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+bush_rock
+  rotate: false
+  xy: 1034, 30
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+bush_sand
+  rotate: false
+  xy: 22, 2
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+bush_snow
+  rotate: false
+  xy: 1364, 228
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+grass
+  rotate: false
+  xy: 1166, 182
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+grass
+  rotate: false
+  xy: 1298, 182
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 gravel
   rotate: false
-  xy: 1034, 96
+  xy: 1034, 116
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 gravel
   rotate: false
-  xy: 1232, 96
+  xy: 1232, 116
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 highlighted
   rotate: false
-  xy: 1034, 30
+  xy: 1034, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 rock
   rotate: false
-  xy: 1100, 162
+  xy: 1100, 182
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 rock
   rotate: false
-  xy: 1100, 30
+  xy: 1100, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 sand
   rotate: false
-  xy: 1100, 96
+  xy: 1100, 116
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 sand
   rotate: false
-  xy: 1166, 30
+  xy: 1166, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 1
 snow
   rotate: false
-  xy: 1166, 96
+  xy: 1166, 116
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: 2
 snow
   rotate: false
-  xy: 1232, 30
+  xy: 1232, 50
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

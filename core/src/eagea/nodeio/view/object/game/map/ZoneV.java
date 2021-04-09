@@ -32,7 +32,7 @@ public class ZoneV
             for (int j = 0; j < ZoneM.SIZE; j ++)
             {
                 mCells[i][j] = new CellV(mZone, mPlayer, i, j,
-                        new TextureRegion[]{ getCellTexture(), texture });
+                        new TextureRegion[]{ getCellTexture(), texture, getCellBushTexture() });
             }
         }
     }
@@ -57,6 +57,16 @@ public class ZoneV
         String name = mZone.getType().name().toLowerCase();
 
         return GameScreen.mEnvironmentAtlas.findRegion(name, (int) (Math.random() * 2d) + 1);
+    }
+
+    /**
+     * Return the bush texture for a cell of this zone.
+     */
+    private TextureRegion getCellBushTexture()
+    {
+        String name = mZone.getType().name().toLowerCase();
+
+        return GameScreen.mEnvironmentAtlas.findRegion("bush_" + name);
     }
 
     public ZoneM getZone()

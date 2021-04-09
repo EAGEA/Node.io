@@ -19,6 +19,7 @@ import eagea.nodeio.view.View;
 public class CellV
 {
     public static final float TILE_SIZE = 2f;
+    public static final float BUSH_SIZE = 0.85f;
 
     // Model.
     private final ZoneM mZone;
@@ -45,13 +46,35 @@ public class CellV
                 new Vector3(mPlayer.getI(), mPlayer.getJ(), mPlayer.getZone()),
                 new Vector3(mPosition, mZone.getPositionInMap()));
 
-        // Draw.
-        Main.mBatch.draw(mTextures[0], coord.x, coord.y, TILE_SIZE, TILE_SIZE);
-
-        if (highlight)
+        // Switch the type of cell.
+        switch (mZone.getCells()[(int) mPosition.x][(int) mPosition.y].getType())
         {
-            // Highlight the player cells.
-            Main.mBatch.draw(mTextures[1], coord.x, coord.y, TILE_SIZE, TILE_SIZE);
+            case EMPTY:
+                // Draw.
+                Main.mBatch.draw(mTextures[0], coord.x, coord.y, TILE_SIZE, TILE_SIZE);
+
+                if (highlight)
+                {
+                    // Highlight the player cells.
+                    Main.mBatch.draw(mTextures[1], coord.x, coord.y, TILE_SIZE, TILE_SIZE);
+                }
+                break;
+            case VOID:
+                break;
+            case BUSH:
+                // Draw.
+                Main.mBatch.draw(mTextures[0], coord.x, coord.y, TILE_SIZE, TILE_SIZE);
+                Main.mBatch.draw(mTextures[2],
+                        coord.x + TILE_SIZE / 2f - BUSH_SIZE / 2f,
+                        coord.y + TILE_SIZE - TILE_SIZE / 4f - BUSH_SIZE / 2f,
+                        BUSH_SIZE, BUSH_SIZE);
+
+                if (highlight)
+                {
+                    // Highlight the player cells.
+                    Main.mBatch.draw(mTextures[1], coord.x, coord.y, TILE_SIZE, TILE_SIZE);
+                }
+                break;
         }
     }
 }

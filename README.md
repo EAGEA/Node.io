@@ -16,3 +16,5 @@
 * Tiles made by **[Ajay Karat | Devil's Work.shop](https://www.devilswork.shop/)**.
 
 * Character made by **[Gamekrazzy](https://gamekrazzy.itch.io/)**.
+
+* Bushes made by **[Dreammix](https://dreammix.itch.io/)**.
