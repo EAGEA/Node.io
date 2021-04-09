@@ -49,7 +49,7 @@ public class ZoneM extends Observable implements Serializable
         {
             for (int j = 0; j < SIZE; j ++)
             {
-                mCells[i][j] = new CellM(i, j);
+                mCells[i][j] = new CellM();
                 indexes.add(new Vector2(i, j));
             }
         }

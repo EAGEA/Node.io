@@ -64,15 +64,15 @@ public class Model
             // The host initiates game model (the one who create it):
             // - Create Map.
             mMap = new MapM();
-            // - Create player.
-            mPlayer = new PlayerM(mNode.getID(),
-                    (int) (Math.random() * (ZoneM.SIZE - 1)), (int) (Math.random() * (ZoneM.SIZE - 1)), 0, mMap);
-            mPlayers = new PlayersM();
-            mPlayers.add(mPlayer);
             // - Create player's zone.
             ZoneM zone = new ZoneM(mNode.getID(),
                     ZoneM.Type.values()[(int) (Math.random() * ZoneM.Type.values().length)], 0);
             mMap.add(zone);
+            // - Create player.
+            Vector2 appear = findCellToAppear(zone);
+            mPlayer = new PlayerM(mNode.getID(), (int) appear.x, (int) appear.y, 0, mMap);
+            mPlayers = new PlayersM();
+            mPlayers.add(mPlayer);
             // Start rendering.
             mGameScreen.onStartGame();
         }
@@ -317,22 +317,10 @@ public class Model
                 ZoneM.Type.values()[(int) (Math.random() * ZoneM.Type.values().length)],
                 mMap.getNbZones());
         // Get a cell on which the player can appear.
-        ArrayList<CellM> cells = new ArrayList<>();
-
-        for (int i = 0; i < ZoneM.SIZE; i ++)
-        {
-            for (int j = 0; j < ZoneM.SIZE; j ++)
-            {
-                if (zone.getCells()[i][j].getType() == CellM.Type.EMPTY)
-                {
-                    cells.add(zone.getCells()[i][j]);
-                }
-            }
-        }
-        CellM appear = cells.get((int) (Math.random() * cells.size()));
+        Vector2 appear = findCellToAppear(zone);
         // Add new player on this cell.
         PlayerM player = new PlayerM(action.getPlayer(),
-                (int) appear.getPosition().x, (int) appear.getPosition().y,
+                (int) appear.x, (int) appear.y,
                 mMap.getNbZones(), mMap);
         // Update the model.
         mPlayers.add(player);
@@ -497,6 +485,28 @@ public class Model
         }
 
         return null;
+    }
+
+    /**
+     * Find a cell on which there is no environment obstacle, to make player
+     * appear on it.
+     */
+    private Vector2 findCellToAppear(ZoneM zone)
+    {
+        ArrayList<Vector2> cells = new ArrayList<>();
+
+        for (int i = 0; i < ZoneM.SIZE; i ++)
+        {
+            for (int j = 0; j < ZoneM.SIZE; j ++)
+            {
+                if (zone.getCells()[i][j].getType() == CellM.Type.EMPTY)
+                {
+                    cells.add(new Vector2(i, j));
+                }
+            }
+        }
+
+        return cells.get((int) (Math.random() * cells.size()));
     }
 
     public void goToGame()

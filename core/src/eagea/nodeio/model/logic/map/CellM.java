@@ -17,15 +17,11 @@ public class CellM extends Observable implements Serializable
 
     // Type of cell.
     private Type mType;
-    // Position in zone.
-    private Vector2 mPosition;
 
-    public CellM(int i, int j)
+    public CellM()
     {
         // Default.
         mType = Type.EMPTY;
-
-        mPosition = new Vector2(i, j);
     }
 
     public void setType(Type type)
@@ -36,10 +32,5 @@ public class CellM extends Observable implements Serializable
     public Type getType()
     {
         return mType;
-    }
-
-    public Vector2 getPosition()
-    {
-        return mPosition;
     }
 }
