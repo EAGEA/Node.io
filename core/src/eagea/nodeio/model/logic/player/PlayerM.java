@@ -57,8 +57,8 @@ public class PlayerM extends Observable implements Serializable
             }
             else
             {
-                if (mMap.get(mZone - 1).getCells()[(int) mPosition.x]
-                        [(int) (mPosition.y - ZoneM.SIZE)].getType() != CellM.Type.EMPTY)
+                if (mMap.get(mZone - 1).getCells()[(int) mPosition.x][ZoneM.SIZE - 1].getType()
+                        != CellM.Type.EMPTY)
                 {
                     // Cell is not empty (there is a bush
                     // or something else on it), can't go on it.
