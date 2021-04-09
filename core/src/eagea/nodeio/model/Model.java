@@ -1,6 +1,8 @@
 package eagea.nodeio.model;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.audio.Sound;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,7 @@ public class Model
 
     // Context.
     private final GameScreen mGameScreen;
+    private Sound mSound;
 
     // RabbitMQ.
     private final Node mNode;
@@ -46,6 +49,7 @@ public class Model
         mGameScreen = screen;
         mNode = new Node(this);
         mState = State.MENU;
+        mSound = Gdx.audio.newSound(Gdx.files.internal("footstep.ogg"));
     }
 
     /**
@@ -200,6 +204,11 @@ public class Model
         {
             System.err.println("[ERROR]: can't play action");
             return;
+        }
+
+        if(player.getZone() == mPlayer.getZone())
+        {
+            mSound.play();
         }
         // Move it.
         switch (action.getOrientation())
