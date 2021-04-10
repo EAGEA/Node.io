@@ -58,7 +58,6 @@ public class Model
         if (! mNode.isHost())
         {
             // Not the host; request for game model.
-            checkHostChange();
             mNode.notifyHost(new Connection(mNode.getID()));
         }
         else
@@ -77,6 +76,8 @@ public class Model
             mPlayers.add(mPlayer);
             // Start rendering.
             mGameScreen.onStartGame();
+            // Auto-disconnection.
+            addShutDownHook();
         }
     }
 
@@ -170,16 +171,7 @@ public class Model
             // Start rendering.
             mGameScreen.onStartGame();
             // Auto-disconnection.
-            Runtime.getRuntime().addShutdownHook(new Thread(
-                    () ->
-                    {
-                        if (mState == State.GAME)
-                        {
-                            askForDisconnection();
-                        }
-                    }
-                )
-            );
+            addShutDownHook();
         }
         else
         {
@@ -479,9 +471,11 @@ public class Model
         {
             checkHostChange();
         }
+        System.out.println("TADA");
         // If there exists somebody else in the game.
         if (newOwner != null)
         {
+            System.out.println("TADA");
             action = new Disconnection(action.getPlayer(),
                     newOwner.getID(), indexes);
             // Play it for the host.
@@ -489,6 +483,7 @@ public class Model
             // And send it.
             return action;
         }
+        System.out.println("TADA2");
         // Play it for the host.
         playDisconnection(action);
         // Send nothing.
@@ -519,6 +514,38 @@ public class Model
         // Unbind.
         mNode.looseHost();
         System.out.println("[DEBUG]: I'm not HOST anymore");
+    }
+
+    /**
+     * Disconnect player when closing the game.
+     * If we are the host we need to give our role to another player.
+     */
+    private void addShutDownHook()
+    {
+        Runtime.getRuntime().addShutdownHook(
+                new Thread(() ->
+                {
+                    if (mState == State.GAME)
+                    {
+                        if (mNode.isHost())
+                        {
+                            // Directly process our disconnection.
+                            Action action = checkDisconnection(new Disconnection(mNode.getID()));
+
+                            if (action != null)
+                            {
+                                mNode.sendToPlayers(action);
+                            }
+                        }
+                        else
+                        {
+                            // Otherwise only notify the host.
+                            askForDisconnection();
+                        }
+                    }
+                }
+            )
+        );
     }
 
     /**
