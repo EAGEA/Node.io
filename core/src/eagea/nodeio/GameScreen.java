@@ -62,7 +62,7 @@ public class GameScreen extends ScreenAdapter
         mSpeakSound = Gdx.audio.newSound(Gdx.files.internal("sounds/speak.wav"));
         mMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
         mGameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/game.mp3"));
-
+        // Appear in menu.
         startMenuMusic();
     }
 
