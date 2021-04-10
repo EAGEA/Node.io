@@ -391,6 +391,13 @@ public class Model
     {
         ArrayList<String> caught = new ArrayList<>();
         PlayerM player = mPlayers.find(action.getPlayer());
+
+        if (player == null)
+        {
+            // This player has been caught before being able to catch somebody!
+            // Do nothing.
+            return null;
+        }
         // Convert player position in the whole map ones.
         Vector2 position = player.getMapPosition();
         // Check if a player is adjacent to player cell.
