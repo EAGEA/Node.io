@@ -23,4 +23,4 @@
 
 * Speak sound made by **[Juaner_](https://freesound.org/people/Juaner_/)**.
 
-* Music _"BLOB MONSTERS ON THE LOOSE"_ made by **[Eric Matyas](https://soundimage.org/)**.
+* Music _"Blob Monsters on the Loose"_ and "Analog Nostalgia" made by **[Eric Matyas](https://soundimage.org/)**.

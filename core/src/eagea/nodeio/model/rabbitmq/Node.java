@@ -167,6 +167,7 @@ public class Node
             }
             mChannel.queueDelete(mQueueName);
             // Declare the host queue.
+            mChannel.queueDelete(HOST_QUEUE_URI);
             mChannel.queueDeclare(HOST_QUEUE_URI,
                     false, false, true,
                     null);
@@ -182,20 +183,18 @@ public class Node
         }
     }
 
-    public void looseHost(boolean destroy)
+    public void looseHost()
     {
         mIsHost = false;
 
-        if (destroy)
+        try
         {
-            try
-            {
-                mChannel.queueDelete(HOST_QUEUE_URI);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            // Unbind.
+            mChannel.queueDelete(HOST_QUEUE_URI);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -206,7 +205,8 @@ public class Node
      */
     public void notifyHost(Action action)
     {
-        System.out.println("[DEBUG]: send action");
+        System.out.println("[DEBUG]: send action "
+                + action.getClass().getSimpleName());
 
         try
         {
@@ -216,7 +216,8 @@ public class Node
         }
         catch (Exception e)
         {
-            System.err.println("[ERROR]: send action");
+            System.err.println("[ERROR]: send action "
+                    + action.getClass().getSimpleName());
         }
     }
 
@@ -225,26 +226,34 @@ public class Node
      */
     private void onHostReceive(String consumerTag, Delivery delivery)
     {
-        System.out.println("[DEBUG]: HOST receive action");
         Action action = SerializationUtils.deserialize(delivery.getBody());
+        System.out.println("[DEBUG]: HOST receive action "
+                + action.getClass().getSimpleName());
         action = mModel.check(action);
 
         if (action != null)
         {
             // Action validated by host.
             // Send it to all the players.
-            System.out.println("[DEBUG]: HOST publish action");
+            sendToPlayers(action);
+        }
+    }
 
-            try
-            {
-                mChannel.basicPublish(EXCHANGE_URI, "",
-                        null,
-                        SerializationUtils.serialize(action));
-            }
-            catch (Exception e)
-            {
-                System.err.println("[ERROR]: HOST publish action");
-            }
+    public void sendToPlayers(Action action)
+    {
+        System.out.println("[DEBUG]: HOST publish action "
+                + action.getClass().getSimpleName());
+
+        try
+        {
+            mChannel.basicPublish(EXCHANGE_URI, "",
+                    null,
+                    SerializationUtils.serialize(action));
+        }
+        catch (Exception e)
+        {
+            System.err.println("[ERROR]: HOST publish action "
+                    + action.getClass().getSimpleName());
         }
     }
 
@@ -253,18 +262,12 @@ public class Node
      */
     public void onReceive(String consumerTag, Delivery delivery)
     {
-        System.out.println("[DEBUG]: receive action");
+        Action action = SerializationUtils.deserialize(delivery.getBody());
 
-        try
-        {
-            Action action = SerializationUtils.deserialize(delivery.getBody());
-            mModel.play(action);
-        }
-        catch (Exception e)
-        {
-            System.err.println("[ERROR]: receive action");
-            e.printStackTrace();
-        }
+        System.out.println("[DEBUG]: receive action "
+                + action.getClass().getSimpleName());
+
+        mModel.play(action);
     }
 
     public boolean isHost()

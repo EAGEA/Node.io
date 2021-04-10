@@ -12,6 +12,7 @@ public class Catch extends Action
 {
     private static final long serialVersionUID = 2505852453794582472L;
 
+    private boolean mContainHost;
     private final ArrayList<String> mCaught;
 
     /**

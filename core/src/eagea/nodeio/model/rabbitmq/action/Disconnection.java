@@ -7,13 +7,14 @@ import eagea.nodeio.model.logic.player.PlayerM;
 
 /**
  * Player is disconnecting. Send this action to the host so that it can
- * notify everyone, and give our zone to a random player.
+ * notify everyone, and give the zones of the disconnecting player
+ * to a random player.
  */
 public class Disconnection extends Action
 {
     private static final long serialVersionUID = 2116895505000334818L;
 
-    private String mNewOwner, mNewHost;
+    private String mNewOwner;
     private ArrayList<Integer> mIndexes;
 
     /**
@@ -25,7 +26,7 @@ public class Disconnection extends Action
     }
 
     /**
-     * Disconnection from the host to the nodes: disconnection of a non-host player.
+     * Disconnection from the host to the nodes.
      */
     public Disconnection(String ID, String newOwner, ArrayList<Integer> indexes)
     {
@@ -34,20 +35,7 @@ public class Disconnection extends Action
         mIndexes = indexes;
     }
 
-    /**
-     * Disconnection from the host to the nodes: disconnection of the host
-     */
-    public Disconnection(String ID, String newOwner, ArrayList<Integer> indexes, String newHost)
-    {
-        super(ID);
-        mNewOwner = newOwner;
-        mIndexes = indexes;
-        mNewHost = newHost;
-    }
-
     public String getNewOwner() { return mNewOwner; }
-
-    public String getNewHost() { return mNewHost; }
 
     public ArrayList<Integer> getIndexes() { return mIndexes; }
 }

@@ -1,8 +1,6 @@
 package eagea.nodeio.model;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.audio.Sound;
 
 import java.util.ArrayList;
 
@@ -17,8 +15,9 @@ import eagea.nodeio.model.rabbitmq.action.Action;
 import eagea.nodeio.model.rabbitmq.action.Catch;
 import eagea.nodeio.model.rabbitmq.action.Connection;
 import eagea.nodeio.model.rabbitmq.action.Disconnection;
-import eagea.nodeio.model.rabbitmq.action.Speak;
+import eagea.nodeio.model.rabbitmq.action.HostChange;
 import eagea.nodeio.model.rabbitmq.action.Move;
+import eagea.nodeio.model.rabbitmq.action.Speak;
 
 /**
  * Handle all the logic of the game, and the rabbitMQ communications with other
@@ -59,6 +58,7 @@ public class Model
         if (! mNode.isHost())
         {
             // Not the host; request for game model.
+            checkHostChange();
             mNode.notifyHost(new Connection(mNode.getID()));
         }
         else
@@ -146,6 +146,10 @@ public class Model
         else if (action instanceof Disconnection)
         {
             playDisconnection((Disconnection) action);
+        }
+        else if (action instanceof HostChange)
+        {
+            playHostChange((HostChange) action);
         }
     }
 
@@ -274,18 +278,23 @@ public class Model
             goToMenu();
             return;
         }
-        // If I'm the new host.
-        if (mPlayer.getID().equals(action.getNewHost()))
-        {
-            System.out.println("[DEBUG]: I'm the new HOST");
-            mNode.becomeHost();
-        }
         // Set to the corresponding zones.
         action.getIndexes().forEach(i -> mMap.getZones().get(i)
                 .setOwner(action.getNewOwner()));
         // And remove the disconnected user.
         mPlayers.remove(mPlayers.find(action.getPlayer()));
     }
+
+    private void playHostChange(HostChange action)
+    {
+        // If I'm the new elected host.
+        if (action.getPlayer() != null && mPlayer.getID().equals(action.getPlayer()))
+        {
+            System.out.println("[DEBUG]: I'm the new HOST");
+            mNode.becomeHost();
+        }
+    }
+
 
     /**
      * Host only.
@@ -294,11 +303,6 @@ public class Model
      */
     public Action check(Action action)
     {
-        if (mState != State.GAME)
-        {
-            return null;
-        }
-
         System.out.println("[DEBUG]: HOST check " + action.getClass().getSimpleName());
 
         if (action instanceof Connection)
@@ -419,11 +423,17 @@ public class Model
 
         if (caught.isEmpty())
         {
-            // Send nothing.
+            // Send nothing; nobody was caught.
             return null;
         }
         else
         {
+            // If host caught.
+            if (caught.contains(mNode.getID()))
+            {
+                checkHostChange();
+            }
+
             Catch catch_ = new Catch(action.getPlayer(), caught);
             // Play it for the host.
             playCatch(catch_);
@@ -464,43 +474,51 @@ public class Model
                 }
             }
         }
-
+        // If the disconnected player is the host.
+        if (player.equals(mPlayer))
+        {
+            checkHostChange();
+        }
+        // If there exists somebody else in the game.
         if (newOwner != null)
         {
-            if (player.equals(mPlayer))
-            {
-                // If the disconnection received is from the host (host->host).
-                // Node elicitation: new host (let's say newOwner).
-                // Send special disconnection action to notify the new host.
-                action = new Disconnection(action.getPlayer(),
-                        newOwner.getID(), indexes, newOwner.getID());
-                mNode.looseHost(false);
-                // Play it for the host.
-                playDisconnection(action);
-            }
-            else
-            {
-                // If the disconnection is not from the host.
-                action = new Disconnection(action.getPlayer(),
-                        newOwner.getID(), indexes);
-                // Play it for the host.
-                playDisconnection(action);
-            }
+            action = new Disconnection(action.getPlayer(),
+                    newOwner.getID(), indexes);
+            // Play it for the host.
+            playDisconnection(action);
             // And send it.
             return action;
         }
-
         // Play it for the host.
         playDisconnection(action);
-
-        if (player.equals(mPlayer))
-        {
-            // If the disconnection received is from the host (host->host).
-            // Loose host state, and destroy the host queue because last person in game.
-            mNode.looseHost(true);
-        }
-
+        // Send nothing.
         return null;
+    }
+
+    private void checkHostChange()
+    {
+        HostChange action;
+        // Create the a list to pick a random player to be the new host.
+        ArrayList<PlayerM> toPick = new ArrayList<>(mPlayers.getPlayers());
+        toPick.remove(mPlayer);
+        PlayerM newHost;
+
+        if (! toPick.isEmpty())
+        {
+            // Pick new host at random index.
+            newHost = toPick.get((int) (Math.random() * toPick.size()));
+            action = new HostChange(newHost.getID());
+        }
+        else
+        {
+            // If nobody else in the game.
+            action = new HostChange(null);
+        }
+        // Send it.
+        mNode.sendToPlayers(action);
+        // Unbind.
+        mNode.looseHost();
+        System.out.println("[DEBUG]: I'm not HOST anymore");
     }
 
     /**
