@@ -2,6 +2,7 @@ package eagea.nodeio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -32,8 +33,9 @@ public class GameScreen extends ScreenAdapter
     public static Sound mButtonSound;
     public static Sound mCatchSound;
     public static Sound mSpeakSound;
-    public static Sound mMenuMusic;
-    public static Sound mGameMusic;
+    // Musics.
+    public static Music mMenuMusic;
+    public static Music mGameMusic;
     // Model:
     private Model mModel;
     // View:
@@ -58,8 +60,8 @@ public class GameScreen extends ScreenAdapter
         mCatchSound = Gdx.audio.newSound(Gdx.files.internal("sounds/catch.wav"));
         mButtonSound = Gdx.audio.newSound(Gdx.files.internal("sounds/button.wav"));
         mSpeakSound = Gdx.audio.newSound(Gdx.files.internal("sounds/speak.wav"));
-        mMenuMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/menu.mp3"));
-        mGameMusic = Gdx.audio.newSound(Gdx.files.internal("sounds/game.mp3"));
+        mMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/menu.mp3"));
+        mGameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/game.mp3"));
 
         startMenuMusic();
     }
@@ -121,7 +123,9 @@ public class GameScreen extends ScreenAdapter
 
     public static void startMenuMusic()
     {
-        mMenuMusic.loop(MENU_MUSIC_VOLUME);
+        mMenuMusic.setLooping(true);
+        mMenuMusic.setVolume(MENU_MUSIC_VOLUME);
+        mMenuMusic.play();
     }
 
     public static void stopMenuMusic()
@@ -131,7 +135,9 @@ public class GameScreen extends ScreenAdapter
 
     public static void startGameMusic()
     {
-        mGameMusic.loop(GAME_MUSIC_VOLUME);
+        mGameMusic.setLooping(true);
+        mGameMusic.setVolume(GAME_MUSIC_VOLUME);
+        mGameMusic.play();
     }
 
     public static void stopGameMusic()
