@@ -13,7 +13,7 @@ import eagea.nodeio.model.logic.player.PlayerM;
 public class MapV implements Observer
 {
     // Cells' animation.
-    private final float TIME_PER_FRAME = 1f;
+    private final float TIME_PER_FRAME = 0.75f;
 
     // Model.
     private final MapM mMap;
@@ -46,22 +46,27 @@ public class MapV implements Observer
     {
         synchronized (mLock)
         {
+            updateAnimation(delta);
             // Reverse render order because of isometric rendering.
             for (int i = mZones.size() - 1 ; i >= 0 ; i --)
             {
-                eagea.nodeio.view.object.game.map.ZoneV zone = mZones.get(i);
-                // Update cell highlighted animation
-                mTimeSinceLastRender += delta;
-
-                if (mTimeSinceLastRender >= TIME_PER_FRAME)
-                {
-                    mTimeSinceLastRender = 0f;
-                    mHighlighted = ! mHighlighted;
-                }
+                ZoneV zone = mZones.get(i);
 
                 zone.render(delta, mHighlighted && zone.getZone().getOwner()
                         .equals(mPlayer.getID()));
             }
+        }
+    }
+
+    private void updateAnimation(float delta)
+    {
+        // Update cell highlighted animation
+        mTimeSinceLastRender += delta;
+
+        if (mTimeSinceLastRender >= TIME_PER_FRAME)
+        {
+            mTimeSinceLastRender = 0f;
+            mHighlighted = ! mHighlighted;
         }
     }
 
