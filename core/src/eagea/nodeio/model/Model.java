@@ -2,6 +2,8 @@ package eagea.nodeio.model;
 
 import com.badlogic.gdx.math.Vector2;
 
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
+
 import java.util.ArrayList;
 
 import eagea.nodeio.GameScreen;
@@ -258,7 +260,7 @@ public class Model
         if (action.getCaught().contains(mPlayer.getID()))
         {
             GameScreen.playCatchSound();
-            mState = State.CAUGHT;
+            goToCaught();
         }
     }
 
@@ -420,17 +422,27 @@ public class Model
         }
         else
         {
+            action = new Catch(action.getPlayer(), caught);
+            // Play it for the host.
+            playCatch(action);
             // If host caught.
             if (caught.contains(mNode.getID()))
             {
-                checkHostChange();
+                Action change = checkHostChange();
+                // Send caught action before.
+                mNode.sendToPlayers(action);
+                // Than send host change.
+                mNode.sendToPlayers(change);
+                // Unbind.
+                mNode.looseHost();
+                System.out.println("[DEBUG]: I'm not HOST anymore");
+                return null;
             }
-
-            Catch catch_ = new Catch(action.getPlayer(), caught);
-            // Play it for the host.
-            playCatch(catch_);
-            // And send it.
-            return catch_;
+            else
+            {
+                // And send it.
+                return action;
+            }
         }
     }
 
@@ -466,31 +478,44 @@ public class Model
                 }
             }
         }
-        // If the disconnected player is the host.
-        if (player.equals(mPlayer))
-        {
-            checkHostChange();
-        }
-        System.out.println("TADA");
         // If there exists somebody else in the game.
         if (newOwner != null)
         {
-            System.out.println("TADA");
             action = new Disconnection(action.getPlayer(),
                     newOwner.getID(), indexes);
             // Play it for the host.
             playDisconnection(action);
-            // And send it.
-            return action;
         }
-        System.out.println("TADA2");
-        // Play it for the host.
-        playDisconnection(action);
-        // Send nothing.
-        return null;
+        else
+        {
+            // Play it for the host.
+            playDisconnection(action);
+            // Send nothing.
+            action = null;
+        }
+
+        // If the disconnected player is the host.
+        if (player.equals(mPlayer))
+        {
+            Action change = checkHostChange();
+            // Send disconnection before.
+            if (action != null)
+            {
+                mNode.sendToPlayers(action);
+            }
+            // Than send host change.
+            mNode.sendToPlayers(change);
+            // Unbind.
+            mNode.looseHost();
+            System.out.println("[DEBUG]: I'm not HOST anymore");
+            return null;
+        }
+
+        // And send it.
+        return action;
     }
 
-    private void checkHostChange()
+    private Action checkHostChange()
     {
         HostChange action;
         // Create the a list to pick a random player to be the new host.
@@ -509,11 +534,8 @@ public class Model
             // If nobody else in the game.
             action = new HostChange(null);
         }
-        // Send it.
-        mNode.sendToPlayers(action);
-        // Unbind.
-        mNode.looseHost();
-        System.out.println("[DEBUG]: I'm not HOST anymore");
+
+        return action;
     }
 
     /**
@@ -575,6 +597,11 @@ public class Model
         mState = State.STARTING;
         mNode.create();
         askForConnection();
+    }
+
+    public void goToCaught()
+    {
+        mState = State.CAUGHT;
     }
 
     public void goToMenu()

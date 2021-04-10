@@ -17,6 +17,9 @@ public class PlayersV implements Observer
     private final PlayerM mPlayer;
     // Current zones on the map.
     private final ArrayList<eagea.nodeio.view.object.game.player.PlayerV> mPlayersV;
+    // Lock for rendering and updating.
+    private final Object mLock;
+
 
     public PlayersV(PlayersM players, PlayerM player)
     {
@@ -29,11 +32,16 @@ public class PlayersV implements Observer
         mPlayers.getPlayers().forEach(p -> mPlayersV.add(new PlayerV(mPlayer, p,
                 p.getColor().toString().toLowerCase())));
 
+        mLock = new Object();
+
     }
 
     public void render(float delta)
     {
-        mPlayersV.forEach(p -> p.render(delta));
+        synchronized (mLock)
+        {
+            mPlayersV.forEach(p -> p.render(delta));
+        }
     }
 
     @Override
@@ -43,32 +51,35 @@ public class PlayersV implements Observer
         {
             if (o != null)
             {
-                // Map has changed.
-                PlayersM.EventContainer container = (PlayersM.EventContainer) o;
-                PlayersM.Event event = container.getEvent();
-                PlayerM player = container.getPlayer();
-
-                switch (event)
+                synchronized (mLock)
                 {
-                    case ADD:
-                        mPlayersV.add(new PlayerV(mPlayer, player,
-                                player.getColor().toString().toLowerCase()));
-                        break;
-                    case REMOVE:
-                        final eagea.nodeio.view.object.game.player.PlayerV[] to_remove = new PlayerV[1];
-                        // Search for player to remove.
-                        mPlayersV.forEach(p ->
-                        {
-                            if (p.getPlayer().equals(player))
+                    // Map has changed.
+                    PlayersM.EventContainer container = (PlayersM.EventContainer) o;
+                    PlayersM.Event event = container.getEvent();
+                    PlayerM player = container.getPlayer();
+
+                    switch (event)
+                    {
+                        case ADD:
+                            mPlayersV.add(new PlayerV(mPlayer, player,
+                                    player.getColor().toString().toLowerCase()));
+                            break;
+                        case REMOVE:
+                            final eagea.nodeio.view.object.game.player.PlayerV[] to_remove = new PlayerV[1];
+                            // Search for player to remove.
+                            mPlayersV.forEach(p ->
                             {
-                                to_remove[0] = p;
+                                if (p.getPlayer().equals(player))
+                                {
+                                    to_remove[0] = p;
+                                }
+                            });
+                            // Remove it.
+                            if (to_remove[0] != null)
+                            {
+                                mPlayersV.remove(to_remove[0]);
                             }
-                        });
-                        // Remove it.
-                        if (to_remove[0] != null)
-                        {
-                            mPlayersV.remove(to_remove[0]);
-                        }
+                    }
                 }
             }
         }

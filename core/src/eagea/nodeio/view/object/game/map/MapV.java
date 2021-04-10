@@ -23,6 +23,8 @@ public class MapV implements Observer
     // Cells' animation.
     private boolean mHighlighted;
     private float mTimeSinceLastRender;
+    // Lock for rendering and updating.
+    private final Object mLock;
 
     public MapV(MapM map, PlayerM player)
     {
@@ -37,43 +39,50 @@ public class MapV implements Observer
         mHighlighted = false;
         mTimeSinceLastRender = 0f;
 
+        mLock = new Object();
     }
 
     public void render(float delta)
     {
-        // Reverse render order because of isometric rendering.
-        for (int i = mZones.size() - 1 ; i >= 0 ; i --)
+        synchronized (mLock)
         {
-            eagea.nodeio.view.object.game.map.ZoneV zone = mZones.get(i);
-            // Update cell highlighted animation
-            mTimeSinceLastRender += delta;
-
-            if (mTimeSinceLastRender >= TIME_PER_FRAME)
+            // Reverse render order because of isometric rendering.
+            for (int i = mZones.size() - 1 ; i >= 0 ; i --)
             {
-                mTimeSinceLastRender = 0f;
-                mHighlighted = ! mHighlighted;
-            }
+                eagea.nodeio.view.object.game.map.ZoneV zone = mZones.get(i);
+                // Update cell highlighted animation
+                mTimeSinceLastRender += delta;
 
-            zone.render(delta, mHighlighted && zone.getZone().getOwner()
-                    .equals(mPlayer.getID()));
+                if (mTimeSinceLastRender >= TIME_PER_FRAME)
+                {
+                    mTimeSinceLastRender = 0f;
+                    mHighlighted = ! mHighlighted;
+                }
+
+                zone.render(delta, mHighlighted && zone.getZone().getOwner()
+                        .equals(mPlayer.getID()));
+            }
         }
     }
 
     @Override
     public void update(Observable observable, Object o)
     {
-        if (observable == mMap)
+        synchronized (mLock)
         {
-            if (o != null)
+            if (observable == mMap)
             {
-                // Map has changed.
-                MapM.Event event = (MapM.Event) o;
-
-                switch (event)
+                if (o != null)
                 {
-                    case ADD:
-                        mZones.add(new ZoneV(mMap.get(mMap.getNbZones() - 1), mPlayer));
-                        break;
+                    // Map has changed.
+                    MapM.Event event = (MapM.Event) o;
+
+                    switch (event)
+                    {
+                        case ADD:
+                            mZones.add(new ZoneV(mMap.get(mMap.getNbZones() - 1), mPlayer));
+                            break;
+                    }
                 }
             }
         }

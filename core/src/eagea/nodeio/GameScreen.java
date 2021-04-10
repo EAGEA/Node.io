@@ -19,7 +19,7 @@ public class GameScreen extends ScreenAdapter
     public static float FOOTSTEP_SOUND_VOLUME = 1f;
     public static float CATCH_SOUND_VOLUME = 0.5f;
     public static float BUTTON_SOUND_VOLUME = 0.15f;
-    public static float SPEAK_SOUND_VOLUME = 0.4f;
+    public static float SPEAK_SOUND_VOLUME = 0.7f;
     public static float MENU_MUSIC_VOLUME = 0.3f;
     public static float GAME_MUSIC_VOLUME = 0.3f;
 

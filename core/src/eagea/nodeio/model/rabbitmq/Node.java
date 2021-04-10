@@ -167,7 +167,6 @@ public class Node
             }
             mChannel.queueDelete(mQueueName);
             // Declare the host queue.
-            mChannel.queueDelete(HOST_QUEUE_URI);
             mChannel.queueDeclare(HOST_QUEUE_URI,
                     false, false, true,
                     null);
