@@ -5,19 +5,25 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
-public class AndroidLauncher extends AndroidApplication {
+public class AndroidLauncher extends AndroidApplication
+{
+	private Main mMain;
+
 	@Override
-	protected void onCreate (Bundle savedInstanceState) {
+	protected void onCreate (Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
+
+		mMain = new Main();
+
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new Main(), config);
+		initialize(mMain, config);
 	}
 
 	@Override
 	protected void onStop()
 	{
 		super.onStop();
-		// Trigger the shutdown hook.
-		Runtime.getRuntime().exit(0);
+		mMain.onStop();
 	}
 }

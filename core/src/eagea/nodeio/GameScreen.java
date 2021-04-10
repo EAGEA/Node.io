@@ -96,6 +96,19 @@ public class GameScreen extends ScreenAdapter
         }
     }
 
+    /**
+     * Android activity call (shutdown hook not triggered).
+     */
+    public void onStop()
+    {
+        if (mModel != null)
+        {
+            // Close the connection.
+            // -> No networking on main thread (android policy).
+            new Thread(() -> mModel.shutDownHook()).start();
+        }
+    }
+
     public void onStartGame()
     {
         mView.onStartGame();

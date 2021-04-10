@@ -542,32 +542,26 @@ public class Model
      * Disconnect player when closing the game.
      * If we are the host we need to give our role to another player.
      */
+    public void shutDownHook()
+    {
+        if (mState == State.GAME)
+        {
+            if (mNode.isHost())
+            {
+                // Directly process our disconnection.
+                checkDisconnection(new Disconnection(mNode.getID()));
+            }
+            else
+            {
+                // Otherwise only notify the host.
+                askForDisconnection();
+            }
+        }
+    }
+
     private void addShutDownHook()
     {
-        Runtime.getRuntime().addShutdownHook(
-                new Thread(() ->
-                {
-                    if (mState == State.GAME)
-                    {
-                        if (mNode.isHost())
-                        {
-                            // Directly process our disconnection.
-                            Action action = checkDisconnection(new Disconnection(mNode.getID()));
-
-                            if (action != null)
-                            {
-                                mNode.sendToPlayers(action);
-                            }
-                        }
-                        else
-                        {
-                            // Otherwise only notify the host.
-                            askForDisconnection();
-                        }
-                    }
-                }
-            )
-        );
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutDownHook));
     }
 
     /**
