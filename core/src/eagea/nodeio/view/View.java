@@ -118,11 +118,6 @@ public class View
         return mModel;
     }
 
-    public MapV getMap()
-    {
-        return mMap;
-    }
-
     public PlayersV getPlayers()
     {
         return mPlayers;

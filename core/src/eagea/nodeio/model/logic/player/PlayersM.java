@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import eagea.nodeio.model.logic.map.ZoneM;
-
 /**
  * Manage all the game players.
  */

@@ -23,8 +23,6 @@ public class CaughtBox
 
     // Parent.
     private final View mView;
-    // Position.
-    private final Vector2 mPosition;
     // Icon.
     private final TextureRegion[] mTextures;
     // Animation.
@@ -34,7 +32,6 @@ public class CaughtBox
     public CaughtBox(View view)
     {
         mView = view;
-        mPosition = new Vector2(- ICON_WIDTH / 2f, - ICON_HEIGHT / 2f);
         // Load textures.
         mTextures = new TextureRegion[3];
         mTextures[0] = GameScreen.mHUDAtlas.findRegion("caught_bg");

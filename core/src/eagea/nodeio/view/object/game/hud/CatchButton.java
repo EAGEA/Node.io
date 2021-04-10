@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import eagea.nodeio.GameScreen;
 import eagea.nodeio.Main;
-import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.view.View;
 
 /**
@@ -18,8 +17,6 @@ public class CatchButton
     private final float ICON_HEIGHT = 3f;
     // On touch animation.
     private final float ANIMATION_TIME = 0.2f;
-    // Delta error when clicking on button, on the x and y axis.
-    private final float TOUCH_DELTA = 0.5f;
 
     // Parent.
     private final View mView;

@@ -28,8 +28,8 @@ public class Joystick
     // Icon.
     private final TextureRegion[] mTextures;
     // Animation.
-    private boolean[] mIsAnimated;
-    private float[] mTimeSinceLastRender;
+    private final boolean[] mIsAnimated;
+    private final float[] mTimeSinceLastRender;
 
     public Joystick(View view)
     {

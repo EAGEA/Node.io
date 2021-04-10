@@ -5,22 +5,13 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Delivery;
-import com.rabbitmq.client.ShutdownListener;
-import com.rabbitmq.client.ShutdownSignalException;
 
 import org.apache.commons.lang3.SerializationUtils;
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.TimeoutException;
 
 import eagea.nodeio.model.Model;
 import eagea.nodeio.model.rabbitmq.action.Action;
-import eagea.nodeio.model.rabbitmq.action.Disconnection;
-import eagea.nodeio.model.rabbitmq.action.Move;
 
 /**
  * Handle all the RabbitMQ communications with other players.
@@ -132,7 +123,7 @@ public class Node
         try
         {
             // If no exception, host queue already exists, so host too.
-            AMQP.Queue.DeclareOk hostQueue = mChannel.queueDeclarePassive(HOST_QUEUE_URI);
+            mChannel.queueDeclarePassive(HOST_QUEUE_URI);
             // Non-host players have a queue to receive actions.
             declareQueue();
 

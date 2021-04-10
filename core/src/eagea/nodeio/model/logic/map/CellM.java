@@ -1,7 +1,5 @@
 package eagea.nodeio.model.logic.map;
 
-import com.badlogic.gdx.math.Vector2;
-
 import java.io.Serializable;
 import java.util.Observable;
 

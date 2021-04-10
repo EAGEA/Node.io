@@ -3,7 +3,6 @@ package eagea.nodeio.model.logic.player;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.Serializable;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Observable;
 
 import eagea.nodeio.model.logic.map.CellM;
@@ -232,7 +231,7 @@ public class PlayerM extends Observable implements Serializable
     {
         if (o instanceof PlayerM)
         {
-            return mID == ((PlayerM) o).getID();
+            return mID.equals(((PlayerM) o).getID());
         }
 
         return false;
@@ -244,18 +243,8 @@ public class PlayerM extends Observable implements Serializable
      */
     public Vector2 getMapPosition()
     {
-        return new Vector2((getZone() / MapM.ZONE_LINE) * ZoneM.SIZE + getI(),
+        return new Vector2(((float) getZone() / MapM.ZONE_LINE) * ZoneM.SIZE + getI(),
                 (getZone() % MapM.ZONE_LINE) * ZoneM.SIZE + getJ());
-    }
-
-    public void setMap(MapM map)
-    {
-        mMap = map;
-    }
-
-    public void setZone(int zone)
-    {
-        mZone = zone;
     }
 
     public String getID()

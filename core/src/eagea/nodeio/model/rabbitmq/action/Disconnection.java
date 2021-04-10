@@ -2,9 +2,6 @@ package eagea.nodeio.model.rabbitmq.action;
 
 import java.util.ArrayList;
 
-import eagea.nodeio.model.logic.map.ZoneM;
-import eagea.nodeio.model.logic.player.PlayerM;
-
 /**
  * Player is disconnecting. Send this action to the host so that it can
  * notify everyone, and give the zones of the disconnecting player

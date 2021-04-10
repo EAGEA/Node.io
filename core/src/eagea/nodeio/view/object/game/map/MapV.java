@@ -87,6 +87,8 @@ public class MapV implements Observer
                         case ADD:
                             mZones.add(new ZoneV(mMap.get(mMap.getNbZones() - 1), mPlayer));
                             break;
+                        case REMOVE:
+                            break;
                     }
                 }
             }

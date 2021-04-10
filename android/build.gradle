@@ -6,6 +6,8 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        // To support java 8 calls for android API < 24.
+        coreLibraryDesugaringEnabled true
     }
     sourceSets {
         main {
@@ -28,6 +30,8 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        // To support java 8 calls for android API < 24.
+        multiDexEnabled true
     }
     buildTypes {
         release {

@@ -2,8 +2,6 @@ package eagea.nodeio.model;
 
 import com.badlogic.gdx.math.Vector2;
 
-import org.omg.Messaging.SYNC_WITH_TRANSPORT;
-
 import java.util.ArrayList;
 
 import eagea.nodeio.GameScreen;

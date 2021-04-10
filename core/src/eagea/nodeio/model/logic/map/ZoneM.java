@@ -74,11 +74,6 @@ public class ZoneM extends Observable implements Serializable
         mOwner = owner;
     }
 
-    public void setType(Type type)
-    {
-        mType = type;
-    }
-
     public String getOwner()
     {
         return mOwner;
