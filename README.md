@@ -13,7 +13,11 @@
 	<br>
 </div>
 
-
+<div align="center">
+<a href='https://play.google.com/store/apps/details?id=eagea.nodeio&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+	<br>
+	<br>
+</div>
 
 ## Demonstration
 
@@ -80,6 +84,8 @@ Here is the complete architecture:
   a **Lamport timestamp** system, and enqueue the `Actions` received too early on the _host_ side.
   However this approach would imply a lot of modifications and efforts to make it work, this is why
   we chose to make the _host_ unfair.
+  
+// TODO
   
 ## Attributions
 
