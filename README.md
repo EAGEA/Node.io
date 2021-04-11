@@ -13,10 +13,16 @@
 	<br>
 </div>
 
-## Demonstration
 
 
-## Description
+## Demonstration
+
+<p align="center">
+	<img src="core/assets/misc/demonstration.gif" width="100%">
+	<br>
+</p>
+
+## Description
 
 Control your player and catch others to gain more zones. But watch out: players will try to catch
 you too. Survive and catch them to be the one with the biggest number of zones!
