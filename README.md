@@ -78,12 +78,20 @@ As said before, we use **RabbitMQ** to handle communications between players.
 Here is the complete architecture:
 
 <p align="center">
-	<img src="core/assets/misc/rabbitMQ_arch.png" width="50%">
+	<img src="core/assets/misc/rabbitMQ_arch.png" width="40%">
 	<br>
 </p>
 
-## Limits
+## Theoretical Limits
 
+Most of the limits of our game are related to the _host_. Here are the most important:
+
+* _Host_ is the bottleneck of our game. If processing (_computation capacity_) or sending (_network
+  speed_) an `Action` take too much time for her/him, the game will be slowed down for every player. 
+ 
+* In the same way, if too much players are connected and are playing at moment, the _host_ will 
+  need more _computation speed_ to keep the game smooth. 
+  
 * The game is not fair, the _host_ is advantaged: when sending an `Action` every player should wait 
   for _host_ validation to update their model (_i.e. to receive back an `Action` from the host_),
   while the _host_ sees her/his model updated directly during the validation process. Thus there is
@@ -94,9 +102,6 @@ Here is the complete architecture:
   a **Lamport timestamp** system, and enqueue the `Actions` received too early on the _host_ side.
   However this approach would imply a lot of modifications and efforts to make it work, this is why
   we chose to make the _host_ unfair.
-  
-* _Host_ is disconnected ... TODO
-// TODO
   
 ## Attributions
 
