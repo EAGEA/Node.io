@@ -59,6 +59,13 @@ Our game is implemented using the **Model View Controller** pattern. To achieve 
 * **The Controller:**
 
     * Only one _class_ that handles the inputs of the player and updates the _model_ accordingly.
+    
+Here is the architecture of the game: 
+    
+<p align="center">
+	<img src="core/assets/misc/prog_arch.png" width="100%">
+	<br>
+</p>
 
 ## RabbitMQ
 
@@ -70,7 +77,10 @@ As said before, we use **RabbitMQ** to handle communications between players.
 
 Here is the complete architecture:
 
-// TODO
+<p align="center">
+	<img src="core/assets/misc/rabbitMQ_arch.png" width="50%">
+	<br>
+</p>
 
 ## Limits
 
@@ -85,6 +95,7 @@ Here is the complete architecture:
   However this approach would imply a lot of modifications and efforts to make it work, this is why
   we chose to make the _host_ unfair.
   
+* _Host_ is disconnected ... TODO
 // TODO
   
 ## Attributions
