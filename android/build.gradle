@@ -4,10 +4,11 @@ android {
     buildToolsVersion "30.0.3"
     compileSdkVersion 30
     compileOptions {
+        // To support java 8 calls for android API < 24 (mandatory).
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-        // To support java 8 calls for android API < 24.
-        coreLibraryDesugaringEnabled true
     }
     sourceSets {
         main {
@@ -30,7 +31,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        // To support java 8 calls for android API < 24.
+        // To support java 8 calls for android API < 24 (bc minSdk < 20).
         multiDexEnabled true
     }
     buildTypes {
