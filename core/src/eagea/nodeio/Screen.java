@@ -96,17 +96,22 @@ public class Screen extends ScreenAdapter
         }
     }
 
-    /**
-     * Android activity call (shutdown hook not triggered).
-     */
-    public void onStop()
+    public void onPause()
     {
         if (mModel != null)
         {
+            // Can't stop game music (android bug), so mute it.
+            mGameMusic.setVolume(0f);
             // Close the connection.
             // -> No networking on main thread (android policy).
             new Thread(() -> mModel.shutDownHook()).start();
         }
+    }
+
+    public void onResume()
+    {
+        // Switch for menu music.
+        Screen.startMenuMusic();
     }
 
     public void onStartGame()

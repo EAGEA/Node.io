@@ -51,12 +51,18 @@ public class Main extends Game
         mBatch.setProjectionMatrix(mCamera.combined);
     }
 
-    /**
-     * Android activity call (shutdown hook not triggered).
-     */
-    public void onStop()
+    @Override
+    public void pause()
     {
-        mScreen.onStop();
+        super.pause();
+        mScreen.onPause();
+    }
+
+    @Override
+    public void resume()
+    {
+        super.pause();
+        mScreen.onResume();
     }
 
     public void DEBUG()

@@ -76,8 +76,6 @@ public class Model
             mPlayers.add(mPlayer);
             // Start rendering.
             mScreen.onStartGame();
-            // Auto-disconnection.
-            addShutDownHook();
         }
     }
 
@@ -170,8 +168,6 @@ public class Model
             mPlayer = mPlayers.get(mPlayers.getNbPlayers() - 1);
             // Start rendering.
             mScreen.onStartGame();
-            // Auto-disconnection.
-            addShutDownHook();
         }
         else
         {
@@ -359,12 +355,6 @@ public class Model
         mPlayers.getPlayers().forEach(p ->
                 {
                     Vector2 pPosition = p.getMapPosition();
-
-                    if (! p.equals(player))
-                    {
-                        System.out.println(position.y + " & " + position.x);
-                        System.out.println(pPosition.y + " " + pPosition.x);
-                    }
 
                     if (pPosition.x == position.x
                             && pPosition.y == position.y)
@@ -568,11 +558,6 @@ public class Model
                 askForDisconnection();
             }
         }
-    }
-
-    private void addShutDownHook()
-    {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::shutDownHook));
     }
 
     /**
