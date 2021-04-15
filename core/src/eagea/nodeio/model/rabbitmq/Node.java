@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import eagea.nodeio.model.Model;
 import eagea.nodeio.model.rabbitmq.action.Action;
+import jdk.nashorn.internal.runtime.ECMAException;
 
 /**
  * Handle all the RabbitMQ communications with other players.
@@ -180,9 +181,12 @@ public class Node
         try
         {
             // Unbind.
-            mChannel.queueDelete(HOST_QUEUE_URI);
+            AMQP.Queue.DeleteOk q = mChannel.queueDelete(HOST_QUEUE_URI);
+            // Android Bug: if the result is not assigned to "q",
+            // these line will never be reached,
+            // and RabbitMQ will never delete the queue...
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }

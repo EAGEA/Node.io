@@ -55,6 +55,8 @@ Our game is implemented using the **Model View Controller** pattern. To achieve 
     * There are a _view_ associated to each one of the _model classes_. They are `Observer` of them. 
     * A special _view_ is dedicated to the background.
     * And all the remaining _views_ are used to depict the _HUD_, and _GUI_. 
+    * Also, the access to the model is synchronized between the rendering and updating threads using 
+      a _lock_.
 
 * **The Controller:**
 
