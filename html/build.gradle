@@ -83,10 +83,15 @@ task addSource {
     }
 }
 
+dependencies {
+    implementation project(path: ':core')
+}
+
 tasks.compileGwt.dependsOn(addSource)
 tasks.draftCompileGwt.dependsOn(addSource)
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.resources.srcDirs = ["../core/assets"]
 
 eclipse.project.name = appName + "-html"
