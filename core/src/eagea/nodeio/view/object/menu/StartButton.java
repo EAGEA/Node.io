@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 import eagea.nodeio.model.Model;
 import eagea.nodeio.view.View;
@@ -33,7 +33,7 @@ public class StartButton
     {
         mView = view;
         mPosition = new Vector2(-ICON_WIDTH / 2f, 0f);
-        mTexture = GameScreen.mGUIAtlas.findRegion("start");
+        mTexture = Screen.mGUIAtlas.findRegion("start");
         // Animation.
         mIsShown = true;
         mTimeSinceLastRender = 0f;
@@ -77,9 +77,9 @@ public class StartButton
         {
             // Whole screen touchable in this state.
             System.out.println("[DEBUG]: on click start");
-            GameScreen.playButtonSound();
-            GameScreen.stopMenuMusic();
-            GameScreen.startGameMusic();
+            Screen.playButtonSound();
+            Screen.stopMenuMusic();
+            Screen.startGameMusic();
             // Start the game
             mView.getModel().goToGame();
             return true;

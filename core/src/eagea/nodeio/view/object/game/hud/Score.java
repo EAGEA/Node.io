@@ -3,7 +3,7 @@ package eagea.nodeio.view.object.game.hud;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 import eagea.nodeio.view.View;
 
@@ -31,7 +31,7 @@ public class Score
     {
         mView = view;
         mPosition = new Vector2();
-        mTexture = GameScreen.mHUDAtlas.findRegion("head");
+        mTexture = Screen.mHUDAtlas.findRegion("head");
     }
 
     public void render(float delta)
@@ -52,7 +52,7 @@ public class Score
             int digit = (int) ((float) score / coef) ;
             score -= digit * coef ;
             // Its texture.
-            TextureRegion digitTexture = GameScreen.mHUDAtlas.findRegion(
+            TextureRegion digitTexture = Screen.mHUDAtlas.findRegion(
                     "digit_wendy_outlined_white", digit) ;
             // Draw.
             Main.mBatch.draw(digitTexture,

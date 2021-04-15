@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 import eagea.nodeio.view.View;
 
@@ -27,7 +27,7 @@ public class ExitButton
     {
         mView = view;
         mPosition = new Vector2();
-        mTexture = GameScreen.mHUDAtlas.findRegion("exit");
+        mTexture = Screen.mHUDAtlas.findRegion("exit");
     }
 
     public void render(float delta)
@@ -54,9 +54,9 @@ public class ExitButton
                 && mPosition.y <= position.y && position.y <= mPosition.y + ICON_HEIGHT)
         {
             System.out.println("[DEBUG]: on click exit");
-            GameScreen.playButtonSound();
-            GameScreen.stopGameMusic();
-            GameScreen.startMenuMusic();
+            Screen.playButtonSound();
+            Screen.stopGameMusic();
+            Screen.startMenuMusic();
             // Disconnect user.
             mView.getModel().askForDisconnection();
             return true;

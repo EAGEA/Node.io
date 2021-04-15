@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.Observable;
 import java.util.Observer;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.view.View;
@@ -162,17 +162,17 @@ public class PlayerV implements Observer
 
         for (int i = 0; i < FRAMES_PER_ANIMATION; i ++)
         {
-            mLeftAnimation[i] = GameScreen.mCharactersAtlas.findRegion(color + "_left", i);
-            mRightAnimation[i] = GameScreen.mCharactersAtlas.findRegion(color + "_right", i);
-            mUpAnimation[i] = GameScreen.mCharactersAtlas.findRegion(color + "_up", i);
-            mDownAnimation[i] = GameScreen.mCharactersAtlas.findRegion(color + "_down", i);
+            mLeftAnimation[i] = Screen.mCharactersAtlas.findRegion(color + "_left", i);
+            mRightAnimation[i] = Screen.mCharactersAtlas.findRegion(color + "_right", i);
+            mUpAnimation[i] = Screen.mCharactersAtlas.findRegion(color + "_up", i);
+            mDownAnimation[i] = Screen.mCharactersAtlas.findRegion(color + "_down", i);
         }
 
         mSpeakTextures = new TextureRegion[PlayerM.Speak.values().length];
 
         for (int i = 0; i < PlayerM.Speak.values().length; i ++)
         {
-            mSpeakTextures[i] = GameScreen.mCharactersAtlas.findRegion(
+            mSpeakTextures[i] = Screen.mCharactersAtlas.findRegion(
                     PlayerM.Speak.values()[i].toString().toLowerCase());
         }
     }

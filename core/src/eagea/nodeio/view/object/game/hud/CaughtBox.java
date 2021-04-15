@@ -3,7 +3,7 @@ package eagea.nodeio.view.object.game.hud;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 import eagea.nodeio.model.Model;
 import eagea.nodeio.view.View;
@@ -34,9 +34,9 @@ public class CaughtBox
         mView = view;
         // Load textures.
         mTextures = new TextureRegion[3];
-        mTextures[0] = GameScreen.mHUDAtlas.findRegion("caught_bg");
-        mTextures[1] = GameScreen.mHUDAtlas.findRegion("caught");
-        mTextures[2] = GameScreen.mHUDAtlas.findRegion("caught_menu");
+        mTextures[0] = Screen.mHUDAtlas.findRegion("caught_bg");
+        mTextures[1] = Screen.mHUDAtlas.findRegion("caught");
+        mTextures[2] = Screen.mHUDAtlas.findRegion("caught_menu");
         // Animation.
         mIsShown = true;
         mTimeSinceLastRender = 0f;
@@ -83,9 +83,9 @@ public class CaughtBox
         {
             // Whole screen touchable in this state.
             System.out.println("[DEBUG]: on click caught");
-            GameScreen.playButtonSound();
-            GameScreen.stopGameMusic();
-            GameScreen.startMenuMusic();
+            Screen.playButtonSound();
+            Screen.stopGameMusic();
+            Screen.startMenuMusic();
             // Go to menu.
             mView.getModel().goToMenu();
             return true;

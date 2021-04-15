@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.view.View;
@@ -37,11 +37,11 @@ public class Joystick
         mPosition = new Vector2(- ICON_WIDTH / 2f, 0f);
         // Load textures.
         mTextures = new TextureRegion[5];
-        mTextures[0] = GameScreen.mHUDAtlas.findRegion("joystick");
-        mTextures[1] = GameScreen.mHUDAtlas.findRegion("joystick_on_touch_left");
-        mTextures[2] = GameScreen.mHUDAtlas.findRegion("joystick_on_touch_right");
-        mTextures[3] = GameScreen.mHUDAtlas.findRegion("joystick_on_touch_up");
-        mTextures[4] = GameScreen.mHUDAtlas.findRegion("joystick_on_touch_down");
+        mTextures[0] = Screen.mHUDAtlas.findRegion("joystick");
+        mTextures[1] = Screen.mHUDAtlas.findRegion("joystick_on_touch_left");
+        mTextures[2] = Screen.mHUDAtlas.findRegion("joystick_on_touch_right");
+        mTextures[3] = Screen.mHUDAtlas.findRegion("joystick_on_touch_up");
+        mTextures[4] = Screen.mHUDAtlas.findRegion("joystick_on_touch_down");
         // Animation.
         mIsAnimated = new boolean[] { false, false, false, false };
         mTimeSinceLastRender = new float[] { 0f, 0f, 0f, 0f };

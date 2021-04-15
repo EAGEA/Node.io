@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.model.logic.map.CellM;
 import eagea.nodeio.model.logic.map.MapM;
 import eagea.nodeio.model.logic.map.ZoneM;
@@ -29,7 +29,7 @@ public class Model
     public enum State { MENU, STARTING, GAME, CAUGHT }
 
     // Context.
-    private final GameScreen mGameScreen;
+    private final Screen mScreen;
 
     // RabbitMQ.
     private final Node mNode;
@@ -42,9 +42,9 @@ public class Model
     // State.
     private State mState;
 
-    public Model(GameScreen screen)
+    public Model(Screen screen)
     {
-        mGameScreen = screen;
+        mScreen = screen;
         mNode = new Node(this);
         mState = State.MENU;
     }
@@ -75,7 +75,7 @@ public class Model
             mPlayers = new PlayersM();
             mPlayers.add(mPlayer);
             // Start rendering.
-            mGameScreen.onStartGame();
+            mScreen.onStartGame();
             // Auto-disconnection.
             addShutDownHook();
         }
@@ -169,7 +169,7 @@ public class Model
             mPlayers = action.getPlayers();
             mPlayer = mPlayers.get(mPlayers.getNbPlayers() - 1);
             // Start rendering.
-            mGameScreen.onStartGame();
+            mScreen.onStartGame();
             // Auto-disconnection.
             addShutDownHook();
         }
@@ -212,7 +212,7 @@ public class Model
         // play a footstep sound.
         if (move && player.getZone() == mPlayer.getZone())
         {
-            GameScreen.playFootstepSound();
+            Screen.playFootstepSound();
         }
     }
 
@@ -232,7 +232,7 @@ public class Model
         // play a speak sound.
         if (player.getZone() == mPlayer.getZone())
         {
-            GameScreen.playSpeakSound();
+            Screen.playSpeakSound();
         }
     }
 
@@ -257,7 +257,7 @@ public class Model
         // If I'm caught.
         if (action.getCaught().contains(mPlayer.getID()))
         {
-            GameScreen.playCatchSound();
+            Screen.playCatchSound();
             goToCaught();
         }
     }
@@ -355,10 +355,16 @@ public class Model
             case UP: position.x ++; break;
             case DOWN: position.x --; break;
         }
-        // Check if a player is already in this cell.
+        // Check if a player is already on this cell.
         mPlayers.getPlayers().forEach(p ->
                 {
                     Vector2 pPosition = p.getMapPosition();
+
+                    if (! p.equals(player))
+                    {
+                        System.out.println(position.y + " & " + position.x);
+                        System.out.println(pPosition.y + " " + pPosition.x);
+                    }
 
                     if (pPosition.x == position.x
                             && pPosition.y == position.y)

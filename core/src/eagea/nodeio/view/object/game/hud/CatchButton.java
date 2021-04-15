@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 import eagea.nodeio.view.View;
 
@@ -34,8 +34,8 @@ public class CatchButton
         mPosition = new Vector2();
         mTexture = new TextureRegion[2];
         // Load frames.
-        mTexture[0] = GameScreen.mHUDAtlas.findRegion("catch");
-        mTexture[1] = GameScreen.mHUDAtlas.findRegion("catch_on_touch");
+        mTexture[0] = Screen.mHUDAtlas.findRegion("catch");
+        mTexture[1] = Screen.mHUDAtlas.findRegion("catch_on_touch");
         // Animation.
         mIsAnimated = false;
         mTimeSinceLastRender = 0f;

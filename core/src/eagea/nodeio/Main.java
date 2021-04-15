@@ -20,7 +20,7 @@ public class Main extends Game
     public static OrthographicCamera mCamera;
     public static Viewport mViewPortGame;
     public static SpriteBatch mBatch;
-    private static GameScreen mGameScreen;
+    private static Screen mScreen;
 
     @Override
     public void create ()
@@ -31,15 +31,15 @@ public class Main extends Game
         mCamera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         mViewPortGame = new FillViewport(mCamera.viewportWidth, mCamera.viewportHeight, mCamera) ;
         // Screens.
-        mGameScreen = new GameScreen();
-        setScreen(mGameScreen);
+        mScreen = new Screen();
+        setScreen(mScreen);
     }
 
     @Override
     public void dispose ()
     {
         mBatch.dispose();
-        mGameScreen.dispose();
+        mScreen.dispose();
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Main extends Game
      */
     public void onStop()
     {
-        mGameScreen.onStop();
+        mScreen.onStop();
     }
 
     public void DEBUG()

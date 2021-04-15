@@ -33,7 +33,7 @@ public class PlayerM extends Observable implements Serializable
     // Her/his sentence to say.
     private Speak mSentence;
     // Current environment.
-    private MapM mMap;
+    private final MapM mMap;
 
     public PlayerM(String ID, int i, int j, int zone, MapM map)
     {
@@ -54,19 +54,17 @@ public class PlayerM extends Observable implements Serializable
                 // The player can not go over limits.
                 return false;
             }
-            else
+
+            if (mMap.get(mZone - 1).getCells()[(int) mPosition.x][ZoneM.SIZE - 1].getType()
+                    != CellM.Type.EMPTY)
             {
-                if (mMap.get(mZone - 1).getCells()[(int) mPosition.x][ZoneM.SIZE - 1].getType()
-                        != CellM.Type.EMPTY)
-                {
-                    // Cell is not empty (there is a bush
-                    // or something else on it), can't go on it.
-                    return false;
-                }
-                // The player exit the current zone.
-                mPosition.y = ZoneM.SIZE - 1;
-                mZone --;
+                // Cell is not empty (there is a bush
+                // or something else on it), can't go on it.
+                return false;
             }
+            // The player exit the current zone.
+            mPosition.y = ZoneM.SIZE - 1;
+            mZone --;
         }
         else
         {
@@ -96,19 +94,17 @@ public class PlayerM extends Observable implements Serializable
                 // The player can not go over limits.
                 return false;
             }
-            else
+
+            if (mMap.get(mZone + 1).getCells()[(int) mPosition.x][0].getType()
+                    != CellM.Type.EMPTY)
             {
-                if (mMap.get(mZone + 1).getCells()[(int) mPosition.x][0].getType()
-                        != CellM.Type.EMPTY)
-                {
-                    // Cell is not empty (there is a bush
-                    // or something else on it), can't go on it.
-                    return false;
-                }
-                // The player exit the current zone.
-                mPosition.y = 0;
-                mZone ++;
+                // Cell is not empty (there is a bush
+                // or something else on it), can't go on it.
+                return false;
             }
+            // The player exit the current zone.
+            mPosition.y = 0;
+            mZone ++;
         }
         else
         {
@@ -138,19 +134,17 @@ public class PlayerM extends Observable implements Serializable
                 // The player can not go over limits.
                 return false;
             }
-            else
+
+            if (mMap.get(mZone + MapM.ZONE_LINE).getCells()[0][(int) (mPosition.y)].getType()
+                    != CellM.Type.EMPTY)
             {
-                if (mMap.get(mZone + MapM.ZONE_LINE).getCells()[0][(int) (mPosition.y)].getType()
-                        != CellM.Type.EMPTY)
-                {
-                    // Cell is not empty (there is a bush
-                    // or something else on it), can't go on it.
-                    return false;
-                }
-                // The player exit the current zone.
-                mPosition.x = 0;
-                mZone += MapM.ZONE_LINE;
+                // Cell is not empty (there is a bush
+                // or something else on it), can't go on it.
+                return false;
             }
+            // The player exit the current zone.
+            mPosition.x = 0;
+            mZone += MapM.ZONE_LINE;
         }
         else
         {
@@ -180,19 +174,17 @@ public class PlayerM extends Observable implements Serializable
                 // The player can not go over limits.
                 return false;
             }
-            else
+
+            if (mMap.get(mZone - MapM.ZONE_LINE).getCells()[ZoneM.SIZE - 1]
+                    [(int) (mPosition.y)].getType() != CellM.Type.EMPTY)
             {
-                if (mMap.get(mZone - MapM.ZONE_LINE).getCells()[ZoneM.SIZE - 1]
-                        [(int) (mPosition.y)].getType() != CellM.Type.EMPTY)
-                {
-                    // Cell is not empty (there is a bush
-                    // or something else on it), can't go on it.
-                    return false;
-                }
-                // The player exit the current zone.
-                mPosition.x = ZoneM.SIZE - 1;
-                mZone -= MapM.ZONE_LINE;
+                // Cell is not empty (there is a bush
+                // or something else on it), can't go on it.
+                return false;
             }
+            // The player exit the current zone.
+            mPosition.x = ZoneM.SIZE - 1;
+            mZone -= MapM.ZONE_LINE;
         }
         else
         {
@@ -243,7 +235,7 @@ public class PlayerM extends Observable implements Serializable
      */
     public Vector2 getMapPosition()
     {
-        return new Vector2(((float) getZone() / MapM.ZONE_LINE) * ZoneM.SIZE + getI(),
+        return new Vector2((float) (getZone() / MapM.ZONE_LINE) * ZoneM.SIZE + getI(),
                 (getZone() % MapM.ZONE_LINE) * ZoneM.SIZE + getJ());
     }
 

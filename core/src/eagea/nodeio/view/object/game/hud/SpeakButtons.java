@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 import eagea.nodeio.model.logic.player.PlayerM;
 import eagea.nodeio.view.View;
@@ -46,14 +46,14 @@ public class SpeakButtons
                 (-3 * ICON_WIDTH -2 * SPACE_HORIZONTAL_ICONS) / 2f, 0f);
         // Load textures
         mHelloTextures = new TextureRegion[2];
-        mHelloTextures[0] = GameScreen.mHUDAtlas.findRegion("hello");
-        mHelloTextures[1] = GameScreen.mHUDAtlas.findRegion("hello_on_touch");
+        mHelloTextures[0] = Screen.mHUDAtlas.findRegion("hello");
+        mHelloTextures[1] = Screen.mHUDAtlas.findRegion("hello_on_touch");
         mLooserTextures = new TextureRegion[2];
-        mLooserTextures[0] = GameScreen.mHUDAtlas.findRegion("looser");
-        mLooserTextures[1] = GameScreen.mHUDAtlas.findRegion("looser_on_touch");
+        mLooserTextures[0] = Screen.mHUDAtlas.findRegion("looser");
+        mLooserTextures[1] = Screen.mHUDAtlas.findRegion("looser_on_touch");
         mByeTextures = new TextureRegion[2];
-        mByeTextures[0] = GameScreen.mHUDAtlas.findRegion("bye");
-        mByeTextures[1] = GameScreen.mHUDAtlas.findRegion("bye_on_touch");
+        mByeTextures[0] = Screen.mHUDAtlas.findRegion("bye");
+        mByeTextures[1] = Screen.mHUDAtlas.findRegion("bye_on_touch");
         // Animations.
         mHelloAnimated = false;
         mHelloDeltaTime = 0f;

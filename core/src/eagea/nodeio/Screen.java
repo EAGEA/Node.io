@@ -12,9 +12,9 @@ import eagea.nodeio.model.Model;
 import eagea.nodeio.view.View;
 
 /**
- * Render the game environment i.e. map, players and more.
+ * Render the menus and the game environment i.e. map, players and more.
  */
-public class GameScreen extends ScreenAdapter
+public class Screen extends ScreenAdapter
 {
     private static final float FOOTSTEP_SOUND_VOLUME = 1f;
     private static final float CATCH_SOUND_VOLUME = 0.5f;

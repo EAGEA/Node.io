@@ -3,7 +3,7 @@ package eagea.nodeio.view.object.game.background;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 
 /**
@@ -23,7 +23,7 @@ public class Layer
 
     public Layer(int i, float speed)
     {
-        mTexture = GameScreen.mEnvironmentAtlas.findRegion("background", i);
+        mTexture = Screen.mEnvironmentAtlas.findRegion("background", i);
         mSpeed = speed;
         mCoordinates = new Vector2(-Main.WORLD_WIDTH / 2f, -Main.WORLD_HEIGHT / 2f);
     }

@@ -3,7 +3,7 @@ package eagea.nodeio.view.object.menu;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.Main;
 import eagea.nodeio.view.View;
 
@@ -26,7 +26,7 @@ public class Logo
     {
         mView = view;
         mPosition = new Vector2(-ICON_WIDTH / 2f, 0f);
-        mTexture = GameScreen.mGUIAtlas.findRegion("logo");
+        mTexture = Screen.mGUIAtlas.findRegion("logo");
     }
 
     public void render(float delta)

@@ -2,7 +2,7 @@ package eagea.nodeio.view.object.game.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import eagea.nodeio.GameScreen;
+import eagea.nodeio.Screen;
 import eagea.nodeio.model.logic.map.ZoneM;
 import eagea.nodeio.model.logic.player.PlayerM;
 
@@ -25,7 +25,7 @@ public class ZoneV
         // Load the cells.
         mCells = new CellV[ZoneM.SIZE][ZoneM.SIZE];
         // Texture common to all the cell animation.
-        TextureRegion texture = GameScreen.mEnvironmentAtlas.findRegion("highlighted");
+        TextureRegion texture = Screen.mEnvironmentAtlas.findRegion("highlighted");
 
         for (int i = 0; i < ZoneM.SIZE; i ++)
         {
@@ -56,7 +56,7 @@ public class ZoneV
     {
         String name = mZone.getType().name().toLowerCase();
 
-        return GameScreen.mEnvironmentAtlas.findRegion(name, (int) (Math.random() * 2d) + 1);
+        return Screen.mEnvironmentAtlas.findRegion(name, (int) (Math.random() * 2d) + 1);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ZoneV
     {
         String name = mZone.getType().name().toLowerCase();
 
-        return GameScreen.mEnvironmentAtlas.findRegion("bush_" + name);
+        return Screen.mEnvironmentAtlas.findRegion("bush_" + name);
     }
 
     public ZoneM getZone()
