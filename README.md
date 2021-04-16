@@ -3,7 +3,7 @@
 <div align="center">
 	<br>
 	<br>
-	<img src="android/ic_launcher-playstore.png" width="200" height="200">
+	<img src="core/assets/misc/ic_launcher.png" width="200" height="200">
 	<h1>Node.io</h1>
 	<p>
 	<b>A cross platform multiplayer game<br>for android, iOS, web and desktop, using RabbitMQ for communications.</b>
