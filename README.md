@@ -105,6 +105,20 @@ Most of the limits of our game are related to the _host_. Here are the most impo
   However this approach would imply a lot of modifications and efforts to make it work, this is why
   we chose to make the _host_ unfair.
   
+## Instruction
+
+To run and test `Node.io`, you can either:
+
+* Load the project using `Android Studio` (or `Intellij`), `Gradle` tasks should load automatically.
+
+* Launch gradle tasks using _CLI_ (not detailed). 
+
+* Download the app on the `PlayStore` [here](https://play.google.com/store/apps/details?id=eagea.nodeio).
+
+* Execute directly the app using the `.jar` file in the `Node.io/desktop/build/libs/` folder, for
+  the desktop version.
+
+
 ## Attributions
 
 * Background made by **[Enjl](https://enjl.itch.io/)**.
