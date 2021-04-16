@@ -264,6 +264,19 @@ public class Node
         mModel.play(action);
     }
 
+    public void close()
+    {
+        try
+        {
+            mChannel.close();
+            mConnection.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public boolean isHost()
     {
         return mIsHost;
