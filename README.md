@@ -41,10 +41,10 @@ Our game is implemented using the **Model View Controller** pattern. To achieve 
     * The map is represented by `Zones`. Each `Zone` is represented by `Cells`. Players can move
       from one cell to another at a time.
     * When connecting, the player appears with an associated `Zone`. Each player is identified with
-      an unique _ID_ which is the name of her/his communication _queue_ (given by the _RabbitMQ 
+      a unique _ID_ which is the name of her/his communication _queue_ (given by the _RabbitMQ 
       server_).
     * All the things that the player can do is represented with a dedicated `Action`.
-    * When a player wants to do something, she/he send an `Action` to a special player; the _host_. 
+    * When a player wants to do something, she/he sends an `Action` to a special player; the _host_. 
       The _host_ validates it (checks if it is possible) before sending it to all the players. 
     * The _host_ if the first player to connect. She/he initiates the game. When she/he disconnects,
       we use an election algorithm that choose a random player among the connected ones, to give 
@@ -52,7 +52,7 @@ Our game is implemented using the **Model View Controller** pattern. To achieve 
     
 * **The View:**
     
-    * There are a _view_ associated to each one of the _model classes_. They are `Observer` of them. 
+    * There is a _view_ associated to each one of the _model classes_. They are `Observer` of them. 
     * A special _view_ is dedicated to the background.
     * And all the remaining _views_ are used to depict the _HUD_, and _GUI_. 
     * Also, the access to the model is synchronized between the rendering and updating threads using 
@@ -73,9 +73,9 @@ Here is the architecture of the game:
 
 As said before, we use **RabbitMQ** to handle communications between players. Also, we use a hosted server on [CloudAMQP](https://www.cloudamqp.com/).
 
-* The _host_ use a dedicated _queue_ to receive `Actions` from users.
+* The _host_ uses a dedicated _queue_ to receive `Actions` from users.
 * The _players_ are all connected to a _fan-out exchange_ using a queue. The _host_ publish the
-  validated `Actions` in this _exchange_ so that every player receive and play them.
+  validated `Actions` in this _exchange_ so that every player receives and plays them.
 
 Here is the complete architecture:
 
@@ -89,7 +89,7 @@ Here is the complete architecture:
 Most of the limits of our game are related to the _host_. Here are the most important:
 
 * _Host_ is the bottleneck of our game. If processing (_computation capacity_) or sending (_network
-  speed_) an `Action` take too much time for her/him, the game will be slowed down for every player. 
+  speed_) an `Action` takes too much time for her/him, the game will be slowed down for every player. 
  
 * In the same way, if too much players are connected and are playing at moment, the _host_ will 
   need more _computation speed_ to keep the game smooth. 
