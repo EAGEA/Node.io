@@ -71,7 +71,7 @@ Here is the architecture of the game:
 
 ## RabbitMQ
 
-As said before, we use **RabbitMQ** to handle communications between players.
+As said before, we use **RabbitMQ** to handle communications between players. Also, we use a hosted server on [CloudAMQP](https://www.cloudamqp.com/).
 
 * The _host_ use a dedicated _queue_ to receive `Actions` from users.
 * The _players_ are all connected to a _fan-out exchange_ using a queue. The _host_ publish the
